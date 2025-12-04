@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>NetOps: AI-Powered Automation Solution</title>
+  <style>
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+      background: #f0f2f5;
+    }
+    header {
+      padding: 10px 16px;
+      background: #202123;
+      color: #fff;
+      font-weight: 600;
+    }
+    #chat {
+      flex: 1;
+      padding: 10px;
+      overflow-y: auto;
+    }
+    .msg {
+      margin: 8px 0;
+      max-width: 80%;
+      padding: 8px 12px;
+      border-radius: 8px;
+      white-space: pre-wrap;
+    }
+    .user {
+      background: #0b93f6;
+      color: #fff;
+      margin-left: auto;
+      border-bottom-right-radius: 0;
+    }
+    .assistant {
+      background: #fff;
+      color: #333;
+      margin-right: auto;
+      border-bottom-left-radius: 0;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+    }
+    #input-area {
+      display: flex;
+      border-top: 1px solid #ddd;
+      padding: 10px;
+      background: #fff;
+    }
+    #msgInput {
+      flex: 1;
+      padding: 8px;
+      border-radius: 4px;
+      border: 1px solid #ccc;
+      font-size: 14px;
+    }
+    button {
+      margin-left: 8px;
+      padding: 8px 14px;
+      border-radius: 4px;
+      border: none;
+      background: #0b93f6;
+      color: #fff;
+      font-weight: 500;
+      cursor: pointer;
+    }
+    button:hover {
+      opacity: 0.9;
+    }
+  </style>
+</head>
+<body>
+  <header>NetOps: AI-Powered Automation Solution</header>
+  <div id="chat"></div>
+  <div id="input-area">
+    <input id="msgInput" type="text" placeholder="Ask NetOps to run a script or list available scripts...." />
+    <button onclick="sendMessage()">Send</button>
+  </div>
+
+  <script>
+    const chatDiv = document.getElementById('chat');
+    const input = document.getElementById('msgInput');
+
+    function addMessage(text, cls) {
+      const div = document.createElement('div');
+      div.className = 'msg ' + cls;
+      div.textContent = text;
+      chatDiv.appendChild(div);
+      chatDiv.scrollTop = chatDiv.scrollHeight;
+    }
+
+    async function sendMessage() {
+      const text = input.value.trim();
+      if (!text) return;
+      addMessage(text, 'user');
+      input.value = '';
+
+      try {
+        const res = await fetch('http://127.0.0.1:8000/chat', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ message: text })
+        });
+
+        const data = await res.json();
+        if (data.assistant_message) {
+          addMessage(data.assistant_message, 'assistant');
+        } else if (data.error) {
+          addMessage('Error: ' + data.error, 'assistant');
+        } else {
+          addMessage('Unexpected response from backend.', 'assistant');
+        }
+      } catch (err) {
+        console.error(err);
+        addMessage('Error contacting backend: ' + err, 'assistant');
+      }
+    }
+
+    // Enviar con Enter
+    input.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        sendMessage();
+      }
+    });
+  </script>
+</body>
+</html>
