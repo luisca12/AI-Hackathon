@@ -76,54 +76,115 @@
   <div id="chat"></div>
   <div id="input-area">
     <input id="msgInput" type="text" placeholder="Ask NetOps to run a script or list available scripts...." />
-    <button onclick="sendMessage()">Send</button>
+    <button id="sendBtn">Send</button>
   </div>
 
   <script>
-    const chatDiv = document.getElementById('chat');
-    const input = document.getElementById('msgInput');
+  console.log("[INIT] Cargando NetOps frontend...");
 
-    function addMessage(text, cls) {
-      const div = document.createElement('div');
-      div.className = 'msg ' + cls;
-      div.textContent = text;
-      chatDiv.appendChild(div);
-      chatDiv.scrollTop = chatDiv.scrollHeight;
+  const chatDiv = document.getElementById('chat');
+  const input = document.getElementById('msgInput');
+  const sendBtn = document.getElementById('sendBtn');
+
+  console.log("[INIT] Elementos obtenidos:", { chatDiv, input, sendBtn });
+
+  function addMessage(text, cls) {
+    console.log("[addMessage] Agregando mensaje al chat", { text, cls });
+
+    const div = document.createElement('div');
+    div.className = 'msg ' + cls;
+    div.textContent = text;
+    chatDiv.appendChild(div);
+    chatDiv.scrollTop = chatDiv.scrollHeight;
+
+    console.log("[addMessage] Mensaje agregado. Scroll ajustado.");
+  }
+
+  async function sendMessage() {
+    const text = input.value.trim();
+    console.log("[sendMessage] Invocado. Texto actual:", text);
+
+    if (!text) {
+      console.log("[sendMessage] Texto vacío, no se envía nada.");
+      return;
     }
 
-    async function sendMessage() {
-      const text = input.value.trim();
-      if (!text) return;
-      addMessage(text, 'user');
-      input.value = '';
+    // Mostrar mensaje del usuario en el chat
+    addMessage(text, 'user');
+    input.value = '';
+    console.log("[sendMessage] Mensaje del usuario agregado al chat, input limpiado.");
 
+    const payload = { message: text };
+    console.log("[sendMessage] Payload a enviar al backend:", payload);
+
+    try {
+      console.log("[sendMessage] Iniciando fetch a backend...");
+      const res = await fetch('http://127.0.0.1:8000/chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+
+      console.log("[sendMessage] Respuesta HTTP recibida:", {
+        ok: res.ok,
+        status: res.status,
+        statusText: res.statusText
+      });
+
+      let data;
       try {
-        const res = await fetch('http://127.0.0.1:8000/chat', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ message: text })
+        data = await res.json();
+        console.log("[sendMessage] JSON parseado correctamente:", data);
+      } catch (jsonErr) {
+        console.error("[sendMessage] Error parseando JSON de la respuesta:", jsonErr);
+        addMessage("Error: respuesta del backend no es JSON válido.", 'assistant');
+        return;
+      }
+
+      if (data.assistant_message) {
+        console.log("[sendMessage] Mostrando assistant_message en el chat.");
+        addMessage(data.assistant_message, 'assistant');
+      } else if (data.error) {
+        console.log("[sendMessage] Respuesta contiene error:", data.error);
+        addMessage('Error: ' + data.error, 'assistant');
+      } else {
+        console.log("[sendMessage] Respuesta inesperada del backend, no trae assistant_message ni error.");
+        addMessage('Unexpected response from backend.', 'assistant');
+      }
+
+      // Si quisieras seguir usando script_result desde el backend, aquí podrías loguearlo:
+      if (data.script_executed || data.script_result) {
+        console.log("[sendMessage] script_executed/script_result devueltos por el backend:", {
+          script_executed: data.script_executed,
+          script_result: data.script_result
         });
-
-        const data = await res.json();
-        if (data.assistant_message) {
-          addMessage(data.assistant_message, 'assistant');
-        } else if (data.error) {
-          addMessage('Error: ' + data.error, 'assistant');
-        } else {
-          addMessage('Unexpected response from backend.', 'assistant');
-        }
-      } catch (err) {
-        console.error(err);
-        addMessage('Error contacting backend: ' + err, 'assistant');
       }
+
+    } catch (err) {
+      console.error("[sendMessage] Error contactando al backend:", err);
+      addMessage('Error contacting backend: ' + err, 'assistant');
     }
+  }
 
-    // Enviar con Enter
-    input.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter') {
-        sendMessage();
-      }
-    });
+  // Click en botón "Send"
+  sendBtn.addEventListener('click', () => {
+    console.log("[EVENT] Click en botón Send.");
+    sendMessage();
+  });
+
+  // Enviar con Enter
+  input.addEventListener('keydown', (e) => {
+    console.log("[EVENT] keydown en input:", { key: e.key });
+    if (e.key === 'Enter') {
+      console.log("[EVENT] Enter presionado, llamando sendMessage().");
+      sendMessage();
+    }
+  });
+
+  // Log al terminar de cargar
+  window.addEventListener('load', () => {
+    console.log("[INIT] Ventana cargada. Frontend listo para usar.");
+  });
   </script>
 </body>
 </html>

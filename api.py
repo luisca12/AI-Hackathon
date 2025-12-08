@@ -1,11 +1,14 @@
-import os, subprocess, shlex, sys
+import os, subprocess, sys, json
 from dotenv import load_dotenv
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from openai import OpenAI
 
-# Cargar variables de entorno (.env)
+# ========================
+# CONFIG INICIAL
+# ========================
+
 load_dotenv()
 api_key = os.getenv("OPENAI_API_KEY")
 if not api_key:
@@ -13,26 +16,22 @@ if not api_key:
 
 client = OpenAI(api_key=api_key)
 
-# Inicializar FastAPI
 app = FastAPI(
     title="NetOps: AI-Powered Automation Solution",
     description="Simple backend for a ChatGPT-style NetOps assistant.",
 )
 
-# CORS para poder llamar desde el HTML (localhost)
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],      # en producción deberías restringir esto
+    allow_origins=["*"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
-# Modelo de entrada del chat
 class ChatRequest(BaseModel):
     message: str
 
-# Catálogo de scripts LOCALES disponibles
 scriptsAvailable = {
     "runShowCommands-main": {
         "displayName": "Run Show Commands",
@@ -82,76 +81,57 @@ def scriptCatalogText():
             lines.append("  Parameters:")
             for p in info["parameters"]:
                 lines.append(f"    - {p['name']}: {p['description']}")
-        lines.append("")  # línea en blanco
+        lines.append("")
     return "\n".join(lines)
 
 scriptCatalogTextOut = scriptCatalogText()
 
 SYSTEM_PROMPT = f"""
-Your name is Automation Hero, yuou're an AI-powered automation assistant for network and operations engineers.
-
-We are going to follow the rules/instructions defined on:
-- Rules about the first message 
-- General Rules
-- Rules about scripts
-- Your job for now is
-
-Rules about the first message:
-- The first message should be a short greeting and ask what they would like to do.
-- You can suggest that you can list available scripts or running a specific script, but do not prompt it on the first message
-
-Generale rules:
-- All the replies must have a nice and human readable format.
-- Only prompt the available scripts if the user ask for it
-- Keep answers technical but easy to understand and short, don't put too much text, keep things simple.
-- When the user asks about the available scripts, only show the name and description, no need to put the ID and parameters section yet.
-- When the user wants to run a specific script, only then you can show and ask for the parameters
-- Use a human readable format when presenting the available scripts or any reply
-- Do not ask for what ID the user would like to run, instead, prompt something more user friendly like "what script would you like to run?"
+Your name is Automation Hero, you're an AI-powered automation assistant for network and operations engineers.
 
 You have access to exactly the following local scripts (identified by their ID):
 
 {scriptCatalogTextOut}
 
-Rules about scripts:
-- When the user asks about "available scripts", you MUST list ONLY these scripts, using their IDs and descriptions.
-- NEVER invent or mention scripts that are not in the catalog above.
-- If the user mentions a script that is not in the catalog, tell them that script is not available and suggest one of the existing ones.
-- Later, the backend will use the script ID to execute the corresponding local Python automation.
+You must ALWAYS respond with a single JSON object, and nothing else. No markdown, no explanations outside JSON.
+The JSON MUST have the following structure:
 
-Your job for now is:
-- Answer questions clearly and concisely.
-- Help the user understand what scripts exist in the catalog above and how to use them.
-- Ask for any parameters required by a script (devices, username, password, commands, etc.) before execution.
-- Do NOT say that you executed a script yourself; you only propose which script to run and with which parameters.
-- Do NOT propose running any script without explicit confirmation from the user.
+{{
+  "answer": "<short, human readable message to show in the chat>",
+  "script_to_run": "<one of: runShowCommands-main | aclRemoval-main | shIntStatHalf_SD-WAN-main | showErrDisableInt-main | null>",
+  "parameters": {{
+    "...": "..."
+  }},
+  "run_script": false
+}}
 
+Behavior rules:
+
+General rules:
+- "answer" is what the user will see in the chat, keep it short, clear, technical but easy to understand and looking good.
+- Only show the available scripts when the user asks for them, never show them on the first message.
+- When the user asks for available scripts, list ONLY the scripts that appear in the catalog above, using a friendly name and description.
+- Do NOT invent or mention scripts that are not in the catalog.
+- When the user wants to run a specific script, you must:
+  - Set "script_to_run" to the correct script ID.
+  - Ask for any missing parameters in "answer" and keep "run_script": false.
+  - Only when the user has provided ALL required parameters AND explicitly confirms execution (e.g. "yes, run it"), set "run_script": true.
+- When "run_script" is true, "parameters" MUST include all values needed by the script (for runShowCommands-main: devices, username, password, command).
+- All the replies to the user must always be short, clear, technical but easy to understand, in a nice and human readable format.
+- If you will reply with a list of things or missing parameters, use a clear multi-line format, not everything on the same line.
+
+Very important:
+- If you are NOT ready to execute (need more info or no explicit confirmation), set "run_script": false.
+- If the user changes their mind or says "do not run it", keep "run_script": false.
+- Never say that you executed the script yourself; you only request execution through this JSON.
+
+Remember: respond ONLY with JSON. No text before or after the JSON.
 """
-
-@app.post("/chat")
-def chatEndpoint(req: ChatRequest):
-    """
-    Simple chat endpoint:
-    - Receives a user message.
-    - Sends it to OpenAI with a system prompt.
-    - Returns the assistant message.
-    """
-    response = client.chat.completions.create(
-        model="gpt-5-nano",  # tu modelo actual
-        messages=[
-            {"role": "system", "content": SYSTEM_PROMPT},
-            {"role": "user", "content": req.message},
-        ],
-        # temperature=0.2,
-    )
-
-    assistant_message = response.choices[0].message.content
-    return {"assistant_message": assistant_message}
 
 baseScriptDir = os.path.join(os.path.dirname(__file__), "scripts")
 
 def run_runShowCommands(params: dict) -> dict:
-    devices = params["devices"]           # "10.1.1.1,10.1.1.2"
+    devices = params["devices"]           # "192.168.0.14" o "ip1,ip2"
     username = params["username"]
     password = params["password"]
     command = params["command"]
@@ -171,8 +151,6 @@ def run_runShowCommands(params: dict) -> dict:
         "--command", command,
     ]
 
-    # Opcional: poner cwd en la carpeta del script para que logs/Outputs se
-    # creen ahí dentro
     script_dir = os.path.dirname(script_path)
 
     result = subprocess.run(
@@ -186,4 +164,88 @@ def run_runShowCommands(params: dict) -> dict:
         "returncode": result.returncode,
         "stdout": result.stdout,
         "stderr": result.stderr,
+    }
+
+# ========================
+# HISTORIAL DE CONVERSACIÓN
+# ========================
+
+# Para el prototipo: un solo historial global
+conversation_history = [
+    {"role": "system", "content": SYSTEM_PROMPT}
+]
+
+@app.post("/chat")
+def chatEndpoint(req: ChatRequest):
+    global conversation_history
+
+    # Añadir mensaje del usuario al historial
+    conversation_history.append({"role": "user", "content": req.message})
+
+    # Llamar al modelo con TODO el historial
+    response = client.chat.completions.create(
+        model="gpt-5-nano",
+        messages=conversation_history,
+        # Si tu versión soporta esto, ayuda a forzar JSON:
+        # response_format={"type": "json_object"},
+    )
+
+    raw = response.choices[0].message.content
+
+    # Guardar también la respuesta del modelo en el historial
+    conversation_history.append({"role": "assistant", "content": raw})
+
+    # Intentar parsear JSON
+    try:
+        data = json.loads(raw)
+    except json.JSONDecodeError:
+        # Si el modelo se portó mal y no devolvió JSON, devolvemos el texto tal cual
+        return {
+            "assistant_message": raw,
+            "script_executed": None,
+            "script_result": None,
+        }
+
+    answer = data.get("answer", "")
+    script_id = data.get("script_to_run")
+    run_flag = data.get("run_script", False)
+    params = data.get("parameters") or {}
+
+    script_result = None
+
+    if run_flag and script_id == "runShowCommands-main":
+        try:
+            script_result = run_runShowCommands(params)
+        except Exception as e:
+            script_result = {
+                "error": str(e),
+            }
+    
+    # Combinar el resultado del script dentro del mensaje de la IA
+    if script_result is not None:
+        # Por si hay error
+        if "error" in script_result:
+            answer = (
+                answer
+                + "\n\n--- Script execution failed ---\n"
+                + f"Error: {script_result['error']}"
+            )
+        else:
+            answer = (
+                answer
+                + "\n\n--- Script execution ---\n"
+                + f"Return code: {script_result.get('returncode')}\n"
+            )
+            if script_result.get("stdout"):
+                answer += "\nOutput:\n" + script_result["stdout"]
+            if script_result.get("stderr"):
+                answer += "\nErrors:\n" + script_result["stderr"]
+
+    print("DEBUG RAW FROM MODEL:", raw)
+    print("DEBUG SCRIPT_RESULT:", script_result)
+
+    return {
+        "assistant_message": answer,
+        "script_executed": script_id if run_flag else None,
+        "script_result": script_result,
     }
