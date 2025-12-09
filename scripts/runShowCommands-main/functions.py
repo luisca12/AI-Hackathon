@@ -57,21 +57,21 @@ def validateIP(deviceIP):
     if validIP(deviceIP):
         if checkConnect22(deviceIP):
             authLog.info(f"Device IP {deviceIP} is reachable on Port TCP 22.")
-            print(f"INFO: Device IP {deviceIP} is reachable on Port TCP 22.")
+            # print(f"INFO: Device IP {deviceIP} is reachable on Port TCP 22.")
             return deviceIP
 
     for hostname in hostnamesResolution:
         resolvedIP = resolveHostname(hostname)
         if resolvedIP and checkConnect22(resolvedIP):
             authLog.info(f"Device IP {hostname} is reachable on Port TCP 22.")
-            print(f"INFO: Device IP {hostname} is reachable on Port TCP 22.")
+            # print(f"INFO: Device IP {hostname} is reachable on Port TCP 22.")
             return hostname    
 
     hostnameStr = ', '.join(hostnamesResolution)  
     
     authLog.error(f"Not a valid IP address or hostname: {hostnameStr}")
     authLog.error(traceback.format_exc())
-    print(f"ERROR: Invalid IP address or hostname: {hostnameStr}")
+    # print(f"ERROR: Invalid IP address or hostname: {hostnameStr}")
 
     with open('Devices unreachable.csv', mode='a', newline='') as file:
         writer = csv.writer(file)
@@ -94,30 +94,30 @@ def requestLogin(validIPs):
                     'password': password,
                     'secret': password
                 }
-                # print(f"This is netDevice: {netDevice}\n")
-                # print(f"This is deviceIP: {deviceIP}\n")
+                print(f"This is netDevice: {netDevice}\n")
+                print(f"This is deviceIP: {deviceIP}\n")
 
                 # sshAccess = ConnectHandler(**netDevice)
-                # print(f"Login successful! Logged to device {deviceIP} \n")
+                print(f"Login successful! Logged to device {deviceIP} \n")
                 authLog.info(f"Successful saved credentials for username: {username}")
 
             return validIPs, username, netDevice
 
         except NetMikoAuthenticationException:
-            print("\n Login incorrect. Please check your username and password")
-            print(" Retrying operation... \n")
+            # print("\n Login incorrect. Please check your username and password")
+            # print(" Retrying operation... \n")
             authLog.error(f"Failed to authenticate - remote device IP: {deviceIP}, Username: {username}")
             authLog.debug(traceback.format_exc())
 
         except NetMikoTimeoutException:
-            print("\n Connection to the device timed out. Please check your network connectivity and try again.")
-            print(" Retrying operation... \n")
+            # print("\n Connection to the device timed out. Please check your network connectivity and try again.")
+            # print(" Retrying operation... \n")
             authLog.error(f"Connection timed out, device not reachable - remote device IP: {deviceIP}, Username: {username}")
             authLog.debug(traceback.format_exc())
 
         except socket.error:
-            print("\n IP address is not reachable. Please check the IP address and try again.")
-            print(" Retrying operation... \n")
+            # print("\n IP address is not reachable. Please check the IP address and try again.")
+            # print(" Retrying operation... \n")
             authLog.error(f"Remote device unreachable - remote device IP: {deviceIP}, Username: {username}")
             authLog.debug(traceback.format_exc())
 
@@ -131,7 +131,7 @@ def failedDevices(username,validDeviceIP="",error=""):
         failedDevices.write(f"User {username} connected to {validDeviceIP} got an error:\n{error}.\n")
 
 def logInCSV(validDeviceIP, filename=""):
-    print(f"INFO: File created: {filename}")
+    # print(f"INFO: File created: {filename}")
     authLog.info(f"File created: {filename}")
     with open(f'Outputs/{filename}.csv', mode='a', newline='') as file:
         writer = csv.writer(file)

@@ -119,16 +119,24 @@ General rules:
 - When "run_script" is true, "parameters" MUST include all values needed by the script (for runShowCommands-main: devices, username, password, command).
 - All the replies to the user must always be short, clear, technical but easy to understand, in a nice and human readable format.
 - If you will reply with a list of things or missing parameters, use a clear multi-line format, not everything on the same line.
+- If they ask you to run more than one show command, just execute one at a time, and always prompt something like "do u want to run the next command?" and also show the next command
 
 Very important:
 - If you are NOT ready to execute (need more info or no explicit confirmation), set "run_script": false.
 - If the user changes their mind or says "do not run it", keep "run_script": false.
 - Never say that you executed the script yourself; you only request execution through this JSON.
 
+Additional rule about context:
+- You may receive an extra system message like:
+  "Context of last successful runShowCommands-main: {{ ... }}"
+- When the user says things like "same device", "same router", "same credentials", or does not specify devices/username/password, you MUST reuse the values from that context (devices, username, password) unless the user explicitly changes them.
+
 Remember: respond ONLY with JSON. No text before or after the JSON.
 """
 
 baseScriptDir = os.path.join(os.path.dirname(__file__), "scripts")
+
+lastRunCommndContext = {}
 
 def run_runShowCommands(params: dict) -> dict:
     devices = params["devices"]           # "192.168.0.14" o "ip1,ip2"
@@ -171,35 +179,46 @@ def run_runShowCommands(params: dict) -> dict:
 # ========================
 
 # Para el prototipo: un solo historial global
-conversation_history = [
+chatHistory = [
     {"role": "system", "content": SYSTEM_PROMPT}
 ]
 
 @app.post("/chat")
 def chatEndpoint(req: ChatRequest):
-    global conversation_history
+    global chatHistory, lastRunCommndContext
 
-    # Añadir mensaje del usuario al historial
-    conversation_history.append({"role": "user", "content": req.message})
+    # Construimos los mensajes a enviar al modelo:
+    # - SYSTEM_PROMPT + historial previo
+    messages = chatHistory.copy()
 
-    # Llamar al modelo con TODO el historial
+    # Agregamos un mensaje de sistema con el último contexto si existe
+    if lastRunCommndContext:
+        context_text = (
+            "Context of last successful command executed: "
+            + json.dumps(lastRunCommndContext)
+        )
+        messages.append({"role": "system", "content": context_text})
+
+    # Agregamos el mensaje actual del usuario SOLO PARA ESTE REQUEST
+    messages.append({"role": "user", "content": req.message})
+
+    # Llamar al modelo con TODO
     response = client.chat.completions.create(
         model="gpt-5-nano",
-        messages=conversation_history,
-        # Si tu versión soporta esto, ayuda a forzar JSON:
-        # response_format={"type": "json_object"},
+        messages=messages,
+        # response_format={"type": "json_object"},  # si tu modelo lo permite
     )
 
     raw = response.choices[0].message.content
 
-    # Guardar también la respuesta del modelo en el historial
-    conversation_history.append({"role": "assistant", "content": raw})
+    # Ahora sí, guardamos el mensaje del usuario y la respuesta cruda en el historial
+    chatHistory.append({"role": "user", "content": req.message})
+    chatHistory.append({"role": "assistant", "content": raw})
 
     # Intentar parsear JSON
     try:
         data = json.loads(raw)
     except json.JSONDecodeError:
-        # Si el modelo se portó mal y no devolvió JSON, devolvemos el texto tal cual
         return {
             "assistant_message": raw,
             "script_executed": None,
@@ -216,14 +235,21 @@ def chatEndpoint(req: ChatRequest):
     if run_flag and script_id == "runShowCommands-main":
         try:
             script_result = run_runShowCommands(params)
+
+            # 👉 IMPORTANTE: actualizar el contexto con estos parámetros
+            # solo si tenemos todos los campos principales
+            lastRunCommndContext = {
+                "devices": params.get("devices"),
+                "username": params.get("username"),
+                "password": params.get("password"),
+            }
         except Exception as e:
             script_result = {
                 "error": str(e),
             }
-    
+
     # Combinar el resultado del script dentro del mensaje de la IA
     if script_result is not None:
-        # Por si hay error
         if "error" in script_result:
             answer = (
                 answer
@@ -243,6 +269,7 @@ def chatEndpoint(req: ChatRequest):
 
     print("DEBUG RAW FROM MODEL:", raw)
     print("DEBUG SCRIPT_RESULT:", script_result)
+    print("DEBUG LAST_CONTEXT:", lastRunCommndContext)
 
     return {
         "assistant_message": answer,

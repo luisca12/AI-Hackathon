@@ -93,7 +93,7 @@ def main():
 
     print(showCommandOut)
 
-    return showCommandOut
+    # return showCommandOut
 
 
 if __name__ == "__main__":
