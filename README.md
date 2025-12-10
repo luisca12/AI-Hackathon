@@ -99,7 +99,7 @@ High-level architecture:
           v
 [Backend]
   - Shows "answer" in chat.
-  - If run_script = true:
+  - If runScript = true:
         -> run_local_script(script_id, parameters)
         -> execute local Python script with subprocess
         -> combine stdout/stderr into the answer.
