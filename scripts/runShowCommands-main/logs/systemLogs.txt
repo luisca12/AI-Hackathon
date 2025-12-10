@@ -1,0 +1,2425 @@
+2025-12-08 12:41:33,407 - INFO - IP successfully validated: 192.168.0.14
+2025-12-08 12:41:33,409 - INFO - Device IP 192.168.0.14 is reachable on Port TCP 22.
+2025-12-08 12:41:33,409 - INFO - [runShowCommands-main] Non-interactive run. Devices=['192.168.0.14'], username=cisco, command=show run
+2025-12-08 12:41:33,409 - INFO - Connecting to device 192.168.0.14
+2025-12-08 12:41:34,670 - INFO - Connected to device: 192.168.0.14
+2025-12-08 12:41:34,681 - INFO - Generating hostname for 192.168.0.14
+2025-12-08 12:41:34,681 - INFO - Hostname for 192.168.0.14: 192.168.0.14#
+2025-12-08 12:41:34,681 - INFO - Command input by the user:cisco, command:show run
+2025-12-08 12:41:35,839 - INFO - Automation successfully run the command: show run on device: 192.168.0.14
+2025-12-08 12:41:35,839 - INFO - 192.168.0.14#show run
+Building configuration...
+
+Current configuration : 2977 bytes
+!
+! Last configuration change at 16:46:28 UTC Mon Dec 8 2025
+!
+version 15.2
+service timestamps debug datetime msec
+service timestamps log datetime msec
+no service password-encryption
+service compress-config
+!
+hostname SW-TEST
+!
+boot-start-marker
+boot-end-marker
+!
+!
+!
+username luis privilege 15 secret 5 $1$LNCi$g/fbBKwlH58fzZt7YP..61
+username cisco privilege 15 secret 5 $1$WsbN$kaOoIbBXbIReMoS47WQWD0
+no aaa new-model
+!
+!
+!
+!
+!
+!
+!
+!
+ip domain-name cisco.com
+ip cef
+no ipv6 cef
+!
+!
+!
+spanning-tree mode pvst
+spanning-tree extend system-id
+!
+!
+! 
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+interface GigabitEthernet0/0
+ negotiation auto
+!
+interface GigabitEthernet0/1
+ negotiation auto
+!
+interface GigabitEthernet0/2
+ negotiation auto
+!
+interface GigabitEthernet0/3
+ negotiation auto
+!
+interface Vlan1
+ ip address dhcp
+!
+ip default-gateway 192.168.0.1
+ip forward-protocol nd
+!
+ip http server
+ip http secure-server
+!
+ip ssh version 2
+ip ssh server algorithm encryption aes128-ctr aes192-ctr aes256-ctr
+ip ssh client algorithm encryption aes128-ctr aes192-ctr aes256-ctr
+!
+!
+!
+!
+!
+!
+control-plane
+!
+banner exec ^C
+IOSv - Cisco Systems Confidential -
+
+Supplemental End User License Restrictions
+
+This IOSv software is provided AS-IS without warranty of any kind. Under no circumstances may this software be used separate from the Cisco Modeling Labs Software that this software was provided with, or deployed or used as part of a production environment.
+
+By using the software, you agree to abide by the terms and conditions of the Cisco End User License Agreement at http://www.cisco.com/go/eula. Unauthorized use or distribution of this software is expressly prohibited.
+^C
+banner incoming ^C
+IOSv - Cisco Systems Confidential -
+
+Supplemental End User License Restrictions
+
+This IOSv software is provided AS-IS without warranty of any kind. Under no circumstances may this software be used separate from the Cisco Modeling Labs Software that this software was provided with, or deployed or used as part of a production environment.
+
+By using the software, you agree to abide by the terms and conditions of the Cisco End User License Agreement at http://www.cisco.com/go/eula. Unauthorized use or distribution of this software is expressly prohibited.
+^C
+banner login ^C
+IOSv - Cisco Systems Confidential -
+
+Supplemental End User License Restrictions
+
+This IOSv software is provided AS-IS without warranty of any kind. Under no circumstances may this software be used separate from the Cisco Modeling Labs Software that this software was provided with, or deployed or used as part of a production environment.
+
+By using the software, you agree to abide by the terms and conditions of the Cisco End User License Agreement at http://www.cisco.com/go/eula. Unauthorized use or distribution of this software is expressly prohibited.
+^C
+!
+line con 0
+line aux 0
+line vty 0 4
+ login local
+!
+event manager applet catchall
+ event cli pattern ".*" sync no skip no
+ action 1 syslog msg "$_cli_msg"
+!
+end
+
+2025-12-08 12:41:35,839 - INFO - This is the filename:show run
+2025-12-08 12:41:35,839 - INFO - File:<_io.TextIOWrapper name='Outputs/show run for device 192.168.0.14.txt' mode='a' encoding='UTF-8'> successfully created
+2025-12-08 12:41:35,839 - INFO - File:General Outputs.txt successfully created andinfo added
+2025-12-08 12:53:59,982 - INFO - IP successfully validated: 192.168.0.14
+2025-12-08 12:53:59,984 - INFO - Device IP 192.168.0.14 is reachable on Port TCP 22.
+2025-12-08 12:53:59,984 - INFO - [runShowCommands-main] Non-interactive run. Devices=['192.168.0.14'], username=cisco, command=show run
+2025-12-08 12:53:59,984 - INFO - Connecting to device 192.168.0.14
+2025-12-08 12:54:01,242 - INFO - Connected to device: 192.168.0.14
+2025-12-08 12:54:01,253 - INFO - Generating hostname for 192.168.0.14
+2025-12-08 12:54:01,253 - INFO - Hostname for 192.168.0.14: 192.168.0.14#
+2025-12-08 12:54:01,253 - INFO - Command input by the user:cisco, command:show run
+2025-12-08 12:54:02,412 - INFO - Automation successfully run the command: show run on device: 192.168.0.14
+2025-12-08 12:54:02,412 - INFO - 192.168.0.14#show run
+Building configuration...
+
+Current configuration : 2977 bytes
+!
+! Last configuration change at 17:51:45 UTC Mon Dec 8 2025
+!
+version 15.2
+service timestamps debug datetime msec
+service timestamps log datetime msec
+no service password-encryption
+service compress-config
+!
+hostname SW-TEST
+!
+boot-start-marker
+boot-end-marker
+!
+!
+!
+username luis privilege 15 secret 5 $1$LNCi$g/fbBKwlH58fzZt7YP..61
+username cisco privilege 15 secret 5 $1$WsbN$kaOoIbBXbIReMoS47WQWD0
+no aaa new-model
+!
+!
+!
+!
+!
+!
+!
+!
+ip domain-name cisco.com
+ip cef
+no ipv6 cef
+!
+!
+!
+spanning-tree mode pvst
+spanning-tree extend system-id
+!
+!
+! 
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+interface GigabitEthernet0/0
+ negotiation auto
+!
+interface GigabitEthernet0/1
+ negotiation auto
+!
+interface GigabitEthernet0/2
+ negotiation auto
+!
+interface GigabitEthernet0/3
+ negotiation auto
+!
+interface Vlan1
+ ip address dhcp
+!
+ip default-gateway 192.168.0.1
+ip forward-protocol nd
+!
+ip http server
+ip http secure-server
+!
+ip ssh version 2
+ip ssh server algorithm encryption aes128-ctr aes192-ctr aes256-ctr
+ip ssh client algorithm encryption aes128-ctr aes192-ctr aes256-ctr
+!
+!
+!
+!
+!
+!
+control-plane
+!
+banner exec ^C
+IOSv - Cisco Systems Confidential -
+
+Supplemental End User License Restrictions
+
+This IOSv software is provided AS-IS without warranty of any kind. Under no circumstances may this software be used separate from the Cisco Modeling Labs Software that this software was provided with, or deployed or used as part of a production environment.
+
+By using the software, you agree to abide by the terms and conditions of the Cisco End User License Agreement at http://www.cisco.com/go/eula. Unauthorized use or distribution of this software is expressly prohibited.
+^C
+banner incoming ^C
+IOSv - Cisco Systems Confidential -
+
+Supplemental End User License Restrictions
+
+This IOSv software is provided AS-IS without warranty of any kind. Under no circumstances may this software be used separate from the Cisco Modeling Labs Software that this software was provided with, or deployed or used as part of a production environment.
+
+By using the software, you agree to abide by the terms and conditions of the Cisco End User License Agreement at http://www.cisco.com/go/eula. Unauthorized use or distribution of this software is expressly prohibited.
+^C
+banner login ^C
+IOSv - Cisco Systems Confidential -
+
+Supplemental End User License Restrictions
+
+This IOSv software is provided AS-IS without warranty of any kind. Under no circumstances may this software be used separate from the Cisco Modeling Labs Software that this software was provided with, or deployed or used as part of a production environment.
+
+By using the software, you agree to abide by the terms and conditions of the Cisco End User License Agreement at http://www.cisco.com/go/eula. Unauthorized use or distribution of this software is expressly prohibited.
+^C
+!
+line con 0
+line aux 0
+line vty 0 4
+ login local
+!
+event manager applet catchall
+ event cli pattern ".*" sync no skip no
+ action 1 syslog msg "$_cli_msg"
+!
+end
+
+2025-12-08 12:54:02,412 - INFO - This is the filename:show run
+2025-12-08 12:54:02,412 - INFO - File:<_io.TextIOWrapper name='Outputs/show run for device 192.168.0.14.txt' mode='a' encoding='UTF-8'> successfully created
+2025-12-08 12:54:02,412 - INFO - File:General Outputs.txt successfully created andinfo added
+2025-12-08 12:59:48,492 - INFO - IP successfully validated: 192.168.0.14
+2025-12-08 12:59:48,494 - INFO - Device IP 192.168.0.14 is reachable on Port TCP 22.
+2025-12-08 12:59:48,494 - INFO - [runShowCommands-main] Non-interactive run. Devices=['192.168.0.14'], username=cisco, command=show run
+2025-12-08 12:59:48,494 - INFO - Connecting to device 192.168.0.14
+2025-12-08 12:59:49,741 - INFO - Connected to device: 192.168.0.14
+2025-12-08 12:59:49,752 - INFO - Generating hostname for 192.168.0.14
+2025-12-08 12:59:49,752 - INFO - Hostname for 192.168.0.14: 192.168.0.14#
+2025-12-08 12:59:49,752 - INFO - Command input by the user:cisco, command:show run
+2025-12-08 12:59:50,911 - INFO - Automation successfully run the command: show run on device: 192.168.0.14
+2025-12-08 12:59:50,911 - INFO - 192.168.0.14#show run
+Building configuration...
+
+Current configuration : 2977 bytes
+!
+! Last configuration change at 17:51:45 UTC Mon Dec 8 2025
+!
+version 15.2
+service timestamps debug datetime msec
+service timestamps log datetime msec
+no service password-encryption
+service compress-config
+!
+hostname SW-TEST
+!
+boot-start-marker
+boot-end-marker
+!
+!
+!
+username luis privilege 15 secret 5 $1$LNCi$g/fbBKwlH58fzZt7YP..61
+username cisco privilege 15 secret 5 $1$WsbN$kaOoIbBXbIReMoS47WQWD0
+no aaa new-model
+!
+!
+!
+!
+!
+!
+!
+!
+ip domain-name cisco.com
+ip cef
+no ipv6 cef
+!
+!
+!
+spanning-tree mode pvst
+spanning-tree extend system-id
+!
+!
+! 
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+interface GigabitEthernet0/0
+ negotiation auto
+!
+interface GigabitEthernet0/1
+ negotiation auto
+!
+interface GigabitEthernet0/2
+ negotiation auto
+!
+interface GigabitEthernet0/3
+ negotiation auto
+!
+interface Vlan1
+ ip address dhcp
+!
+ip default-gateway 192.168.0.1
+ip forward-protocol nd
+!
+ip http server
+ip http secure-server
+!
+ip ssh version 2
+ip ssh server algorithm encryption aes128-ctr aes192-ctr aes256-ctr
+ip ssh client algorithm encryption aes128-ctr aes192-ctr aes256-ctr
+!
+!
+!
+!
+!
+!
+control-plane
+!
+banner exec ^C
+IOSv - Cisco Systems Confidential -
+
+Supplemental End User License Restrictions
+
+This IOSv software is provided AS-IS without warranty of any kind. Under no circumstances may this software be used separate from the Cisco Modeling Labs Software that this software was provided with, or deployed or used as part of a production environment.
+
+By using the software, you agree to abide by the terms and conditions of the Cisco End User License Agreement at http://www.cisco.com/go/eula. Unauthorized use or distribution of this software is expressly prohibited.
+^C
+banner incoming ^C
+IOSv - Cisco Systems Confidential -
+
+Supplemental End User License Restrictions
+
+This IOSv software is provided AS-IS without warranty of any kind. Under no circumstances may this software be used separate from the Cisco Modeling Labs Software that this software was provided with, or deployed or used as part of a production environment.
+
+By using the software, you agree to abide by the terms and conditions of the Cisco End User License Agreement at http://www.cisco.com/go/eula. Unauthorized use or distribution of this software is expressly prohibited.
+^C
+banner login ^C
+IOSv - Cisco Systems Confidential -
+
+Supplemental End User License Restrictions
+
+This IOSv software is provided AS-IS without warranty of any kind. Under no circumstances may this software be used separate from the Cisco Modeling Labs Software that this software was provided with, or deployed or used as part of a production environment.
+
+By using the software, you agree to abide by the terms and conditions of the Cisco End User License Agreement at http://www.cisco.com/go/eula. Unauthorized use or distribution of this software is expressly prohibited.
+^C
+!
+line con 0
+line aux 0
+line vty 0 4
+ login local
+!
+event manager applet catchall
+ event cli pattern ".*" sync no skip no
+ action 1 syslog msg "$_cli_msg"
+!
+end
+
+2025-12-08 12:59:50,911 - INFO - This is the filename:show run
+2025-12-08 12:59:50,911 - INFO - File:<_io.TextIOWrapper name='Outputs/show run for device 192.168.0.14.txt' mode='a' encoding='UTF-8'> successfully created
+2025-12-08 12:59:50,911 - INFO - File:General Outputs.txt successfully created andinfo added
+2025-12-08 13:01:23,557 - INFO - IP successfully validated: 192.168.0.14
+2025-12-08 13:01:23,559 - INFO - Device IP 192.168.0.14 is reachable on Port TCP 22.
+2025-12-08 13:01:23,559 - INFO - [runShowCommands-main] Non-interactive run. Devices=['192.168.0.14'], username=cisco, command=show run
+2025-12-08 13:01:23,559 - INFO - Connecting to device 192.168.0.14
+2025-12-08 13:01:24,806 - INFO - Connected to device: 192.168.0.14
+2025-12-08 13:01:24,817 - INFO - Generating hostname for 192.168.0.14
+2025-12-08 13:01:24,817 - INFO - Hostname for 192.168.0.14: 192.168.0.14#
+2025-12-08 13:01:24,817 - INFO - Command input by the user:cisco, command:show run
+2025-12-08 13:01:25,973 - INFO - Automation successfully run the command: show run on device: 192.168.0.14
+2025-12-08 13:01:25,973 - INFO - 192.168.0.14#show run
+Building configuration...
+
+Current configuration : 2977 bytes
+!
+! Last configuration change at 17:51:45 UTC Mon Dec 8 2025
+!
+version 15.2
+service timestamps debug datetime msec
+service timestamps log datetime msec
+no service password-encryption
+service compress-config
+!
+hostname SW-TEST
+!
+boot-start-marker
+boot-end-marker
+!
+!
+!
+username luis privilege 15 secret 5 $1$LNCi$g/fbBKwlH58fzZt7YP..61
+username cisco privilege 15 secret 5 $1$WsbN$kaOoIbBXbIReMoS47WQWD0
+no aaa new-model
+!
+!
+!
+!
+!
+!
+!
+!
+ip domain-name cisco.com
+ip cef
+no ipv6 cef
+!
+!
+!
+spanning-tree mode pvst
+spanning-tree extend system-id
+!
+!
+! 
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+interface GigabitEthernet0/0
+ negotiation auto
+!
+interface GigabitEthernet0/1
+ negotiation auto
+!
+interface GigabitEthernet0/2
+ negotiation auto
+!
+interface GigabitEthernet0/3
+ negotiation auto
+!
+interface Vlan1
+ ip address dhcp
+!
+ip default-gateway 192.168.0.1
+ip forward-protocol nd
+!
+ip http server
+ip http secure-server
+!
+ip ssh version 2
+ip ssh server algorithm encryption aes128-ctr aes192-ctr aes256-ctr
+ip ssh client algorithm encryption aes128-ctr aes192-ctr aes256-ctr
+!
+!
+!
+!
+!
+!
+control-plane
+!
+banner exec ^C
+IOSv - Cisco Systems Confidential -
+
+Supplemental End User License Restrictions
+
+This IOSv software is provided AS-IS without warranty of any kind. Under no circumstances may this software be used separate from the Cisco Modeling Labs Software that this software was provided with, or deployed or used as part of a production environment.
+
+By using the software, you agree to abide by the terms and conditions of the Cisco End User License Agreement at http://www.cisco.com/go/eula. Unauthorized use or distribution of this software is expressly prohibited.
+^C
+banner incoming ^C
+IOSv - Cisco Systems Confidential -
+
+Supplemental End User License Restrictions
+
+This IOSv software is provided AS-IS without warranty of any kind. Under no circumstances may this software be used separate from the Cisco Modeling Labs Software that this software was provided with, or deployed or used as part of a production environment.
+
+By using the software, you agree to abide by the terms and conditions of the Cisco End User License Agreement at http://www.cisco.com/go/eula. Unauthorized use or distribution of this software is expressly prohibited.
+^C
+banner login ^C
+IOSv - Cisco Systems Confidential -
+
+Supplemental End User License Restrictions
+
+This IOSv software is provided AS-IS without warranty of any kind. Under no circumstances may this software be used separate from the Cisco Modeling Labs Software that this software was provided with, or deployed or used as part of a production environment.
+
+By using the software, you agree to abide by the terms and conditions of the Cisco End User License Agreement at http://www.cisco.com/go/eula. Unauthorized use or distribution of this software is expressly prohibited.
+^C
+!
+line con 0
+line aux 0
+line vty 0 4
+ login local
+!
+event manager applet catchall
+ event cli pattern ".*" sync no skip no
+ action 1 syslog msg "$_cli_msg"
+!
+end
+
+2025-12-08 13:01:25,973 - INFO - This is the filename:show run
+2025-12-08 13:01:25,973 - INFO - File:<_io.TextIOWrapper name='Outputs/show run for device 192.168.0.14.txt' mode='a' encoding='UTF-8'> successfully created
+2025-12-08 13:01:25,973 - INFO - File:General Outputs.txt successfully created andinfo added
+2025-12-08 13:16:50,040 - INFO - IP successfully validated: 192.168.0.19
+2025-12-08 13:16:53,090 - ERROR - Was not posible to resolve hostname: 192.168.0.19.mgmt.internal.das
+2025-12-08 13:16:53,133 - ERROR - Was not posible to resolve hostname: 192.168.0.19.cm.mgmt.internal.das
+2025-12-08 13:16:53,275 - ERROR - Was not posible to resolve hostname: 192.168.0.19.mgmt.wellpoint.com
+2025-12-08 13:16:53,350 - ERROR - Was not posible to resolve hostname: 192.168.0.19.caremore.com
+2025-12-08 13:16:53,393 - ERROR - Was not posible to resolve hostname: 192.168.0.19.healthcore.local
+2025-12-08 13:16:53,393 - ERROR - Not a valid IP address or hostname: 192.168.0.19.mgmt.internal.das, 192.168.0.19.cm.mgmt.internal.das, 192.168.0.19.mgmt.wellpoint.com, 192.168.0.19.caremore.com, 192.168.0.19.healthcore.local
+2025-12-08 13:16:53,393 - ERROR - NoneType: None
+
+2025-12-08 13:16:53,393 - INFO - IP address 192.168.0.19 is invalid or unreachable.
+2025-12-08 13:23:26,513 - INFO - IP successfully validated: 192.168.0.14
+2025-12-08 13:23:26,516 - INFO - Device IP 192.168.0.14 is reachable on Port TCP 22.
+2025-12-08 13:23:26,516 - INFO - [runShowCommands-main] Non-interactive run. Devices=['192.168.0.14'], username=cisco, command=show run
+2025-12-08 13:23:26,516 - INFO - Connecting to device 192.168.0.14
+2025-12-08 13:23:27,763 - INFO - Connected to device: 192.168.0.14
+2025-12-08 13:23:27,774 - INFO - Generating hostname for 192.168.0.14
+2025-12-08 13:23:27,774 - INFO - Hostname for 192.168.0.14: 192.168.0.14#
+2025-12-08 13:23:27,774 - INFO - Command input by the user:cisco, command:show run
+2025-12-08 13:23:28,932 - INFO - Automation successfully run the command: show run on device: 192.168.0.14
+2025-12-08 13:23:28,932 - INFO - 192.168.0.14#show run
+Building configuration...
+
+Current configuration : 2977 bytes
+!
+! Last configuration change at 17:51:45 UTC Mon Dec 8 2025
+!
+version 15.2
+service timestamps debug datetime msec
+service timestamps log datetime msec
+no service password-encryption
+service compress-config
+!
+hostname SW-TEST
+!
+boot-start-marker
+boot-end-marker
+!
+!
+!
+username luis privilege 15 secret 5 $1$LNCi$g/fbBKwlH58fzZt7YP..61
+username cisco privilege 15 secret 5 $1$WsbN$kaOoIbBXbIReMoS47WQWD0
+no aaa new-model
+!
+!
+!
+!
+!
+!
+!
+!
+ip domain-name cisco.com
+ip cef
+no ipv6 cef
+!
+!
+!
+spanning-tree mode pvst
+spanning-tree extend system-id
+!
+!
+! 
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+interface GigabitEthernet0/0
+ negotiation auto
+!
+interface GigabitEthernet0/1
+ negotiation auto
+!
+interface GigabitEthernet0/2
+ negotiation auto
+!
+interface GigabitEthernet0/3
+ negotiation auto
+!
+interface Vlan1
+ ip address dhcp
+!
+ip default-gateway 192.168.0.1
+ip forward-protocol nd
+!
+ip http server
+ip http secure-server
+!
+ip ssh version 2
+ip ssh server algorithm encryption aes128-ctr aes192-ctr aes256-ctr
+ip ssh client algorithm encryption aes128-ctr aes192-ctr aes256-ctr
+!
+!
+!
+!
+!
+!
+control-plane
+!
+banner exec ^C
+IOSv - Cisco Systems Confidential -
+
+Supplemental End User License Restrictions
+
+This IOSv software is provided AS-IS without warranty of any kind. Under no circumstances may this software be used separate from the Cisco Modeling Labs Software that this software was provided with, or deployed or used as part of a production environment.
+
+By using the software, you agree to abide by the terms and conditions of the Cisco End User License Agreement at http://www.cisco.com/go/eula. Unauthorized use or distribution of this software is expressly prohibited.
+^C
+banner incoming ^C
+IOSv - Cisco Systems Confidential -
+
+Supplemental End User License Restrictions
+
+This IOSv software is provided AS-IS without warranty of any kind. Under no circumstances may this software be used separate from the Cisco Modeling Labs Software that this software was provided with, or deployed or used as part of a production environment.
+
+By using the software, you agree to abide by the terms and conditions of the Cisco End User License Agreement at http://www.cisco.com/go/eula. Unauthorized use or distribution of this software is expressly prohibited.
+^C
+banner login ^C
+IOSv - Cisco Systems Confidential -
+
+Supplemental End User License Restrictions
+
+This IOSv software is provided AS-IS without warranty of any kind. Under no circumstances may this software be used separate from the Cisco Modeling Labs Software that this software was provided with, or deployed or used as part of a production environment.
+
+By using the software, you agree to abide by the terms and conditions of the Cisco End User License Agreement at http://www.cisco.com/go/eula. Unauthorized use or distribution of this software is expressly prohibited.
+^C
+!
+line con 0
+line aux 0
+line vty 0 4
+ login local
+!
+event manager applet catchall
+ event cli pattern ".*" sync no skip no
+ action 1 syslog msg "$_cli_msg"
+!
+end
+
+2025-12-08 13:23:28,932 - INFO - This is the filename:show run
+2025-12-08 13:23:28,932 - INFO - File:<_io.TextIOWrapper name='Outputs/show run for device 192.168.0.14.txt' mode='a' encoding='UTF-8'> successfully created
+2025-12-08 13:23:28,932 - INFO - File:General Outputs.txt successfully created andinfo added
+2025-12-08 14:40:53,297 - INFO - IP successfully validated: 192.168.0.14
+2025-12-08 14:40:53,299 - INFO - Device IP 192.168.0.14 is reachable on Port TCP 22.
+2025-12-08 14:40:53,299 - INFO - [runShowCommands-main] Non-interactive run. Devices=['192.168.0.14'], username=cisco, command=show run
+2025-12-08 14:40:53,299 - INFO - Connecting to device 192.168.0.14
+2025-12-08 14:40:54,554 - INFO - Connected to device: 192.168.0.14
+2025-12-08 14:40:54,565 - INFO - Generating hostname for 192.168.0.14
+2025-12-08 14:40:54,565 - INFO - Hostname for 192.168.0.14: 192.168.0.14#
+2025-12-08 14:40:54,565 - INFO - Command input by the user:cisco, command:show run
+2025-12-08 14:40:55,719 - INFO - Automation successfully run the command: show run on device: 192.168.0.14
+2025-12-08 14:40:55,719 - INFO - 192.168.0.14#show run
+Building configuration...
+
+Current configuration : 2977 bytes
+!
+! Last configuration change at 17:51:45 UTC Mon Dec 8 2025
+!
+version 15.2
+service timestamps debug datetime msec
+service timestamps log datetime msec
+no service password-encryption
+service compress-config
+!
+hostname SW-TEST
+!
+boot-start-marker
+boot-end-marker
+!
+!
+!
+username luis privilege 15 secret 5 $1$LNCi$g/fbBKwlH58fzZt7YP..61
+username cisco privilege 15 secret 5 $1$WsbN$kaOoIbBXbIReMoS47WQWD0
+no aaa new-model
+!
+!
+!
+!
+!
+!
+!
+!
+ip domain-name cisco.com
+ip cef
+no ipv6 cef
+!
+!
+!
+spanning-tree mode pvst
+spanning-tree extend system-id
+!
+!
+! 
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+interface GigabitEthernet0/0
+ negotiation auto
+!
+interface GigabitEthernet0/1
+ negotiation auto
+!
+interface GigabitEthernet0/2
+ negotiation auto
+!
+interface GigabitEthernet0/3
+ negotiation auto
+!
+interface Vlan1
+ ip address dhcp
+!
+ip default-gateway 192.168.0.1
+ip forward-protocol nd
+!
+ip http server
+ip http secure-server
+!
+ip ssh version 2
+ip ssh server algorithm encryption aes128-ctr aes192-ctr aes256-ctr
+ip ssh client algorithm encryption aes128-ctr aes192-ctr aes256-ctr
+!
+!
+!
+!
+!
+!
+control-plane
+!
+banner exec ^C
+IOSv - Cisco Systems Confidential -
+
+Supplemental End User License Restrictions
+
+This IOSv software is provided AS-IS without warranty of any kind. Under no circumstances may this software be used separate from the Cisco Modeling Labs Software that this software was provided with, or deployed or used as part of a production environment.
+
+By using the software, you agree to abide by the terms and conditions of the Cisco End User License Agreement at http://www.cisco.com/go/eula. Unauthorized use or distribution of this software is expressly prohibited.
+^C
+banner incoming ^C
+IOSv - Cisco Systems Confidential -
+
+Supplemental End User License Restrictions
+
+This IOSv software is provided AS-IS without warranty of any kind. Under no circumstances may this software be used separate from the Cisco Modeling Labs Software that this software was provided with, or deployed or used as part of a production environment.
+
+By using the software, you agree to abide by the terms and conditions of the Cisco End User License Agreement at http://www.cisco.com/go/eula. Unauthorized use or distribution of this software is expressly prohibited.
+^C
+banner login ^C
+IOSv - Cisco Systems Confidential -
+
+Supplemental End User License Restrictions
+
+This IOSv software is provided AS-IS without warranty of any kind. Under no circumstances may this software be used separate from the Cisco Modeling Labs Software that this software was provided with, or deployed or used as part of a production environment.
+
+By using the software, you agree to abide by the terms and conditions of the Cisco End User License Agreement at http://www.cisco.com/go/eula. Unauthorized use or distribution of this software is expressly prohibited.
+^C
+!
+line con 0
+line aux 0
+line vty 0 4
+ login local
+!
+event manager applet catchall
+ event cli pattern ".*" sync no skip no
+ action 1 syslog msg "$_cli_msg"
+!
+end
+
+2025-12-08 14:40:55,719 - INFO - This is the filename:show run
+2025-12-08 14:40:55,719 - INFO - File:<_io.TextIOWrapper name='Outputs/show run for device 192.168.0.14.txt' mode='a' encoding='UTF-8'> successfully created
+2025-12-08 14:40:55,719 - INFO - File:General Outputs.txt successfully created andinfo added
+2025-12-09 11:20:10,166 - INFO - IP successfully validated: 192.168.0.17
+2025-12-09 11:20:10,171 - INFO - Device IP 192.168.0.17 is reachable on Port TCP 22.
+2025-12-09 11:20:10,171 - INFO - [runShowCommands-main] Non-interactive run. Devices=['192.168.0.17'], username=cisco, command=show run
+2025-12-09 11:20:10,171 - INFO - Connecting to device 192.168.0.17
+2025-12-09 11:20:11,426 - INFO - Connected to device: 192.168.0.17
+2025-12-09 11:20:11,437 - INFO - Generating hostname for 192.168.0.17
+2025-12-09 11:20:11,437 - INFO - Hostname for 192.168.0.17: 192.168.0.17#
+2025-12-09 11:20:11,437 - INFO - Command input by the user:cisco, command:show run
+2025-12-09 11:20:12,568 - INFO - Automation successfully run the command: show run on device: 192.168.0.17
+2025-12-09 11:20:12,568 - INFO - 192.168.0.17#show run
+Building configuration...
+
+Current configuration : 2874 bytes
+!
+! Last configuration change at 16:14:53 UTC Tue Dec 9 2025
+!
+version 15.2
+service timestamps debug datetime msec
+service timestamps log datetime msec
+no service password-encryption
+service compress-config
+!
+hostname SW-TEST
+!
+boot-start-marker
+boot-end-marker
+!
+!
+!
+username luis privilege 15 secret 5 $1$LNCi$g/fbBKwlH58fzZt7YP..61
+username cisco privilege 15 secret 5 $1$IhfD$qOVdvCRfV4O2hHm3Cb73N0
+no aaa new-model
+!
+!
+!
+!
+!
+!
+!
+!
+ip domain-name cisco.com
+ip cef
+no ipv6 cef
+!
+!
+!
+spanning-tree mode pvst
+spanning-tree extend system-id
+!
+!
+! 
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+interface GigabitEthernet0/0
+ negotiation auto
+!
+interface GigabitEthernet0/1
+ negotiation auto
+!
+interface GigabitEthernet0/2
+ negotiation auto
+!
+interface GigabitEthernet0/3
+ negotiation auto
+!
+interface Vlan1
+ ip address dhcp
+!
+ip default-gateway 192.168.0.1
+ip forward-protocol nd
+!
+ip http server
+ip http secure-server
+!
+ip ssh version 2
+ip ssh server algorithm encryption aes128-ctr aes192-ctr aes256-ctr
+ip ssh client algorithm encryption aes128-ctr aes192-ctr aes256-ctr
+!
+!
+!
+!
+!
+!
+control-plane
+!
+banner exec ^C
+IOSv - Cisco Systems Confidential -
+
+Supplemental End User License Restrictions
+
+This IOSv software is provided AS-IS without warranty of any kind. Under no circumstances may this software be used separate from the Cisco Modeling Labs Software that this software was provided with, or deployed or used as part of a production environment.
+
+By using the software, you agree to abide by the terms and conditions of the Cisco End User License Agreement at http://www.cisco.com/go/eula. Unauthorized use or distribution of this software is expressly prohibited.
+^C
+banner incoming ^C
+IOSv - Cisco Systems Confidential -
+
+Supplemental End User License Restrictions
+
+This IOSv software is provided AS-IS without warranty of any kind. Under no circumstances may this software be used separate from the Cisco Modeling Labs Software that this software was provided with, or deployed or used as part of a production environment.
+
+By using the software, you agree to abide by the terms and conditions of the Cisco End User License Agreement at http://www.cisco.com/go/eula. Unauthorized use or distribution of this software is expressly prohibited.
+^C
+banner login ^C
+IOSv - Cisco Systems Confidential -
+
+Supplemental End User License Restrictions
+
+This IOSv software is provided AS-IS without warranty of any kind. Under no circumstances may this software be used separate from the Cisco Modeling Labs Software that this software was provided with, or deployed or used as part of a production environment.
+
+By using the software, you agree to abide by the terms and conditions of the Cisco End User License Agreement at http://www.cisco.com/go/eula. Unauthorized use or distribution of this software is expressly prohibited.
+^C
+!
+line con 0
+line aux 0
+line vty 0 4
+ login local
+!
+!
+end
+
+2025-12-09 11:20:12,568 - INFO - This is the filename:show run
+2025-12-09 11:20:12,568 - INFO - File:<_io.TextIOWrapper name='Outputs/show run for device 192.168.0.17.txt' mode='a' encoding='UTF-8'> successfully created
+2025-12-09 11:20:12,568 - INFO - File:General Outputs.txt successfully created andinfo added
+2025-12-09 11:25:36,504 - INFO - IP successfully validated: 192.168.0.17
+2025-12-09 11:25:36,506 - INFO - Device IP 192.168.0.17 is reachable on Port TCP 22.
+2025-12-09 11:25:36,506 - INFO - [runShowCommands-main] Non-interactive run. Devices=['192.168.0.17'], username=cisco, command=show run
+2025-12-09 11:25:36,506 - INFO - Connecting to device 192.168.0.17
+2025-12-09 11:25:37,750 - INFO - Connected to device: 192.168.0.17
+2025-12-09 11:25:37,761 - INFO - Generating hostname for 192.168.0.17
+2025-12-09 11:25:37,761 - INFO - Hostname for 192.168.0.17: 192.168.0.17#
+2025-12-09 11:25:37,761 - INFO - Command input by the user:cisco, command:show run
+2025-12-09 11:25:38,917 - INFO - Automation successfully run the command: show run on device: 192.168.0.17
+2025-12-09 11:25:38,918 - INFO - 192.168.0.17#show run
+Building configuration...
+
+Current configuration : 2874 bytes
+!
+! Last configuration change at 16:14:53 UTC Tue Dec 9 2025
+!
+version 15.2
+service timestamps debug datetime msec
+service timestamps log datetime msec
+no service password-encryption
+service compress-config
+!
+hostname SW-TEST
+!
+boot-start-marker
+boot-end-marker
+!
+!
+!
+username luis privilege 15 secret 5 $1$LNCi$g/fbBKwlH58fzZt7YP..61
+username cisco privilege 15 secret 5 $1$IhfD$qOVdvCRfV4O2hHm3Cb73N0
+no aaa new-model
+!
+!
+!
+!
+!
+!
+!
+!
+ip domain-name cisco.com
+ip cef
+no ipv6 cef
+!
+!
+!
+spanning-tree mode pvst
+spanning-tree extend system-id
+!
+!
+! 
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+interface GigabitEthernet0/0
+ negotiation auto
+!
+interface GigabitEthernet0/1
+ negotiation auto
+!
+interface GigabitEthernet0/2
+ negotiation auto
+!
+interface GigabitEthernet0/3
+ negotiation auto
+!
+interface Vlan1
+ ip address dhcp
+!
+ip default-gateway 192.168.0.1
+ip forward-protocol nd
+!
+ip http server
+ip http secure-server
+!
+ip ssh version 2
+ip ssh server algorithm encryption aes128-ctr aes192-ctr aes256-ctr
+ip ssh client algorithm encryption aes128-ctr aes192-ctr aes256-ctr
+!
+!
+!
+!
+!
+!
+control-plane
+!
+banner exec ^C
+IOSv - Cisco Systems Confidential -
+
+Supplemental End User License Restrictions
+
+This IOSv software is provided AS-IS without warranty of any kind. Under no circumstances may this software be used separate from the Cisco Modeling Labs Software that this software was provided with, or deployed or used as part of a production environment.
+
+By using the software, you agree to abide by the terms and conditions of the Cisco End User License Agreement at http://www.cisco.com/go/eula. Unauthorized use or distribution of this software is expressly prohibited.
+^C
+banner incoming ^C
+IOSv - Cisco Systems Confidential -
+
+Supplemental End User License Restrictions
+
+This IOSv software is provided AS-IS without warranty of any kind. Under no circumstances may this software be used separate from the Cisco Modeling Labs Software that this software was provided with, or deployed or used as part of a production environment.
+
+By using the software, you agree to abide by the terms and conditions of the Cisco End User License Agreement at http://www.cisco.com/go/eula. Unauthorized use or distribution of this software is expressly prohibited.
+^C
+banner login ^C
+IOSv - Cisco Systems Confidential -
+
+Supplemental End User License Restrictions
+
+This IOSv software is provided AS-IS without warranty of any kind. Under no circumstances may this software be used separate from the Cisco Modeling Labs Software that this software was provided with, or deployed or used as part of a production environment.
+
+By using the software, you agree to abide by the terms and conditions of the Cisco End User License Agreement at http://www.cisco.com/go/eula. Unauthorized use or distribution of this software is expressly prohibited.
+^C
+!
+line con 0
+line aux 0
+line vty 0 4
+ login local
+!
+!
+end
+
+2025-12-09 11:25:38,918 - INFO - This is the filename:show run
+2025-12-09 11:25:38,918 - INFO - File:<_io.TextIOWrapper name='Outputs/show run for device 192.168.0.17.txt' mode='a' encoding='UTF-8'> successfully created
+2025-12-09 11:25:38,918 - INFO - File:General Outputs.txt successfully created andinfo added
+2025-12-09 11:26:59,246 - INFO - IP successfully validated: 192.168.0.17
+2025-12-09 11:26:59,248 - INFO - Device IP 192.168.0.17 is reachable on Port TCP 22.
+2025-12-09 11:26:59,248 - INFO - [runShowCommands-main] Non-interactive run. Devices=['192.168.0.17'], username=cisco, command=show run
+2025-12-09 11:26:59,248 - INFO - Connecting to device 192.168.0.17
+2025-12-09 11:27:00,497 - INFO - Connected to device: 192.168.0.17
+2025-12-09 11:27:00,508 - INFO - Generating hostname for 192.168.0.17
+2025-12-09 11:27:00,508 - INFO - Hostname for 192.168.0.17: 192.168.0.17#
+2025-12-09 11:27:00,508 - INFO - Command input by the user:cisco, command:show run
+2025-12-09 11:27:01,641 - INFO - Automation successfully run the command: show run on device: 192.168.0.17
+2025-12-09 11:27:01,641 - INFO - 192.168.0.17#show run
+Building configuration...
+
+Current configuration : 2874 bytes
+!
+! Last configuration change at 16:14:53 UTC Tue Dec 9 2025
+!
+version 15.2
+service timestamps debug datetime msec
+service timestamps log datetime msec
+no service password-encryption
+service compress-config
+!
+hostname SW-TEST
+!
+boot-start-marker
+boot-end-marker
+!
+!
+!
+username luis privilege 15 secret 5 $1$LNCi$g/fbBKwlH58fzZt7YP..61
+username cisco privilege 15 secret 5 $1$IhfD$qOVdvCRfV4O2hHm3Cb73N0
+no aaa new-model
+!
+!
+!
+!
+!
+!
+!
+!
+ip domain-name cisco.com
+ip cef
+no ipv6 cef
+!
+!
+!
+spanning-tree mode pvst
+spanning-tree extend system-id
+!
+!
+! 
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+interface GigabitEthernet0/0
+ negotiation auto
+!
+interface GigabitEthernet0/1
+ negotiation auto
+!
+interface GigabitEthernet0/2
+ negotiation auto
+!
+interface GigabitEthernet0/3
+ negotiation auto
+!
+interface Vlan1
+ ip address dhcp
+!
+ip default-gateway 192.168.0.1
+ip forward-protocol nd
+!
+ip http server
+ip http secure-server
+!
+ip ssh version 2
+ip ssh server algorithm encryption aes128-ctr aes192-ctr aes256-ctr
+ip ssh client algorithm encryption aes128-ctr aes192-ctr aes256-ctr
+!
+!
+!
+!
+!
+!
+control-plane
+!
+banner exec ^C
+IOSv - Cisco Systems Confidential -
+
+Supplemental End User License Restrictions
+
+This IOSv software is provided AS-IS without warranty of any kind. Under no circumstances may this software be used separate from the Cisco Modeling Labs Software that this software was provided with, or deployed or used as part of a production environment.
+
+By using the software, you agree to abide by the terms and conditions of the Cisco End User License Agreement at http://www.cisco.com/go/eula. Unauthorized use or distribution of this software is expressly prohibited.
+^C
+banner incoming ^C
+IOSv - Cisco Systems Confidential -
+
+Supplemental End User License Restrictions
+
+This IOSv software is provided AS-IS without warranty of any kind. Under no circumstances may this software be used separate from the Cisco Modeling Labs Software that this software was provided with, or deployed or used as part of a production environment.
+
+By using the software, you agree to abide by the terms and conditions of the Cisco End User License Agreement at http://www.cisco.com/go/eula. Unauthorized use or distribution of this software is expressly prohibited.
+^C
+banner login ^C
+IOSv - Cisco Systems Confidential -
+
+Supplemental End User License Restrictions
+
+This IOSv software is provided AS-IS without warranty of any kind. Under no circumstances may this software be used separate from the Cisco Modeling Labs Software that this software was provided with, or deployed or used as part of a production environment.
+
+By using the software, you agree to abide by the terms and conditions of the Cisco End User License Agreement at http://www.cisco.com/go/eula. Unauthorized use or distribution of this software is expressly prohibited.
+^C
+!
+line con 0
+line aux 0
+line vty 0 4
+ login local
+!
+!
+end
+
+2025-12-09 11:27:01,641 - INFO - This is the filename:show run
+2025-12-09 11:27:01,641 - INFO - File:<_io.TextIOWrapper name='Outputs/show run for device 192.168.0.17.txt' mode='a' encoding='UTF-8'> successfully created
+2025-12-09 11:27:01,641 - INFO - File:General Outputs.txt successfully created andinfo added
+2025-12-09 11:27:59,590 - INFO - IP successfully validated: 192.168.0.17
+2025-12-09 11:27:59,592 - INFO - Device IP 192.168.0.17 is reachable on Port TCP 22.
+2025-12-09 11:27:59,592 - INFO - [runShowCommands-main] Non-interactive run. Devices=['192.168.0.17'], username=cisco, command=show run
+2025-12-09 11:27:59,592 - INFO - Connecting to device 192.168.0.17
+2025-12-09 11:28:00,840 - INFO - Connected to device: 192.168.0.17
+2025-12-09 11:28:00,851 - INFO - Generating hostname for 192.168.0.17
+2025-12-09 11:28:00,851 - INFO - Hostname for 192.168.0.17: 192.168.0.17#
+2025-12-09 11:28:00,851 - INFO - Command input by the user:cisco, command:show run
+2025-12-09 11:28:02,008 - INFO - Automation successfully run the command: show run on device: 192.168.0.17
+2025-12-09 11:28:02,008 - INFO - 192.168.0.17#show run
+Building configuration...
+
+Current configuration : 2874 bytes
+!
+! Last configuration change at 16:14:53 UTC Tue Dec 9 2025
+!
+version 15.2
+service timestamps debug datetime msec
+service timestamps log datetime msec
+no service password-encryption
+service compress-config
+!
+hostname SW-TEST
+!
+boot-start-marker
+boot-end-marker
+!
+!
+!
+username luis privilege 15 secret 5 $1$LNCi$g/fbBKwlH58fzZt7YP..61
+username cisco privilege 15 secret 5 $1$IhfD$qOVdvCRfV4O2hHm3Cb73N0
+no aaa new-model
+!
+!
+!
+!
+!
+!
+!
+!
+ip domain-name cisco.com
+ip cef
+no ipv6 cef
+!
+!
+!
+spanning-tree mode pvst
+spanning-tree extend system-id
+!
+!
+! 
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+interface GigabitEthernet0/0
+ negotiation auto
+!
+interface GigabitEthernet0/1
+ negotiation auto
+!
+interface GigabitEthernet0/2
+ negotiation auto
+!
+interface GigabitEthernet0/3
+ negotiation auto
+!
+interface Vlan1
+ ip address dhcp
+!
+ip default-gateway 192.168.0.1
+ip forward-protocol nd
+!
+ip http server
+ip http secure-server
+!
+ip ssh version 2
+ip ssh server algorithm encryption aes128-ctr aes192-ctr aes256-ctr
+ip ssh client algorithm encryption aes128-ctr aes192-ctr aes256-ctr
+!
+!
+!
+!
+!
+!
+control-plane
+!
+banner exec ^C
+IOSv - Cisco Systems Confidential -
+
+Supplemental End User License Restrictions
+
+This IOSv software is provided AS-IS without warranty of any kind. Under no circumstances may this software be used separate from the Cisco Modeling Labs Software that this software was provided with, or deployed or used as part of a production environment.
+
+By using the software, you agree to abide by the terms and conditions of the Cisco End User License Agreement at http://www.cisco.com/go/eula. Unauthorized use or distribution of this software is expressly prohibited.
+^C
+banner incoming ^C
+IOSv - Cisco Systems Confidential -
+
+Supplemental End User License Restrictions
+
+This IOSv software is provided AS-IS without warranty of any kind. Under no circumstances may this software be used separate from the Cisco Modeling Labs Software that this software was provided with, or deployed or used as part of a production environment.
+
+By using the software, you agree to abide by the terms and conditions of the Cisco End User License Agreement at http://www.cisco.com/go/eula. Unauthorized use or distribution of this software is expressly prohibited.
+^C
+banner login ^C
+IOSv - Cisco Systems Confidential -
+
+Supplemental End User License Restrictions
+
+This IOSv software is provided AS-IS without warranty of any kind. Under no circumstances may this software be used separate from the Cisco Modeling Labs Software that this software was provided with, or deployed or used as part of a production environment.
+
+By using the software, you agree to abide by the terms and conditions of the Cisco End User License Agreement at http://www.cisco.com/go/eula. Unauthorized use or distribution of this software is expressly prohibited.
+^C
+!
+line con 0
+line aux 0
+line vty 0 4
+ login local
+!
+!
+end
+
+2025-12-09 11:28:02,008 - INFO - This is the filename:show run
+2025-12-09 11:28:02,008 - INFO - File:<_io.TextIOWrapper name='Outputs/show run for device 192.168.0.17.txt' mode='a' encoding='UTF-8'> successfully created
+2025-12-09 11:28:02,009 - INFO - File:General Outputs.txt successfully created andinfo added
+2025-12-09 11:47:36,258 - INFO - IP successfully validated: 192.168.0.17
+2025-12-09 11:47:36,260 - INFO - Device IP 192.168.0.17 is reachable on Port TCP 22.
+2025-12-09 11:47:36,260 - INFO - [runShowCommands-main] Non-interactive run. Devices=['192.168.0.17'], username=cisco, command=show run
+2025-12-09 11:47:36,260 - INFO - Connecting to device 192.168.0.17
+2025-12-09 11:47:38,524 - ERROR - User cisco connected to 192.168.0.17 got an error: Authentication to device failed.
+
+Common causes of this problem are:
+1. Invalid username and password
+2. Incorrect SSH-key file
+3. Connecting to the wrong device
+
+Device settings: cisco_xe 192.168.0.17:22
+
+
+Authentication failed.
+2025-12-09 11:47:38,528 - ERROR - Device: 192.168.0.17 had an error
+2025-12-09 11:47:38,529 - ERROR - Traceback (most recent call last):
+  File "/usr/lib/python3/dist-packages/netmiko/base_connection.py", line 1146, in establish_connection
+    self.remote_conn_pre.connect(**ssh_connect_params)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/paramiko/client.py", line 485, in connect
+    self._auth(
+    ~~~~~~~~~~^
+        username,
+        ^^^^^^^^^
+    ...<9 lines>...
+        passphrase,
+        ^^^^^^^^^^^
+    )
+    ^
+  File "/usr/lib/python3/dist-packages/paramiko/client.py", line 818, in _auth
+    raise saved_exception
+  File "/usr/lib/python3/dist-packages/paramiko/client.py", line 805, in _auth
+    self._transport.auth_password(username, password)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/paramiko/transport.py", line 1638, in auth_password
+    return self.auth_handler.wait_for_response(my_event)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/paramiko/auth_handler.py", line 263, in wait_for_response
+    raise e
+paramiko.ssh_exception.AuthenticationException: Authentication failed.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/kali/Documents/AI-Hackathon/scripts/runShowCommands-main/commandsCLI.py", line 34, in showCommands
+    with ConnectHandler(**currentNetDevice) as sshAccess:
+         ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/netmiko/ssh_dispatcher.py", line 460, in ConnectHandler
+    return ConnectionClass(*args, **kwargs)
+  File "/usr/lib/python3/dist-packages/netmiko/base_connection.py", line 495, in __init__
+    self._open()
+    ~~~~~~~~~~^^
+  File "/usr/lib/python3/dist-packages/netmiko/base_connection.py", line 500, in _open
+    self.establish_connection()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "/usr/lib/python3/dist-packages/netmiko/base_connection.py", line 1183, in establish_connection
+    raise NetmikoAuthenticationException(msg)
+netmiko.exceptions.NetmikoAuthenticationException: Authentication to device failed.
+
+Common causes of this problem are:
+1. Invalid username and password
+2. Incorrect SSH-key file
+3. Connecting to the wrong device
+
+Device settings: cisco_xe 192.168.0.17:22
+
+
+Authentication failed.
+
+2025-12-09 11:48:17,035 - INFO - IP successfully validated: 192.168.0.17
+2025-12-09 11:48:17,037 - INFO - Device IP 192.168.0.17 is reachable on Port TCP 22.
+2025-12-09 11:48:17,037 - INFO - [runShowCommands-main] Non-interactive run. Devices=['192.168.0.17'], username=cisco, command=show run
+2025-12-09 11:48:17,037 - INFO - Connecting to device 192.168.0.17
+2025-12-09 11:48:18,283 - INFO - Connected to device: 192.168.0.17
+2025-12-09 11:48:18,293 - INFO - Generating hostname for 192.168.0.17
+2025-12-09 11:48:18,294 - INFO - Hostname for 192.168.0.17: 192.168.0.17#
+2025-12-09 11:48:18,294 - INFO - Command input by the user:cisco, command:show run
+2025-12-09 11:48:19,421 - INFO - Automation successfully run the command: show run on device: 192.168.0.17
+2025-12-09 11:48:19,421 - INFO - 192.168.0.17#show run
+Building configuration...
+
+Current configuration : 2874 bytes
+!
+! Last configuration change at 16:29:34 UTC Tue Dec 9 2025
+!
+version 15.2
+service timestamps debug datetime msec
+service timestamps log datetime msec
+no service password-encryption
+service compress-config
+!
+hostname SW-TEST
+!
+boot-start-marker
+boot-end-marker
+!
+!
+!
+username luis privilege 15 secret 5 $1$LNCi$g/fbBKwlH58fzZt7YP..61
+username cisco privilege 15 secret 5 $1$IhfD$qOVdvCRfV4O2hHm3Cb73N0
+no aaa new-model
+!
+!
+!
+!
+!
+!
+!
+!
+ip domain-name cisco.com
+ip cef
+no ipv6 cef
+!
+!
+!
+spanning-tree mode pvst
+spanning-tree extend system-id
+!
+!
+! 
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+interface GigabitEthernet0/0
+ negotiation auto
+!
+interface GigabitEthernet0/1
+ negotiation auto
+!
+interface GigabitEthernet0/2
+ negotiation auto
+!
+interface GigabitEthernet0/3
+ negotiation auto
+!
+interface Vlan1
+ ip address dhcp
+!
+ip default-gateway 192.168.0.1
+ip forward-protocol nd
+!
+ip http server
+ip http secure-server
+!
+ip ssh version 2
+ip ssh server algorithm encryption aes128-ctr aes192-ctr aes256-ctr
+ip ssh client algorithm encryption aes128-ctr aes192-ctr aes256-ctr
+!
+!
+!
+!
+!
+!
+control-plane
+!
+banner exec ^C
+IOSv - Cisco Systems Confidential -
+
+Supplemental End User License Restrictions
+
+This IOSv software is provided AS-IS without warranty of any kind. Under no circumstances may this software be used separate from the Cisco Modeling Labs Software that this software was provided with, or deployed or used as part of a production environment.
+
+By using the software, you agree to abide by the terms and conditions of the Cisco End User License Agreement at http://www.cisco.com/go/eula. Unauthorized use or distribution of this software is expressly prohibited.
+^C
+banner incoming ^C
+IOSv - Cisco Systems Confidential -
+
+Supplemental End User License Restrictions
+
+This IOSv software is provided AS-IS without warranty of any kind. Under no circumstances may this software be used separate from the Cisco Modeling Labs Software that this software was provided with, or deployed or used as part of a production environment.
+
+By using the software, you agree to abide by the terms and conditions of the Cisco End User License Agreement at http://www.cisco.com/go/eula. Unauthorized use or distribution of this software is expressly prohibited.
+^C
+banner login ^C
+IOSv - Cisco Systems Confidential -
+
+Supplemental End User License Restrictions
+
+This IOSv software is provided AS-IS without warranty of any kind. Under no circumstances may this software be used separate from the Cisco Modeling Labs Software that this software was provided with, or deployed or used as part of a production environment.
+
+By using the software, you agree to abide by the terms and conditions of the Cisco End User License Agreement at http://www.cisco.com/go/eula. Unauthorized use or distribution of this software is expressly prohibited.
+^C
+!
+line con 0
+line aux 0
+line vty 0 4
+ login local
+!
+!
+end
+
+2025-12-09 11:48:19,421 - INFO - This is the filename:show run
+2025-12-09 11:48:19,421 - INFO - File:<_io.TextIOWrapper name='Outputs/show run for device 192.168.0.17.txt' mode='a' encoding='UTF-8'> successfully created
+2025-12-09 11:48:19,422 - INFO - File:General Outputs.txt successfully created andinfo added
+2025-12-09 11:48:45,406 - INFO - IP successfully validated: 192.168.0.17
+2025-12-09 11:48:45,408 - INFO - Device IP 192.168.0.17 is reachable on Port TCP 22.
+2025-12-09 11:48:45,408 - INFO - [runShowCommands-main] Non-interactive run. Devices=['192.168.0.17'], username=cisco, command=show ip int br
+2025-12-09 11:48:45,408 - INFO - Connecting to device 192.168.0.17
+2025-12-09 11:48:46,657 - INFO - Connected to device: 192.168.0.17
+2025-12-09 11:48:46,668 - INFO - Generating hostname for 192.168.0.17
+2025-12-09 11:48:46,668 - INFO - Hostname for 192.168.0.17: 192.168.0.17#
+2025-12-09 11:48:46,668 - INFO - Command input by the user:cisco, command:show ip int br
+2025-12-09 11:48:47,367 - INFO - Automation successfully run the command: show ip int br on device: 192.168.0.17
+2025-12-09 11:48:47,367 - INFO - 192.168.0.17#show ip int br
+Interface              IP-Address      OK? Method Status                Protocol
+GigabitEthernet0/0     unassigned      YES unset  up                    up      
+GigabitEthernet0/1     unassigned      YES unset  up                    up      
+GigabitEthernet0/2     unassigned      YES unset  up                    up      
+GigabitEthernet0/3     unassigned      YES unset  up                    up      
+Vlan1                  192.168.0.17    YES DHCP   up                    up      
+2025-12-09 11:48:47,367 - INFO - This is the filename:show ip int br
+2025-12-09 11:48:47,367 - INFO - File:<_io.TextIOWrapper name='Outputs/show ip int br for device 192.168.0.17.txt' mode='a' encoding='UTF-8'> successfully created
+2025-12-09 11:48:47,367 - INFO - File:General Outputs.txt successfully created andinfo added
+2025-12-09 11:51:22,263 - INFO - IP successfully validated: 192.168.0.17
+2025-12-09 11:51:22,265 - INFO - Device IP 192.168.0.17 is reachable on Port TCP 22.
+2025-12-09 11:51:22,265 - INFO - [runShowCommands-main] Non-interactive run. Devices=['192.168.0.17'], username=cisco, command=show ip int br; show run
+2025-12-09 11:51:22,265 - INFO - Connecting to device 192.168.0.17
+2025-12-09 11:51:23,511 - INFO - Connected to device: 192.168.0.17
+2025-12-09 11:51:23,522 - INFO - Generating hostname for 192.168.0.17
+2025-12-09 11:51:23,522 - INFO - Hostname for 192.168.0.17: 192.168.0.17#
+2025-12-09 11:51:23,522 - INFO - Command input by the user:cisco, command:show ip int br; show run
+2025-12-09 11:51:24,242 - INFO - Automation successfully run the command: show ip int br; show run on device: 192.168.0.17
+2025-12-09 11:51:24,242 - INFO - 192.168.0.17#show ip int br; show run
+Interface              IP-Address      OK? Method Status                Protocol
+GigabitEthernet0/0     unassigned      YES unset  up                    up      
+GigabitEthernet0/1     unassigned      YES unset  up                    up      
+GigabitEthernet0/2     unassigned      YES unset  up                    up      
+GigabitEthernet0/3     unassigned      YES unset  up                    up      
+Vlan1                  192.168.0.17    YES DHCP   up                    up      
+2025-12-09 11:51:24,242 - INFO - This is the filename:show ip int br_ show run
+2025-12-09 11:51:24,242 - INFO - File:<_io.TextIOWrapper name='Outputs/show ip int br_ show run for device 192.168.0.17.txt' mode='a' encoding='UTF-8'> successfully created
+2025-12-09 11:51:24,242 - INFO - File:General Outputs.txt successfully created andinfo added
+2025-12-09 11:53:57,234 - INFO - IP successfully validated: 192.168.0.17
+2025-12-09 11:53:57,237 - INFO - Device IP 192.168.0.17 is reachable on Port TCP 22.
+2025-12-09 11:53:57,237 - INFO - [runShowCommands-main] Non-interactive run. Devices=['192.168.0.17'], username=cisco, command=show ip int br
+2025-12-09 11:53:57,237 - INFO - Connecting to device 192.168.0.17
+2025-12-09 11:53:58,481 - INFO - Connected to device: 192.168.0.17
+2025-12-09 11:53:58,491 - INFO - Generating hostname for 192.168.0.17
+2025-12-09 11:53:58,492 - INFO - Hostname for 192.168.0.17: 192.168.0.17#
+2025-12-09 11:53:58,492 - INFO - Command input by the user:cisco, command:show ip int br
+2025-12-09 11:53:59,189 - INFO - Automation successfully run the command: show ip int br on device: 192.168.0.17
+2025-12-09 11:53:59,189 - INFO - 192.168.0.17#show ip int br
+Interface              IP-Address      OK? Method Status                Protocol
+GigabitEthernet0/0     unassigned      YES unset  up                    up      
+GigabitEthernet0/1     unassigned      YES unset  up                    up      
+GigabitEthernet0/2     unassigned      YES unset  up                    up      
+GigabitEthernet0/3     unassigned      YES unset  up                    up      
+Vlan1                  192.168.0.17    YES DHCP   up                    up      
+2025-12-09 11:53:59,189 - INFO - This is the filename:show ip int br
+2025-12-09 11:53:59,189 - INFO - File:<_io.TextIOWrapper name='Outputs/show ip int br for device 192.168.0.17.txt' mode='a' encoding='UTF-8'> successfully created
+2025-12-09 11:53:59,189 - INFO - File:General Outputs.txt successfully created andinfo added
+2025-12-09 11:54:20,488 - INFO - IP successfully validated: 192.168.0.17
+2025-12-09 11:54:20,490 - INFO - Device IP 192.168.0.17 is reachable on Port TCP 22.
+2025-12-09 11:54:20,491 - INFO - [runShowCommands-main] Non-interactive run. Devices=['192.168.0.17'], username=cisco, command=show run
+2025-12-09 11:54:20,491 - INFO - Connecting to device 192.168.0.17
+2025-12-09 11:54:21,737 - INFO - Connected to device: 192.168.0.17
+2025-12-09 11:54:21,748 - INFO - Generating hostname for 192.168.0.17
+2025-12-09 11:54:21,748 - INFO - Hostname for 192.168.0.17: 192.168.0.17#
+2025-12-09 11:54:21,748 - INFO - Command input by the user:cisco, command:show run
+2025-12-09 11:54:22,879 - INFO - Automation successfully run the command: show run on device: 192.168.0.17
+2025-12-09 11:54:22,879 - INFO - 192.168.0.17#show run
+Building configuration...
+
+Current configuration : 2874 bytes
+!
+! Last configuration change at 16:29:34 UTC Tue Dec 9 2025
+!
+version 15.2
+service timestamps debug datetime msec
+service timestamps log datetime msec
+no service password-encryption
+service compress-config
+!
+hostname SW-TEST
+!
+boot-start-marker
+boot-end-marker
+!
+!
+!
+username luis privilege 15 secret 5 $1$LNCi$g/fbBKwlH58fzZt7YP..61
+username cisco privilege 15 secret 5 $1$IhfD$qOVdvCRfV4O2hHm3Cb73N0
+no aaa new-model
+!
+!
+!
+!
+!
+!
+!
+!
+ip domain-name cisco.com
+ip cef
+no ipv6 cef
+!
+!
+!
+spanning-tree mode pvst
+spanning-tree extend system-id
+!
+!
+! 
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+interface GigabitEthernet0/0
+ negotiation auto
+!
+interface GigabitEthernet0/1
+ negotiation auto
+!
+interface GigabitEthernet0/2
+ negotiation auto
+!
+interface GigabitEthernet0/3
+ negotiation auto
+!
+interface Vlan1
+ ip address dhcp
+!
+ip default-gateway 192.168.0.1
+ip forward-protocol nd
+!
+ip http server
+ip http secure-server
+!
+ip ssh version 2
+ip ssh server algorithm encryption aes128-ctr aes192-ctr aes256-ctr
+ip ssh client algorithm encryption aes128-ctr aes192-ctr aes256-ctr
+!
+!
+!
+!
+!
+!
+control-plane
+!
+banner exec ^C
+IOSv - Cisco Systems Confidential -
+
+Supplemental End User License Restrictions
+
+This IOSv software is provided AS-IS without warranty of any kind. Under no circumstances may this software be used separate from the Cisco Modeling Labs Software that this software was provided with, or deployed or used as part of a production environment.
+
+By using the software, you agree to abide by the terms and conditions of the Cisco End User License Agreement at http://www.cisco.com/go/eula. Unauthorized use or distribution of this software is expressly prohibited.
+^C
+banner incoming ^C
+IOSv - Cisco Systems Confidential -
+
+Supplemental End User License Restrictions
+
+This IOSv software is provided AS-IS without warranty of any kind. Under no circumstances may this software be used separate from the Cisco Modeling Labs Software that this software was provided with, or deployed or used as part of a production environment.
+
+By using the software, you agree to abide by the terms and conditions of the Cisco End User License Agreement at http://www.cisco.com/go/eula. Unauthorized use or distribution of this software is expressly prohibited.
+^C
+banner login ^C
+IOSv - Cisco Systems Confidential -
+
+Supplemental End User License Restrictions
+
+This IOSv software is provided AS-IS without warranty of any kind. Under no circumstances may this software be used separate from the Cisco Modeling Labs Software that this software was provided with, or deployed or used as part of a production environment.
+
+By using the software, you agree to abide by the terms and conditions of the Cisco End User License Agreement at http://www.cisco.com/go/eula. Unauthorized use or distribution of this software is expressly prohibited.
+^C
+!
+line con 0
+line aux 0
+line vty 0 4
+ login local
+!
+!
+end
+
+2025-12-09 11:54:22,880 - INFO - This is the filename:show run
+2025-12-09 11:54:22,880 - INFO - File:<_io.TextIOWrapper name='Outputs/show run for device 192.168.0.17.txt' mode='a' encoding='UTF-8'> successfully created
+2025-12-09 11:54:22,880 - INFO - File:General Outputs.txt successfully created andinfo added
+2025-12-09 11:57:30,810 - INFO - IP successfully validated: 192.168.0.17
+2025-12-09 11:57:30,812 - INFO - Device IP 192.168.0.17 is reachable on Port TCP 22.
+2025-12-09 11:57:30,812 - INFO - IP successfully validated: 192.168.0.18
+2025-12-09 11:57:30,818 - INFO - Device IP 192.168.0.18 is reachable on Port TCP 22.
+2025-12-09 11:57:30,818 - INFO - [runShowCommands-main] Non-interactive run. Devices=['192.168.0.17', '192.168.0.18'], username=cisco, command=show ip int br
+2025-12-09 11:57:30,818 - INFO - Connecting to device 192.168.0.17
+2025-12-09 11:57:32,073 - INFO - Connected to device: 192.168.0.17
+2025-12-09 11:57:32,084 - INFO - Generating hostname for 192.168.0.17
+2025-12-09 11:57:32,084 - INFO - Hostname for 192.168.0.17: 192.168.0.17#
+2025-12-09 11:57:32,084 - INFO - Command input by the user:cisco, command:show ip int br
+2025-12-09 11:57:32,793 - INFO - Automation successfully run the command: show ip int br on device: 192.168.0.17
+2025-12-09 11:57:32,793 - INFO - 192.168.0.17#show ip int br
+Interface              IP-Address      OK? Method Status                Protocol
+GigabitEthernet0/0     unassigned      YES unset  up                    up      
+GigabitEthernet0/1     unassigned      YES unset  up                    up      
+GigabitEthernet0/2     unassigned      YES unset  up                    up      
+GigabitEthernet0/3     unassigned      YES unset  up                    up      
+Vlan1                  192.168.0.17    YES DHCP   up                    up      
+2025-12-09 11:57:32,793 - INFO - This is the filename:show ip int br
+2025-12-09 11:57:32,793 - INFO - File:<_io.TextIOWrapper name='Outputs/show ip int br for device 192.168.0.17.txt' mode='a' encoding='UTF-8'> successfully created
+2025-12-09 11:57:32,793 - INFO - File:General Outputs.txt successfully created andinfo added
+2025-12-09 11:57:32,804 - INFO - Connecting to device 192.168.0.18
+2025-12-09 11:57:34,054 - INFO - Connected to device: 192.168.0.18
+2025-12-09 11:57:34,065 - INFO - Generating hostname for 192.168.0.18
+2025-12-09 11:57:34,065 - INFO - Hostname for 192.168.0.18: 192.168.0.18#
+2025-12-09 11:57:34,065 - INFO - Command input by the user:cisco, command:show ip int br
+2025-12-09 11:57:34,775 - INFO - Automation successfully run the command: show ip int br on device: 192.168.0.18
+2025-12-09 11:57:34,775 - INFO - 192.168.0.18#show ip int br
+Interface              IP-Address      OK? Method Status                Protocol
+GigabitEthernet0/0     unassigned      YES unset  up                    up      
+GigabitEthernet0/1     unassigned      YES unset  up                    up      
+GigabitEthernet0/2     unassigned      YES unset  up                    up      
+GigabitEthernet0/3     unassigned      YES unset  up                    up      
+Vlan1                  192.168.0.18    YES DHCP   up                    up      
+2025-12-09 11:57:34,775 - INFO - This is the filename:show ip int br
+2025-12-09 11:57:34,775 - INFO - File:<_io.TextIOWrapper name='Outputs/show ip int br for device 192.168.0.18.txt' mode='a' encoding='UTF-8'> successfully created
+2025-12-09 11:57:34,775 - INFO - File:General Outputs.txt successfully created andinfo added
+2025-12-09 11:58:34,554 - INFO - IP successfully validated: 192.168.0.17
+2025-12-09 11:58:34,556 - INFO - Device IP 192.168.0.17 is reachable on Port TCP 22.
+2025-12-09 11:58:34,556 - INFO - IP successfully validated: 192.168.0.18
+2025-12-09 11:58:34,558 - INFO - Device IP 192.168.0.18 is reachable on Port TCP 22.
+2025-12-09 11:58:34,558 - INFO - [runShowCommands-main] Non-interactive run. Devices=['192.168.0.17', '192.168.0.18'], username=cisco, command=show run
+2025-12-09 11:58:34,558 - INFO - Connecting to device 192.168.0.17
+2025-12-09 11:58:35,810 - INFO - Connected to device: 192.168.0.17
+2025-12-09 11:58:35,821 - INFO - Generating hostname for 192.168.0.17
+2025-12-09 11:58:35,822 - INFO - Hostname for 192.168.0.17: 192.168.0.17#
+2025-12-09 11:58:35,822 - INFO - Command input by the user:cisco, command:show run
+2025-12-09 11:58:36,983 - INFO - Automation successfully run the command: show run on device: 192.168.0.17
+2025-12-09 11:58:36,983 - INFO - 192.168.0.17#show run
+Building configuration...
+
+Current configuration : 2874 bytes
+!
+! Last configuration change at 16:29:34 UTC Tue Dec 9 2025
+!
+version 15.2
+service timestamps debug datetime msec
+service timestamps log datetime msec
+no service password-encryption
+service compress-config
+!
+hostname SW-TEST
+!
+boot-start-marker
+boot-end-marker
+!
+!
+!
+username luis privilege 15 secret 5 $1$LNCi$g/fbBKwlH58fzZt7YP..61
+username cisco privilege 15 secret 5 $1$IhfD$qOVdvCRfV4O2hHm3Cb73N0
+no aaa new-model
+!
+!
+!
+!
+!
+!
+!
+!
+ip domain-name cisco.com
+ip cef
+no ipv6 cef
+!
+!
+!
+spanning-tree mode pvst
+spanning-tree extend system-id
+!
+!
+! 
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+interface GigabitEthernet0/0
+ negotiation auto
+!
+interface GigabitEthernet0/1
+ negotiation auto
+!
+interface GigabitEthernet0/2
+ negotiation auto
+!
+interface GigabitEthernet0/3
+ negotiation auto
+!
+interface Vlan1
+ ip address dhcp
+!
+ip default-gateway 192.168.0.1
+ip forward-protocol nd
+!
+ip http server
+ip http secure-server
+!
+ip ssh version 2
+ip ssh server algorithm encryption aes128-ctr aes192-ctr aes256-ctr
+ip ssh client algorithm encryption aes128-ctr aes192-ctr aes256-ctr
+!
+!
+!
+!
+!
+!
+control-plane
+!
+banner exec ^C
+IOSv - Cisco Systems Confidential -
+
+Supplemental End User License Restrictions
+
+This IOSv software is provided AS-IS without warranty of any kind. Under no circumstances may this software be used separate from the Cisco Modeling Labs Software that this software was provided with, or deployed or used as part of a production environment.
+
+By using the software, you agree to abide by the terms and conditions of the Cisco End User License Agreement at http://www.cisco.com/go/eula. Unauthorized use or distribution of this software is expressly prohibited.
+^C
+banner incoming ^C
+IOSv - Cisco Systems Confidential -
+
+Supplemental End User License Restrictions
+
+This IOSv software is provided AS-IS without warranty of any kind. Under no circumstances may this software be used separate from the Cisco Modeling Labs Software that this software was provided with, or deployed or used as part of a production environment.
+
+By using the software, you agree to abide by the terms and conditions of the Cisco End User License Agreement at http://www.cisco.com/go/eula. Unauthorized use or distribution of this software is expressly prohibited.
+^C
+banner login ^C
+IOSv - Cisco Systems Confidential -
+
+Supplemental End User License Restrictions
+
+This IOSv software is provided AS-IS without warranty of any kind. Under no circumstances may this software be used separate from the Cisco Modeling Labs Software that this software was provided with, or deployed or used as part of a production environment.
+
+By using the software, you agree to abide by the terms and conditions of the Cisco End User License Agreement at http://www.cisco.com/go/eula. Unauthorized use or distribution of this software is expressly prohibited.
+^C
+!
+line con 0
+line aux 0
+line vty 0 4
+ login local
+!
+!
+end
+
+2025-12-09 11:58:36,984 - INFO - This is the filename:show run
+2025-12-09 11:58:36,984 - INFO - File:<_io.TextIOWrapper name='Outputs/show run for device 192.168.0.17.txt' mode='a' encoding='UTF-8'> successfully created
+2025-12-09 11:58:36,984 - INFO - File:General Outputs.txt successfully created andinfo added
+2025-12-09 11:58:36,995 - INFO - Connecting to device 192.168.0.18
+2025-12-09 11:58:38,236 - INFO - Connected to device: 192.168.0.18
+2025-12-09 11:58:38,247 - INFO - Generating hostname for 192.168.0.18
+2025-12-09 11:58:38,247 - INFO - Hostname for 192.168.0.18: 192.168.0.18#
+2025-12-09 11:58:38,247 - INFO - Command input by the user:cisco, command:show run
+2025-12-09 11:58:39,405 - INFO - Automation successfully run the command: show run on device: 192.168.0.18
+2025-12-09 11:58:39,405 - INFO - 192.168.0.18#show run
+Building configuration...
+
+Current configuration : 2808 bytes
+!
+! Last configuration change at 16:56:09 UTC Tue Dec 9 2025
+!
+version 15.2
+service timestamps debug datetime msec
+service timestamps log datetime msec
+no service password-encryption
+service compress-config
+!
+hostname SW-TEST1
+!
+boot-start-marker
+boot-end-marker
+!
+!
+!
+username cisco privilege 15 secret 5 $1$IRA.$5JGFaZpOQpjHfmTfnP0ws/
+no aaa new-model
+!
+!
+!
+!
+!
+!
+!
+!
+ip domain-name cisco.com
+ip cef
+no ipv6 cef
+!
+!
+!
+spanning-tree mode pvst
+spanning-tree extend system-id
+!
+!
+! 
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+interface GigabitEthernet0/0
+ negotiation auto
+!
+interface GigabitEthernet0/1
+ negotiation auto
+!
+interface GigabitEthernet0/2
+ negotiation auto
+!
+interface GigabitEthernet0/3
+ negotiation auto
+!
+interface Vlan1
+ ip address dhcp
+!
+ip default-gateway 192.168.0.1
+ip forward-protocol nd
+!
+ip http server
+ip http secure-server
+!
+ip ssh version 2
+ip ssh server algorithm encryption aes128-ctr aes192-ctr aes256-ctr
+ip ssh client algorithm encryption aes128-ctr aes192-ctr aes256-ctr
+!
+!
+!
+!
+!
+!
+control-plane
+!
+banner exec ^C
+IOSv - Cisco Systems Confidential -
+
+Supplemental End User License Restrictions
+
+This IOSv software is provided AS-IS without warranty of any kind. Under no circumstances may this software be used separate from the Cisco Modeling Labs Software that this software was provided with, or deployed or used as part of a production environment.
+
+By using the software, you agree to abide by the terms and conditions of the Cisco End User License Agreement at http://www.cisco.com/go/eula. Unauthorized use or distribution of this software is expressly prohibited.
+^C
+banner incoming ^C
+IOSv - Cisco Systems Confidential -
+
+Supplemental End User License Restrictions
+
+This IOSv software is provided AS-IS without warranty of any kind. Under no circumstances may this software be used separate from the Cisco Modeling Labs Software that this software was provided with, or deployed or used as part of a production environment.
+
+By using the software, you agree to abide by the terms and conditions of the Cisco End User License Agreement at http://www.cisco.com/go/eula. Unauthorized use or distribution of this software is expressly prohibited.
+^C
+banner login ^C
+IOSv - Cisco Systems Confidential -
+
+Supplemental End User License Restrictions
+
+This IOSv software is provided AS-IS without warranty of any kind. Under no circumstances may this software be used separate from the Cisco Modeling Labs Software that this software was provided with, or deployed or used as part of a production environment.
+
+By using the software, you agree to abide by the terms and conditions of the Cisco End User License Agreement at http://www.cisco.com/go/eula. Unauthorized use or distribution of this software is expressly prohibited.
+^C
+!
+line con 0
+line aux 0
+line vty 0 4
+ login local
+!
+!
+end
+
+2025-12-09 11:58:39,405 - INFO - This is the filename:show run
+2025-12-09 11:58:39,406 - INFO - File:<_io.TextIOWrapper name='Outputs/show run for device 192.168.0.18.txt' mode='a' encoding='UTF-8'> successfully created
+2025-12-09 11:58:39,406 - INFO - File:General Outputs.txt successfully created andinfo added
+2025-12-09 12:02:08,591 - INFO - IP successfully validated: 192.168.0.17
+2025-12-09 12:02:08,594 - INFO - Device IP 192.168.0.17 is reachable on Port TCP 22.
+2025-12-09 12:02:08,594 - INFO - [runShowCommands-main] Non-interactive run. Devices=['192.168.0.17'], username=cisco, command=show ip int br
+2025-12-09 12:02:08,594 - INFO - Connecting to device 192.168.0.17
+2025-12-09 12:02:09,842 - INFO - Connected to device: 192.168.0.17
+2025-12-09 12:02:09,853 - INFO - Generating hostname for 192.168.0.17
+2025-12-09 12:02:09,853 - INFO - Hostname for 192.168.0.17: 192.168.0.17#
+2025-12-09 12:02:09,853 - INFO - Command input by the user:cisco, command:show ip int br
+2025-12-09 12:02:10,561 - INFO - Automation successfully run the command: show ip int br on device: 192.168.0.17
+2025-12-09 12:02:10,561 - INFO - 192.168.0.17#show ip int br
+Interface              IP-Address      OK? Method Status                Protocol
+GigabitEthernet0/0     unassigned      YES unset  up                    up      
+GigabitEthernet0/1     unassigned      YES unset  up                    up      
+GigabitEthernet0/2     unassigned      YES unset  up                    up      
+GigabitEthernet0/3     unassigned      YES unset  up                    up      
+Vlan1                  192.168.0.17    YES DHCP   up                    up      
+2025-12-09 12:02:10,561 - INFO - This is the filename:show ip int br
+2025-12-09 12:02:10,561 - INFO - File:<_io.TextIOWrapper name='Outputs/show ip int br for device 192.168.0.17.txt' mode='a' encoding='UTF-8'> successfully created
+2025-12-09 12:02:10,561 - INFO - File:General Outputs.txt successfully created andinfo added
+2025-12-09 12:05:20,164 - INFO - IP successfully validated: 192.168.0.17
+2025-12-09 12:05:20,167 - INFO - Device IP 192.168.0.17 is reachable on Port TCP 22.
+2025-12-09 12:05:20,167 - INFO - IP successfully validated: 192.168.0.18
+2025-12-09 12:05:20,169 - INFO - Device IP 192.168.0.18 is reachable on Port TCP 22.
+2025-12-09 12:05:20,169 - INFO - [runShowCommands-main] Non-interactive run. Devices=['192.168.0.17', '192.168.0.18'], username=cisco, command=show ip int br
+2025-12-09 12:05:20,169 - INFO - Connecting to device 192.168.0.17
+2025-12-09 12:05:21,421 - INFO - Connected to device: 192.168.0.17
+2025-12-09 12:05:21,432 - INFO - Generating hostname for 192.168.0.17
+2025-12-09 12:05:21,433 - INFO - Hostname for 192.168.0.17: 192.168.0.17#
+2025-12-09 12:05:21,433 - INFO - Command input by the user:cisco, command:show ip int br
+2025-12-09 12:05:22,141 - INFO - Automation successfully run the command: show ip int br on device: 192.168.0.17
+2025-12-09 12:05:22,141 - INFO - 192.168.0.17#show ip int br
+Interface              IP-Address      OK? Method Status                Protocol
+GigabitEthernet0/0     unassigned      YES unset  up                    up      
+GigabitEthernet0/1     unassigned      YES unset  up                    up      
+GigabitEthernet0/2     unassigned      YES unset  up                    up      
+GigabitEthernet0/3     unassigned      YES unset  up                    up      
+Vlan1                  192.168.0.17    YES DHCP   up                    up      
+2025-12-09 12:05:22,141 - INFO - This is the filename:show ip int br
+2025-12-09 12:05:22,141 - INFO - File:<_io.TextIOWrapper name='Outputs/show ip int br for device 192.168.0.17.txt' mode='a' encoding='UTF-8'> successfully created
+2025-12-09 12:05:22,142 - INFO - File:General Outputs.txt successfully created andinfo added
+2025-12-09 12:05:22,153 - INFO - Connecting to device 192.168.0.18
+2025-12-09 12:05:23,404 - INFO - Connected to device: 192.168.0.18
+2025-12-09 12:05:23,415 - INFO - Generating hostname for 192.168.0.18
+2025-12-09 12:05:23,415 - INFO - Hostname for 192.168.0.18: 192.168.0.18#
+2025-12-09 12:05:23,415 - INFO - Command input by the user:cisco, command:show ip int br
+2025-12-09 12:05:24,123 - INFO - Automation successfully run the command: show ip int br on device: 192.168.0.18
+2025-12-09 12:05:24,123 - INFO - 192.168.0.18#show ip int br
+Interface              IP-Address      OK? Method Status                Protocol
+GigabitEthernet0/0     unassigned      YES unset  up                    up      
+GigabitEthernet0/1     unassigned      YES unset  up                    up      
+GigabitEthernet0/2     unassigned      YES unset  up                    up      
+GigabitEthernet0/3     unassigned      YES unset  up                    up      
+Vlan1                  192.168.0.18    YES DHCP   up                    up      
+2025-12-09 12:05:24,123 - INFO - This is the filename:show ip int br
+2025-12-09 12:05:24,123 - INFO - File:<_io.TextIOWrapper name='Outputs/show ip int br for device 192.168.0.18.txt' mode='a' encoding='UTF-8'> successfully created
+2025-12-09 12:05:24,123 - INFO - File:General Outputs.txt successfully created andinfo added
+2025-12-09 12:06:30,468 - INFO - IP successfully validated: 192.168.0.17
+2025-12-09 12:06:30,470 - INFO - Device IP 192.168.0.17 is reachable on Port TCP 22.
+2025-12-09 12:06:30,470 - INFO - IP successfully validated: 192.168.0.18
+2025-12-09 12:06:30,472 - INFO - Device IP 192.168.0.18 is reachable on Port TCP 22.
+2025-12-09 12:06:30,472 - INFO - [runShowCommands-main] Non-interactive run. Devices=['192.168.0.17', '192.168.0.18'], username=cisco, command=show run
+2025-12-09 12:06:30,472 - INFO - Connecting to device 192.168.0.17
+2025-12-09 12:06:31,717 - INFO - Connected to device: 192.168.0.17
+2025-12-09 12:06:31,727 - INFO - Generating hostname for 192.168.0.17
+2025-12-09 12:06:31,727 - INFO - Hostname for 192.168.0.17: 192.168.0.17#
+2025-12-09 12:06:31,727 - INFO - Command input by the user:cisco, command:show run
+2025-12-09 12:06:32,881 - INFO - Automation successfully run the command: show run on device: 192.168.0.17
+2025-12-09 12:06:32,881 - INFO - 192.168.0.17#show run
+Building configuration...
+
+Current configuration : 2874 bytes
+!
+! Last configuration change at 16:29:34 UTC Tue Dec 9 2025
+!
+version 15.2
+service timestamps debug datetime msec
+service timestamps log datetime msec
+no service password-encryption
+service compress-config
+!
+hostname SW-TEST
+!
+boot-start-marker
+boot-end-marker
+!
+!
+!
+username luis privilege 15 secret 5 $1$LNCi$g/fbBKwlH58fzZt7YP..61
+username cisco privilege 15 secret 5 $1$IhfD$qOVdvCRfV4O2hHm3Cb73N0
+no aaa new-model
+!
+!
+!
+!
+!
+!
+!
+!
+ip domain-name cisco.com
+ip cef
+no ipv6 cef
+!
+!
+!
+spanning-tree mode pvst
+spanning-tree extend system-id
+!
+!
+! 
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+interface GigabitEthernet0/0
+ negotiation auto
+!
+interface GigabitEthernet0/1
+ negotiation auto
+!
+interface GigabitEthernet0/2
+ negotiation auto
+!
+interface GigabitEthernet0/3
+ negotiation auto
+!
+interface Vlan1
+ ip address dhcp
+!
+ip default-gateway 192.168.0.1
+ip forward-protocol nd
+!
+ip http server
+ip http secure-server
+!
+ip ssh version 2
+ip ssh server algorithm encryption aes128-ctr aes192-ctr aes256-ctr
+ip ssh client algorithm encryption aes128-ctr aes192-ctr aes256-ctr
+!
+!
+!
+!
+!
+!
+control-plane
+!
+banner exec ^C
+IOSv - Cisco Systems Confidential -
+
+Supplemental End User License Restrictions
+
+This IOSv software is provided AS-IS without warranty of any kind. Under no circumstances may this software be used separate from the Cisco Modeling Labs Software that this software was provided with, or deployed or used as part of a production environment.
+
+By using the software, you agree to abide by the terms and conditions of the Cisco End User License Agreement at http://www.cisco.com/go/eula. Unauthorized use or distribution of this software is expressly prohibited.
+^C
+banner incoming ^C
+IOSv - Cisco Systems Confidential -
+
+Supplemental End User License Restrictions
+
+This IOSv software is provided AS-IS without warranty of any kind. Under no circumstances may this software be used separate from the Cisco Modeling Labs Software that this software was provided with, or deployed or used as part of a production environment.
+
+By using the software, you agree to abide by the terms and conditions of the Cisco End User License Agreement at http://www.cisco.com/go/eula. Unauthorized use or distribution of this software is expressly prohibited.
+^C
+banner login ^C
+IOSv - Cisco Systems Confidential -
+
+Supplemental End User License Restrictions
+
+This IOSv software is provided AS-IS without warranty of any kind. Under no circumstances may this software be used separate from the Cisco Modeling Labs Software that this software was provided with, or deployed or used as part of a production environment.
+
+By using the software, you agree to abide by the terms and conditions of the Cisco End User License Agreement at http://www.cisco.com/go/eula. Unauthorized use or distribution of this software is expressly prohibited.
+^C
+!
+line con 0
+line aux 0
+line vty 0 4
+ login local
+!
+!
+end
+
+2025-12-09 12:06:32,881 - INFO - This is the filename:show run
+2025-12-09 12:06:32,881 - INFO - File:<_io.TextIOWrapper name='Outputs/show run for device 192.168.0.17.txt' mode='a' encoding='UTF-8'> successfully created
+2025-12-09 12:06:32,881 - INFO - File:General Outputs.txt successfully created andinfo added
+2025-12-09 12:06:32,892 - INFO - Connecting to device 192.168.0.18
+2025-12-09 12:06:34,130 - INFO - Connected to device: 192.168.0.18
+2025-12-09 12:06:34,141 - INFO - Generating hostname for 192.168.0.18
+2025-12-09 12:06:34,141 - INFO - Hostname for 192.168.0.18: 192.168.0.18#
+2025-12-09 12:06:34,141 - INFO - Command input by the user:cisco, command:show run
+2025-12-09 12:06:35,272 - INFO - Automation successfully run the command: show run on device: 192.168.0.18
+2025-12-09 12:06:35,272 - INFO - 192.168.0.18#show run
+Building configuration...
+
+Current configuration : 2808 bytes
+!
+! Last configuration change at 16:56:09 UTC Tue Dec 9 2025
+!
+version 15.2
+service timestamps debug datetime msec
+service timestamps log datetime msec
+no service password-encryption
+service compress-config
+!
+hostname SW-TEST1
+!
+boot-start-marker
+boot-end-marker
+!
+!
+!
+username cisco privilege 15 secret 5 $1$IRA.$5JGFaZpOQpjHfmTfnP0ws/
+no aaa new-model
+!
+!
+!
+!
+!
+!
+!
+!
+ip domain-name cisco.com
+ip cef
+no ipv6 cef
+!
+!
+!
+spanning-tree mode pvst
+spanning-tree extend system-id
+!
+!
+! 
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+interface GigabitEthernet0/0
+ negotiation auto
+!
+interface GigabitEthernet0/1
+ negotiation auto
+!
+interface GigabitEthernet0/2
+ negotiation auto
+!
+interface GigabitEthernet0/3
+ negotiation auto
+!
+interface Vlan1
+ ip address dhcp
+!
+ip default-gateway 192.168.0.1
+ip forward-protocol nd
+!
+ip http server
+ip http secure-server
+!
+ip ssh version 2
+ip ssh server algorithm encryption aes128-ctr aes192-ctr aes256-ctr
+ip ssh client algorithm encryption aes128-ctr aes192-ctr aes256-ctr
+!
+!
+!
+!
+!
+!
+control-plane
+!
+banner exec ^C
+IOSv - Cisco Systems Confidential -
+
+Supplemental End User License Restrictions
+
+This IOSv software is provided AS-IS without warranty of any kind. Under no circumstances may this software be used separate from the Cisco Modeling Labs Software that this software was provided with, or deployed or used as part of a production environment.
+
+By using the software, you agree to abide by the terms and conditions of the Cisco End User License Agreement at http://www.cisco.com/go/eula. Unauthorized use or distribution of this software is expressly prohibited.
+^C
+banner incoming ^C
+IOSv - Cisco Systems Confidential -
+
+Supplemental End User License Restrictions
+
+This IOSv software is provided AS-IS without warranty of any kind. Under no circumstances may this software be used separate from the Cisco Modeling Labs Software that this software was provided with, or deployed or used as part of a production environment.
+
+By using the software, you agree to abide by the terms and conditions of the Cisco End User License Agreement at http://www.cisco.com/go/eula. Unauthorized use or distribution of this software is expressly prohibited.
+^C
+banner login ^C
+IOSv - Cisco Systems Confidential -
+
+Supplemental End User License Restrictions
+
+This IOSv software is provided AS-IS without warranty of any kind. Under no circumstances may this software be used separate from the Cisco Modeling Labs Software that this software was provided with, or deployed or used as part of a production environment.
+
+By using the software, you agree to abide by the terms and conditions of the Cisco End User License Agreement at http://www.cisco.com/go/eula. Unauthorized use or distribution of this software is expressly prohibited.
+^C
+!
+line con 0
+line aux 0
+line vty 0 4
+ login local
+!
+!
+end
+
+2025-12-09 12:06:35,272 - INFO - This is the filename:show run
+2025-12-09 12:06:35,272 - INFO - File:<_io.TextIOWrapper name='Outputs/show run for device 192.168.0.18.txt' mode='a' encoding='UTF-8'> successfully created
+2025-12-09 12:06:35,272 - INFO - File:General Outputs.txt successfully created andinfo added
+2025-12-10 13:43:34,659 - INFO - IP successfully validated: 192.168.0.17
+2025-12-10 13:43:34,664 - INFO - Device IP 192.168.0.17 is reachable on Port TCP 22.
+2025-12-10 13:43:34,664 - INFO - IP successfully validated: 192.168.0.18
+2025-12-10 13:43:34,669 - INFO - Device IP 192.168.0.18 is reachable on Port TCP 22.
+2025-12-10 13:43:34,669 - INFO - [runShowCommands-main] Non-interactive run. Devices=['192.168.0.17', '192.168.0.18'], username=cisco, command=show ip interface brief
+2025-12-10 13:43:34,669 - INFO - Connecting to device 192.168.0.17
+2025-12-10 13:43:35,915 - INFO - Connected to device: 192.168.0.17
+2025-12-10 13:43:35,926 - INFO - Generating hostname for 192.168.0.17
+2025-12-10 13:43:35,926 - INFO - Hostname for 192.168.0.17: 192.168.0.17#
+2025-12-10 13:43:35,926 - INFO - Command input by the user:cisco, command:show ip interface brief
+2025-12-10 13:43:36,650 - INFO - Automation successfully run the command: show ip interface brief on device: 192.168.0.17
+2025-12-10 13:43:36,650 - INFO - 192.168.0.17#show ip interface brief
+Interface              IP-Address      OK? Method Status                Protocol
+GigabitEthernet0/0     unassigned      YES unset  up                    up      
+GigabitEthernet0/1     unassigned      YES unset  up                    up      
+GigabitEthernet0/2     unassigned      YES unset  up                    up      
+GigabitEthernet0/3     unassigned      YES unset  up                    up      
+Vlan1                  192.168.0.17    YES DHCP   up                    up      
+2025-12-10 13:43:36,650 - INFO - This is the filename:show ip interface brief
+2025-12-10 13:43:36,650 - INFO - File:<_io.TextIOWrapper name='Outputs/show ip interface brief for device 192.168.0.17.txt' mode='a' encoding='UTF-8'> successfully created
+2025-12-10 13:43:36,650 - INFO - File:General Outputs.txt successfully created andinfo added
+2025-12-10 13:43:36,662 - INFO - Connecting to device 192.168.0.18
+2025-12-10 13:43:37,906 - INFO - Connected to device: 192.168.0.18
+2025-12-10 13:43:37,916 - INFO - Generating hostname for 192.168.0.18
+2025-12-10 13:43:37,916 - INFO - Hostname for 192.168.0.18: 192.168.0.18#
+2025-12-10 13:43:37,916 - INFO - Command input by the user:cisco, command:show ip interface brief
+2025-12-10 13:43:38,636 - INFO - Automation successfully run the command: show ip interface brief on device: 192.168.0.18
+2025-12-10 13:43:38,636 - INFO - 192.168.0.18#show ip interface brief
+Interface              IP-Address      OK? Method Status                Protocol
+GigabitEthernet0/0     unassigned      YES unset  up                    up      
+GigabitEthernet0/1     unassigned      YES unset  up                    up      
+GigabitEthernet0/2     unassigned      YES unset  up                    up      
+GigabitEthernet0/3     unassigned      YES unset  up                    up      
+Vlan1                  192.168.0.18    YES DHCP   up                    up      
+2025-12-10 13:43:38,636 - INFO - This is the filename:show ip interface brief
+2025-12-10 13:43:38,636 - INFO - File:<_io.TextIOWrapper name='Outputs/show ip interface brief for device 192.168.0.18.txt' mode='a' encoding='UTF-8'> successfully created
+2025-12-10 13:43:38,637 - INFO - File:General Outputs.txt successfully created andinfo added

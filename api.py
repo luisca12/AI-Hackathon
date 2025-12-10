@@ -4,6 +4,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from openai import OpenAI
+from strings import scriptsAvailable, SYSTEM_PROMPT
 
 # ========================
 # CONFIG INICIAL
@@ -32,132 +33,45 @@ app.add_middleware(
 class ChatRequest(BaseModel):
     message: str
 
-scriptsAvailable = {
-    "runShowCommands-main": {
-        "displayName": "Run Show Commands",
-        "description": (
-            "Execute any show command on one or multiple network devices using SSH. "
-            "Validates reachability, runs the command and stores outputs in text files under Outputs."
-        ),
-        "parameters": [
-            {"name": "devices", "description": "Comma-separated list of device IPs/hostnames"},
-            {"name": "username", "description": "Username for device login"},
-            {"name": "password", "description": "Password (also used as enable/secret)"},
-            {"name": "command", "description": "Complete show command to run"},
-        ],
-    },
-    "aclRemoval-main": {
-        "displayName": "ACL Removal",
-        "description": "Remove or modify ACLs on multiple devices.",
-        "parameters": [
-            {"name": "devices", "description": "Devices where the ACL will be modified"},
-            {"name": "acl_id", "description": "ACL ID or name"},
-            {"name": "action", "description": "remove/disable or similar"},
-        ],
-    },
-    "shIntStatHalf_SD-WAN-main": {
-        "displayName": "Half Duplex Check (SD-WAN)",
-        "description": "Check interfaces in half-duplex mode on SD-WAN routers.",
-        "parameters": [
-            {"name": "devices", "description": "Routers to check"},
-        ],
-    },
-    "showErrDisableInt-main": {
-        "displayName": "Err-Disabled Interfaces",
-        "description": "Find interfaces in err-disabled state and optionally recover them.",
-        "parameters": [
-            {"name": "devices", "description": "Devices to analyze"},
-        ],
-    },
-}
-
-def scriptCatalogText():
-    lines = []
-    for key, info in scriptsAvailable.items():
-        lines.append(f"- ID: {key}")
-        lines.append(f"  Name: {info['displayName']}")
-        lines.append(f"  Description: {info['description']}")
-        if "parameters" in info:
-            lines.append("  Parameters:")
-            for p in info["parameters"]:
-                lines.append(f"    - {p['name']}: {p['description']}")
-        lines.append("")
-    return "\n".join(lines)
-
-scriptCatalogTextOut = scriptCatalogText()
-
-SYSTEM_PROMPT = f"""
-Your name is Automation Hero, you're an AI-powered automation assistant for network and operations engineers.
-
-You have access to exactly the following local scripts (identified by their ID):
-
-{scriptCatalogTextOut}
-
-You must ALWAYS respond with a single JSON object, and nothing else. No markdown, no explanations outside JSON.
-The JSON MUST have the following structure:
-
-{{
-  "answer": "<short, human readable message to show in the chat>",
-  "script_to_run": "<one of: runShowCommands-main | aclRemoval-main | shIntStatHalf_SD-WAN-main | showErrDisableInt-main | null>",
-  "parameters": {{
-    "...": "..."
-  }},
-  "run_script": false
-}}
-
-Behavior rules:
-
-General rules:
-- "answer" is what the user will see in the chat, keep it short, clear, technical but easy to understand and looking good.
-- Only show the available scripts when the user asks for them, never show them on the first message.
-- When the user asks for available scripts, list ONLY the scripts that appear in the catalog above, using a friendly name and description.
-- Do NOT invent or mention scripts that are not in the catalog.
-- When the user wants to run a specific script, you must:
-  - Set "script_to_run" to the correct script ID.
-  - Ask for any missing parameters in "answer" and keep "run_script": false.
-  - Only when the user has provided ALL required parameters AND explicitly confirms execution (e.g. "yes, run it"), set "run_script": true.
-- When "run_script" is true, "parameters" MUST include all values needed by the script (for runShowCommands-main: devices, username, password, command).
-- All the replies to the user must always be short, clear, technical but easy to understand, in a nice and human readable format.
-- If you will reply with a list of things or missing parameters, use a clear multi-line format, not everything on the same line.
-- If they ask you to run more than one show command, just execute one at a time, and always prompt something like "do u want to run the next command?" and also show the next command
-
-Very important:
-- If you are NOT ready to execute (need more info or no explicit confirmation), set "run_script": false.
-- If the user changes their mind or says "do not run it", keep "run_script": false.
-- Never say that you executed the script yourself; you only request execution through this JSON.
-
-Additional rule about context:
-- You may receive an extra system message like:
-  "Context of last successful runShowCommands-main: {{ ... }}"
-- When the user says things like "same device", "same router", "same credentials", or does not specify devices/username/password, you MUST reuse the values from that context (devices, username, password) unless the user explicitly changes them.
-
-Remember: respond ONLY with JSON. No text before or after the JSON.
-"""
-
 baseScriptDir = os.path.join(os.path.dirname(__file__), "scripts")
 
-lastRunCommndContext = {}
+# Contexto del último comando exitoso (para "same device", etc.)
+lastRunCommandContext = {}
 
-def run_runShowCommands(params: dict) -> dict:
-    devices = params["devices"]           # "192.168.0.14" o "ip1,ip2"
-    username = params["username"]
-    password = params["password"]
-    command = params["command"]
+def runScript(scriptID: str, params: dict) -> dict:
+    """
+    Ejecuta cualquier script definido en scriptsAvailable usando subprocess.
+    """
+    if scriptID not in scriptsAvailable:
+        return {"error": f"Unknown scriptID: {scriptID}"}
 
-    script_path = os.path.join(
-        baseScriptDir,
-        "runShowCommands-main",
-        "main.py"
-    )
+    info = scriptsAvailable[scriptID]
 
-    cmd = [
-        sys.executable,
-        script_path,
-        "--devices", devices,
-        "--username", username,
-        "--password", password,
-        "--command", command,
-    ]
+    folder = info.get("folder")
+    entrypoint = info.get("entrypoint", "main.py")
+    cli_params = info.get("cli_params", [])
+
+    script_path = os.path.join(baseScriptDir, folder, entrypoint)
+
+    cmd = [sys.executable, script_path]
+
+    # Agregar parámetros CLI según la definición
+    for p in cli_params:
+        name = p["name"]         # ejemplo: "devices"
+        flag = p["flag"]         # ejemplo: "--devices"
+        required = p.get("required", True)
+
+        value = params.get(name)
+
+        if value is None or value == "":
+            if required:
+                raise ValueError(
+                    f"Missing required parameter '{name}' for script '{scriptID}'"
+                )
+            else:
+                continue
+
+        cmd.extend([flag, str(value)])
 
     script_dir = os.path.dirname(script_path)
 
@@ -178,47 +92,47 @@ def run_runShowCommands(params: dict) -> dict:
 # HISTORIAL DE CONVERSACIÓN
 # ========================
 
-# Para el prototipo: un solo historial global
 chatHistory = [
     {"role": "system", "content": SYSTEM_PROMPT}
 ]
 
 @app.post("/chat")
 def chatEndpoint(req: ChatRequest):
-    global chatHistory, lastRunCommndContext
+    global chatHistory, lastRunCommandContext
 
-    # Construimos los mensajes a enviar al modelo:
-    # - SYSTEM_PROMPT + historial previo
+    # Construir mensajes para este request
     messages = chatHistory.copy()
 
-    # Agregamos un mensaje de sistema con el último contexto si existe
-    if lastRunCommndContext:
+    # Inyectar contexto del último comando, si existe
+    if lastRunCommandContext:
         context_text = (
             "Context of last successful command executed: "
-            + json.dumps(lastRunCommndContext)
+            + json.dumps(lastRunCommandContext)
         )
         messages.append({"role": "system", "content": context_text})
 
-    # Agregamos el mensaje actual del usuario SOLO PARA ESTE REQUEST
+    # Mensaje actual del usuario
     messages.append({"role": "user", "content": req.message})
 
-    # Llamar al modelo con TODO
+    # Llamar al modelo
     response = client.chat.completions.create(
         model="gpt-5-nano",
         messages=messages,
-        # response_format={"type": "json_object"},  # si tu modelo lo permite
+        # response_format={"type": "json_object"},  # si tu modelo lo soporta
     )
 
     raw = response.choices[0].message.content
 
-    # Ahora sí, guardamos el mensaje del usuario y la respuesta cruda en el historial
+    # Guardar en historial (para próximas vueltas)
     chatHistory.append({"role": "user", "content": req.message})
     chatHistory.append({"role": "assistant", "content": raw})
 
-    # Intentar parsear JSON
+    # Parsear JSON
     try:
         data = json.loads(raw)
     except json.JSONDecodeError:
+        # Modelo se portó mal; devolvemos el texto tal cual
+        print("DEBUG JSONDecodeError, raw =", raw)
         return {
             "assistant_message": raw,
             "script_executed": None,
@@ -226,29 +140,36 @@ def chatEndpoint(req: ChatRequest):
         }
 
     answer = data.get("answer", "")
-    script_id = data.get("script_to_run")
+    scriptID = data.get("script_to_run")
     run_flag = data.get("run_script", False)
     params = data.get("parameters") or {}
 
     script_result = None
 
-    if run_flag and script_id == "runShowCommands-main":
+    # Ejecutar script si corresponde
+    if run_flag and scriptID in scriptsAvailable:
         try:
-            script_result = run_runShowCommands(params)
+            script_result = runScript(scriptID, params)
 
-            # 👉 IMPORTANTE: actualizar el contexto con estos parámetros
-            # solo si tenemos todos los campos principales
-            lastRunCommndContext = {
-                "devices": params.get("devices"),
-                "username": params.get("username"),
-                "password": params.get("password"),
-            }
+            # Actualizar contexto si tiene sentido
+            if (
+                "devices" in params
+                and "username" in params
+                and "password" in params
+            ):
+                lastRunCommandContext = {
+                    "scriptID": scriptID,
+                    "devices": params.get("devices"),
+                    "username": params.get("username"),
+                    "password": params.get("password"),
+                }
+
         except Exception as e:
             script_result = {
                 "error": str(e),
             }
 
-    # Combinar el resultado del script dentro del mensaje de la IA
+    # Combinar resultado del script en el mensaje que verá el usuario
     if script_result is not None:
         if "error" in script_result:
             answer = (
@@ -267,12 +188,16 @@ def chatEndpoint(req: ChatRequest):
             if script_result.get("stderr"):
                 answer += "\nErrors:\n" + script_result["stderr"]
 
+    # Logs de debug en consola del backend
     print("DEBUG RAW FROM MODEL:", raw)
+    print("DEBUG scriptID:", scriptID)
+    print("DEBUG RUN_FLAG:", run_flag)
+    print("DEBUG PARAMS:", params)
     print("DEBUG SCRIPT_RESULT:", script_result)
-    print("DEBUG LAST_CONTEXT:", lastRunCommndContext)
+    print("DEBUG LAST_CONTEXT:", lastRunCommandContext)
 
     return {
         "assistant_message": answer,
-        "script_executed": script_id if run_flag else None,
+        "script_executed": scriptID if (run_flag and script_result is not None) else None,
         "script_result": script_result,
     }
