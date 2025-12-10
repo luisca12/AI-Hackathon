@@ -1,1 +1,1 @@
-### etOps: AI-Powered Automation Solution
+### NetOps: AI-Powered Automation Solution
