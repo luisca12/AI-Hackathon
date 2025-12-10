@@ -11,11 +11,11 @@ from strings import scriptsAvailable, SYSTEM_PROMPT
 # ========================
 
 load_dotenv()
-api_key = os.getenv("OPENAI_API_KEY")
-if not api_key:
+apiKey = os.getenv("OPENAI_API_KEY")
+if not apiKey:
     raise RuntimeError("OPENAI_API_KEY not set")
 
-client = OpenAI(api_key=api_key)
+client = OpenAI(apiKey=apiKey)
 
 app = FastAPI(
     title="NetOps: AI-Powered Automation Solution",
@@ -35,12 +35,11 @@ class ChatRequest(BaseModel):
 
 baseScriptDir = os.path.join(os.path.dirname(__file__), "scripts")
 
-# Contexto del último comando exitoso (para "same device", etc.)
 lastRunCommandContext = {}
 
 def runScript(scriptID: str, params: dict) -> dict:
     """
-    Ejecuta cualquier script definido en scriptsAvailable usando subprocess.
+    Execute the needed script that is available using subprocess.
     """
     if scriptID not in scriptsAvailable:
         return {"error": f"Unknown scriptID: {scriptID}"}
@@ -49,14 +48,13 @@ def runScript(scriptID: str, params: dict) -> dict:
 
     folder = info.get("folder")
     entrypoint = info.get("entrypoint", "main.py")
-    cli_params = info.get("cli_params", [])
+    cliParams = info.get("cliParams", [])
 
-    script_path = os.path.join(baseScriptDir, folder, entrypoint)
+    scriptPath = os.path.join(baseScriptDir, folder, entrypoint)
 
-    cmd = [sys.executable, script_path]
+    cmd = [sys.executable, scriptPath]
 
-    # Agregar parámetros CLI según la definición
-    for p in cli_params:
+    for p in cliParams:
         name = p["name"]         # ejemplo: "devices"
         flag = p["flag"]         # ejemplo: "--devices"
         required = p.get("required", True)
@@ -73,7 +71,7 @@ def runScript(scriptID: str, params: dict) -> dict:
 
         cmd.extend([flag, str(value)])
 
-    script_dir = os.path.dirname(script_path)
+    script_dir = os.path.dirname(scriptPath)
 
     result = subprocess.run(
         cmd,
@@ -100,56 +98,47 @@ chatHistory = [
 def chatEndpoint(req: ChatRequest):
     global chatHistory, lastRunCommandContext
 
-    # Construir mensajes para este request
     messages = chatHistory.copy()
 
-    # Inyectar contexto del último comando, si existe
     if lastRunCommandContext:
-        context_text = (
+        contextTxt = (
             "Context of last successful command executed: "
             + json.dumps(lastRunCommandContext)
         )
-        messages.append({"role": "system", "content": context_text})
+        messages.append({"role": "system", "content": contextTxt})
 
-    # Mensaje actual del usuario
     messages.append({"role": "user", "content": req.message})
 
-    # Llamar al modelo
     response = client.chat.completions.create(
         model="gpt-5-nano",
         messages=messages,
-        # response_format={"type": "json_object"},  # si tu modelo lo soporta
     )
 
     raw = response.choices[0].message.content
 
-    # Guardar en historial (para próximas vueltas)
     chatHistory.append({"role": "user", "content": req.message})
     chatHistory.append({"role": "assistant", "content": raw})
 
-    # Parsear JSON
     try:
         data = json.loads(raw)
     except json.JSONDecodeError:
-        # Modelo se portó mal; devolvemos el texto tal cual
         print("DEBUG JSONDecodeError, raw =", raw)
         return {
-            "assistant_message": raw,
-            "script_executed": None,
-            "script_result": None,
+            "assistantMessage": raw,
+            "scriptExecuted": None,
+            "scriptResult": None,
         }
 
     answer = data.get("answer", "")
-    scriptID = data.get("script_to_run")
-    run_flag = data.get("run_script", False)
+    scriptID = data.get("scriptToRun")
+    runFlag = data.get("runScript", False)
     params = data.get("parameters") or {}
 
-    script_result = None
+    scriptResult = None
 
-    # Ejecutar script si corresponde
-    if run_flag and scriptID in scriptsAvailable:
+    if runFlag and scriptID in scriptsAvailable:
         try:
-            script_result = runScript(scriptID, params)
+            scriptResult = runScript(scriptID, params)
 
             # Actualizar contexto si tiene sentido
             if (
@@ -165,39 +154,37 @@ def chatEndpoint(req: ChatRequest):
                 }
 
         except Exception as e:
-            script_result = {
+            scriptResult = {
                 "error": str(e),
             }
 
-    # Combinar resultado del script en el mensaje que verá el usuario
-    if script_result is not None:
-        if "error" in script_result:
+    if scriptResult is not None:
+        if "error" in scriptResult:
             answer = (
                 answer
                 + "\n\n--- Script execution failed ---\n"
-                + f"Error: {script_result['error']}"
+                + f"Error: {scriptResult['error']}"
             )
         else:
             answer = (
                 answer
                 + "\n\n--- Script execution ---\n"
-                + f"Return code: {script_result.get('returncode')}\n"
+                + f"Return code: {scriptResult.get('returncode')}\n"
             )
-            if script_result.get("stdout"):
-                answer += "\nOutput:\n" + script_result["stdout"]
-            if script_result.get("stderr"):
-                answer += "\nErrors:\n" + script_result["stderr"]
+            if scriptResult.get("stdout"):
+                answer += "\nOutput:\n" + scriptResult["stdout"]
+            if scriptResult.get("stderr"):
+                answer += "\nErrors:\n" + scriptResult["stderr"]
 
-    # Logs de debug en consola del backend
     print("DEBUG RAW FROM MODEL:", raw)
     print("DEBUG scriptID:", scriptID)
-    print("DEBUG RUN_FLAG:", run_flag)
+    print("DEBUG RUN FLAG:", runFlag)
     print("DEBUG PARAMS:", params)
-    print("DEBUG SCRIPT_RESULT:", script_result)
-    print("DEBUG LAST_CONTEXT:", lastRunCommandContext)
+    print("DEBUG SCRIPT RESULT:", scriptResult)
+    print("DEBUG LAST CONTEXT:", lastRunCommandContext)
 
     return {
-        "assistant_message": answer,
-        "script_executed": scriptID if (run_flag and script_result is not None) else None,
-        "script_result": script_result,
+        "assistantMessage": answer,
+        "scriptExecuted": scriptID if (runFlag and scriptResult is not None) else None,
+        "scriptResult": scriptResult,
     }
