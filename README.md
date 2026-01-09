@@ -1,6 +1,6 @@
 # NetOps: AI-Powered Automation Solution
 
-**Version:** 1.2  
+**Version:** 1.2.1  
 **Type:** Internal AI + Network Automation Assistant  
 **Stack:** FastAPI (Python) + OpenAI API + Simple HTML/JS frontend + Local Python scripts
 
@@ -41,6 +41,12 @@ The project is designed as a proof-of-concept for an **AI-driven NetOps assistan
   - Return code
   - Standard output (command results)
   - Standard error (if any)
+ 
+### Version 1.2.1 – New Additions
+
+In version **1.2.1** we added:
+- **New GUI version**
+  -  More user friendly GUI
 
 ### Version 1.2 – New Additions
 
