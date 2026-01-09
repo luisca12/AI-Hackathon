@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>NetOps — AI Automation</title>
+  <title>Automation Heroe - AI Network Automation</title>
 
   <style>
     :root{
@@ -586,7 +586,7 @@
       <div class="brand">
         <div class="logo">N</div>
         <div style="min-width:0">
-          <h1>NetOps</h1>
+          <h1>Automation Heroe</h1>
           <div class="sub">AI-Powered Network Automation Assistant</div>
         </div>
       </div>
@@ -968,7 +968,7 @@
       const meta = document.createElement("div");
       meta.className = "meta";
       const who = document.createElement("span");
-      who.textContent = label || (role === "user" ? "You" : "NetOps");
+      who.textContent = label || (role === "user" ? "You" : "Automation Heroe");
       const time = document.createElement("span");
       time.textContent = nowTime();
       meta.appendChild(who);
@@ -1015,7 +1015,7 @@
     }
 
     function addTyping(){
-      const { row } = addMessage({ role: "assistant", label: "NetOps", text: "" });
+      const { row } = addMessage({ role: "assistant", label: "Automation Heroe", text: "" });
       const content = row.querySelector(".bubble .content");
       const t = document.createElement("div");
       t.className = "typing";
@@ -1077,14 +1077,14 @@
         typingRow.remove();
 
         if (data.assistant_message){
-          addMessage({ role: "assistant", text: data.assistant_message, label: "NetOps" });
+          addMessage({ role: "assistant", text: data.assistant_message, label: "Automation Heroe" });
           setStatus("ok", "Ready");
         } else if (data.error){
-          addMessage({ role: "assistant", text: "Error: " + data.error, label: "NetOps" });
+          addMessage({ role: "assistant", text: "Error: " + data.error, label: "Automation Heroe" });
           setStatus("bad", "Backend error");
           toast("Backend error received.");
         } else {
-          addMessage({ role: "assistant", text: "Unexpected response from backend.", label: "NetOps" });
+          addMessage({ role: "assistant", text: "Unexpected response from backend.", label: "Automation Heroe" });
           setStatus("warn", "Unexpected response");
           toast("Unexpected backend response.");
         }
@@ -1094,7 +1094,7 @@
         typingRow.remove();
         addMessage({
           role: "assistant",
-          label: "NetOps",
+          label: "Automation Heroe",
           text:
             "I couldn't reach the backend.\n\n" +
             "• Make sure the API is running on http://127.0.0.1:8000\n" +
@@ -1136,7 +1136,7 @@
       setStatus("ok", "Ready");
       addMessage({
         role: "assistant",
-        label: "NetOps",
+        label: "Automation Heroe",
         text:
           "Hi! I'm **Automation Heroe👋**!.\n\n" +
           "Please let me know how may I help you?"
