@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>NetOps: AI-Powered Automation Solution</title>
+  <style>
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+      background: #f0f2f5;
+    }
+    header {
+      padding: 10px 16px;
+      background: #202123;
+      color: #fff;
+      font-weight: 600;
+    }
+    #chat {
+      flex: 1;
+      padding: 10px;
+      overflow-y: auto;
+    }
+    .msg {
+      margin: 8px 0;
+      max-width: 80%;
+      padding: 8px 12px;
+      border-radius: 8px;
+      white-space: pre-wrap;
+    }
+    .user {
+      background: #0b93f6;
+      color: #fff;
+      margin-left: auto;
+      border-bottom-right-radius: 0;
+    }
+    .assistant {
+      background: #fff;
+      color: #333;
+      margin-right: auto;
+      border-bottom-left-radius: 0;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+    }
+    #input-area {
+      display: flex;
+      border-top: 1px solid #ddd;
+      padding: 10px;
+      background: #fff;
+    }
+    #msgInput {
+      flex: 1;
+      padding: 8px;
+      border-radius: 4px;
+      border: 1px solid #ccc;
+      font-size: 14px;
+    }
+    button {
+      margin-left: 8px;
+      padding: 8px 14px;
+      border-radius: 4px;
+      border: none;
+      background: #0b93f6;
+      color: #fff;
+      font-weight: 500;
+      cursor: pointer;
+    }
+    button:hover {
+      opacity: 0.9;
+    }
+  </style>
+</head>
+<body>
+  <header>NetOps: AI-Powered Automation Solution</header>
+  <div id="chat"></div>
+  <div id="input-area">
+    <input id="msgInput" type="text" placeholder="Ask NetOps to run a script or list available scripts...." />
+    <button id="sendBtn">Send</button>
+  </div>
+
+  <script>
+  console.log("[INIT] Cargando NetOps frontend...");
+
+  const chatDiv = document.getElementById('chat');
+  const input = document.getElementById('msgInput');
+  const sendBtn = document.getElementById('sendBtn');
+
+  console.log("[INIT] Elementos obtenidos:", { chatDiv, input, sendBtn });
+
+  function addMessage(text, cls) {
+    console.log("[addMessage] Agregando mensaje al chat", { text, cls });
+
+    const div = document.createElement('div');
+    div.className = 'msg ' + cls;
+    div.textContent = text;
+    chatDiv.appendChild(div);
+    chatDiv.scrollTop = chatDiv.scrollHeight;
+
+    console.log("[addMessage] Mensaje agregado. Scroll ajustado.");
+  }
+
+  async function sendMessage() {
+    const text = input.value.trim();
+    console.log("[sendMessage] Invocado. Texto actual:", text);
+
+    if (!text) {
+      console.log("[sendMessage] Texto vacío, no se envía nada.");
+      return;
+    }
+
+    // Mostrar mensaje del usuario en el chat
+    addMessage(text, 'user');
+    input.value = '';
+    console.log("[sendMessage] Mensaje del usuario agregado al chat, input limpiado.");
+
+    const payload = { message: text };
+    console.log("[sendMessage] Payload a enviar al backend:", payload);
+
+    try {
+      console.log("[sendMessage] Iniciando fetch a backend...");
+      const res = await fetch('http://127.0.0.1:8000/chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+
+      console.log("[sendMessage] Respuesta HTTP recibida:", {
+        ok: res.ok,
+        status: res.status,
+        statusText: res.statusText
+      });
+
+      let data;
+      try {
+        data = await res.json();
+        console.log("[sendMessage] JSON parseado correctamente:", data);
+      } catch (jsonErr) {
+        console.error("[sendMessage] Error parseando JSON de la respuesta:", jsonErr);
+        addMessage("Error: respuesta del backend no es JSON válido.", 'assistant');
+        return;
+      }
+
+      if (data.assistant_message) {
+        console.log("[sendMessage] Mostrando assistant_message en el chat.");
+        addMessage(data.assistant_message, 'assistant');
+      } else if (data.error) {
+        console.log("[sendMessage] Respuesta contiene error:", data.error);
+        addMessage('Error: ' + data.error, 'assistant');
+      } else {
+        console.log("[sendMessage] Respuesta inesperada del backend, no trae assistant_message ni error.");
+        addMessage('Unexpected response from backend.', 'assistant');
+      }
+
+      // Si quisieras seguir usando script_result desde el backend, aquí podrías loguearlo:
+      if (data.script_executed || data.script_result) {
+        console.log("[sendMessage] script_executed/script_result devueltos por el backend:", {
+          script_executed: data.script_executed,
+          script_result: data.script_result
+        });
+      }
+
+    } catch (err) {
+      console.error("[sendMessage] Error contactando al backend:", err);
+      addMessage('Error contacting backend: ' + err, 'assistant');
+    }
+  }
+
+  // Click en botón "Send"
+  sendBtn.addEventListener('click', () => {
+    console.log("[EVENT] Click en botón Send.");
+    sendMessage();
+  });
+
+  // Enviar con Enter
+  input.addEventListener('keydown', (e) => {
+    console.log("[EVENT] keydown en input:", { key: e.key });
+    if (e.key === 'Enter') {
+      console.log("[EVENT] Enter presionado, llamando sendMessage().");
+      sendMessage();
+    }
+  });
+
+  // Log al terminar de cargar
+  window.addEventListener('load', () => {
+    console.log("[INIT] Ventana cargada. Frontend listo para usar.");
+  });
+  </script>
+</body>
+</html>

@@ -1,0 +1,670 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>NetOps — AI Automation</title>
+
+  <style>
+    :root{
+      /* Light / modern (ChatGPT-ish) */
+      --bg: #f7f7f8;
+      --panel: #ffffff;
+      --panel2: #fbfbfc;
+
+      --stroke: #e5e7eb;
+      --stroke2: #d1d5db;
+
+      --text: #111827;
+      --muted: #6b7280;
+
+      --assistantBubble: #ffffff;
+      --userBubble: #dbeafe; /* subtle blue */
+      --userBubbleStroke: #bfdbfe;
+
+      --shadow: 0 10px 30px rgba(0,0,0,.08);
+      --shadow2: 0 2px 10px rgba(0,0,0,.06);
+
+      --radius: 18px;
+      --radius2: 14px;
+
+      --ok: #22c55e;
+      --warn: #f59e0b;
+      --bad: #ef4444;
+
+      --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      --sans: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+    }
+
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body{
+      margin: 0;
+      font-family: var(--sans);
+      color: var(--text);
+      background: var(--bg);
+    }
+
+    /* Full-screen app (no outer card) */
+    .app{
+      width: 100vw;
+      height: 100vh;
+      display: grid;
+      grid-template-rows: auto 1fr auto;
+      background: var(--bg);
+    }
+
+    /* Top bar */
+    .topbar{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap: 12px;
+      padding: 14px 18px;
+      background: var(--panel);
+      border-bottom: 1px solid var(--stroke);
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+
+    .brand{
+      display:flex;
+      align-items:center;
+      gap: 10px;
+      min-width: 0;
+    }
+
+    .logo{
+      width: 36px;
+      height: 36px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, #60a5fa, #22c55e);
+      box-shadow: 0 10px 20px rgba(59,130,246,.18);
+      display:grid;
+      place-items:center;
+      font-weight: 800;
+      letter-spacing: .2px;
+      color: white;
+      user-select: none;
+    }
+
+    .brand h1{
+      font-size: 14.5px;
+      line-height: 1.1;
+      margin: 0;
+      font-weight: 750;
+      letter-spacing: .2px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .brand .sub{
+      font-size: 12px;
+      color: var(--muted);
+      margin-top: 2px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .status{
+      display:flex;
+      align-items:center;
+      gap: 8px;
+      color: var(--muted);
+      font-size: 12px;
+      user-select:none;
+    }
+
+    .dot{
+      width: 9px; height: 9px;
+      border-radius: 999px;
+      background: var(--ok);
+      box-shadow: 0 0 0 4px rgba(34,197,94,.16);
+    }
+
+    /* Main chat area: full width, but content centered like ChatGPT */
+    .chat{
+      overflow: hidden;
+      display:flex;
+      flex-direction: column;
+    }
+
+    .messages{
+      flex: 1;
+      overflow-y: auto;
+      padding: 18px 14px 28px 14px;
+      scroll-behavior: smooth;
+    }
+
+    .messages::-webkit-scrollbar { width: 10px; }
+    .messages::-webkit-scrollbar-thumb {
+      background: rgba(17,24,39,.10);
+      border-radius: 999px;
+      border: 2px solid rgba(0,0,0,0);
+      background-clip: padding-box;
+    }
+
+    .inner{
+      width: min(980px, 100%);
+      margin: 0 auto;
+    }
+
+    /* Message row */
+    .row{
+      display:flex;
+      gap: 10px;
+      padding: 10px 4px;
+      align-items:flex-end;
+    }
+
+    .row.user{
+      justify-content: flex-end;
+    }
+
+    .avatar{
+      width: 32px;
+      height: 32px;
+      border-radius: 12px;
+      flex: 0 0 auto;
+      display:grid;
+      place-items:center;
+      font-weight: 800;
+      font-size: 12px;
+      color: #111827;
+      border: 1px solid var(--stroke);
+      background: var(--panel);
+      box-shadow: var(--shadow2);
+      user-select: none;
+    }
+
+    .row.user .avatar{
+      background: #eef2ff;
+      border-color: #e0e7ff;
+    }
+
+    .bubble{
+      max-width: min(760px, 82%);
+      border-radius: var(--radius);
+      padding: 10px 12px;
+      border: 1px solid var(--stroke);
+      box-shadow: var(--shadow2);
+      background: var(--assistantBubble);
+    }
+
+    .row.user .bubble{
+      background: var(--userBubble);
+      border-color: var(--userBubbleStroke);
+    }
+
+    .bubble .meta{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap: 8px;
+      margin-bottom: 6px;
+      color: var(--muted);
+      font-size: 11.5px;
+    }
+
+    .bubble .content{
+      font-size: 14px;
+      line-height: 1.5;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+
+    pre{
+      margin: 10px 0 0 0;
+      padding: 10px 12px;
+      border-radius: 12px;
+      background: #f3f4f6;
+      border: 1px solid #e5e7eb;
+      font-family: var(--mono);
+      font-size: 12.8px;
+      overflow-x: auto;
+    }
+    code{ font-family: var(--mono); }
+
+    /* Composer (ChatGPT-like) */
+    .composer{
+      background: var(--panel);
+      border-top: 1px solid var(--stroke);
+      padding: 12px 14px 16px 14px;
+      position: sticky;
+      bottom: 0;
+      z-index: 10;
+    }
+
+    .composer .inner{
+      width: min(980px, 100%);
+      margin: 0 auto;
+      display:flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .chips{
+      display:flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .chip{
+      border: 1px solid var(--stroke);
+      background: var(--panel2);
+      color: #111827;
+      border-radius: 999px;
+      padding: 7px 10px;
+      font-size: 12.5px;
+      cursor:pointer;
+      transition: transform .08s ease, background .15s ease, border-color .15s ease;
+      user-select:none;
+    }
+    .chip:hover{
+      transform: translateY(-1px);
+      background: #f3f4f6;
+      border-color: #d1d5db;
+    }
+
+    /* The ChatGPT-ish input bar */
+    .composeBox{
+      display:flex;
+      align-items:flex-end;
+      gap: 10px;
+      padding: 10px 10px;
+      border-radius: 18px;
+      border: 1px solid var(--stroke2);
+      background: var(--panel);
+      box-shadow: 0 1px 0 rgba(0,0,0,.02), 0 8px 20px rgba(0,0,0,.06);
+    }
+
+    textarea{
+      flex: 1;
+      resize: none;
+      min-height: 22px;
+      max-height: 180px;
+      padding: 6px 6px;
+      border: none;
+      outline: none;
+      background: transparent;
+      color: var(--text);
+      font-size: 14px;
+      line-height: 1.45;
+    }
+
+    textarea::placeholder{
+      color: #9ca3af;
+    }
+
+    .send{
+      width: 40px;
+      height: 40px;
+      border-radius: 14px;
+      border: 1px solid var(--stroke);
+      background: #111827;  /* dark send button like ChatGPT */
+      color: white;
+      cursor: pointer;
+      display:grid;
+      place-items:center;
+      transition: transform .08s ease, opacity .2s ease;
+      flex: 0 0 auto;
+    }
+    .send:hover{ transform: translateY(-1px); }
+    .send:disabled{
+      opacity: .45;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .hint{
+      font-size: 12px;
+      color: var(--muted);
+      display:flex;
+      justify-content: space-between;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .toast{
+      position: fixed;
+      bottom: 18px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(17,24,39,.92);
+      color: white;
+      padding: 10px 12px;
+      border-radius: 12px;
+      box-shadow: var(--shadow);
+      font-size: 13px;
+      display:none;
+      max-width: min(560px, 92vw);
+      z-index: 999;
+    }
+
+    /* Typing dots */
+    .typing{
+      display:inline-flex;
+      gap: 6px;
+      align-items:center;
+      padding: 3px 0;
+    }
+    .typing span{
+      width: 7px; height: 7px;
+      border-radius: 999px;
+      background: rgba(17,24,39,.45);
+      display:inline-block;
+      animation: bounce 1s infinite ease-in-out;
+    }
+    .typing span:nth-child(2){ animation-delay: .12s; }
+    .typing span:nth-child(3){ animation-delay: .24s; }
+    @keyframes bounce{
+      0%, 80%, 100%{ transform: translateY(0); opacity: .5; }
+      40%{ transform: translateY(-4px); opacity: 1; }
+    }
+
+    @media (max-width: 560px){
+      .bubble{ max-width: 90%; }
+      .topbar{ padding: 12px 14px; }
+      .messages{ padding: 14px 10px 24px 10px; }
+      .composer{ padding: 10px 10px 14px 10px; }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="app">
+    <header class="topbar">
+      <div class="brand">
+        <div class="logo">N</div>
+        <div style="min-width:0">
+          <h1>NetOps</h1>
+          <div class="sub">AI-powered network automation assistant</div>
+        </div>
+      </div>
+
+      <div class="status" title="Backend status">
+        <span id="statusDot" class="dot"></span>
+        <span id="statusText">Ready</span>
+      </div>
+    </header>
+
+    <main class="chat">
+      <div id="messages" class="messages">
+        <div class="inner" id="messagesInner"></div>
+      </div>
+    </main>
+
+    <section class="composer">
+      <div class="inner">
+        <div class="chips" aria-label="Quick actions">
+          <button class="chip" data-prompt="List available scripts">List scripts</button>
+          <button class="chip" data-prompt="Show help (how to run a script)">Help</button>
+          <button class="chip" data-prompt="Run inventoryValidation for devices 10.0.0.1,10.0.0.2 (example)">Run example</button>
+          <button class="chip" data-prompt="What inputs does dot1xConfig need?">Ask about inputs</button>
+        </div>
+
+        <div class="composeBox">
+          <textarea id="msgInput" placeholder="Message NetOps… (Enter to send • Shift+Enter for a new line)"></textarea>
+          <button id="sendBtn" class="send" aria-label="Send message" title="Send">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M3 11.5L21 3l-8.5 18-2.7-7.2L3 11.5Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
+              <path d="M21 3l-11.2 10.8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+            </svg>
+          </button>
+        </div>
+
+        <div class="hint">
+          <span>Tip: try “list scripts” or “run dot1xConfig …”</span>
+          <span id="latencyHint"></span>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <div id="toast" class="toast"></div>
+
+  <script>
+    // ✅ Change backend here if needed
+    const BACKEND_URL = "http://127.0.0.1:8000/chat";
+
+    const messagesEl = document.getElementById("messages");
+    const messagesInner = document.getElementById("messagesInner");
+    const inputEl = document.getElementById("msgInput");
+    const sendBtn = document.getElementById("sendBtn");
+    const statusDot = document.getElementById("statusDot");
+    const statusText = document.getElementById("statusText");
+    const latencyHint = document.getElementById("latencyHint");
+    const toastEl = document.getElementById("toast");
+
+    let isSending = false;
+
+    function setStatus(state, text){
+      const colors = { ok: "var(--ok)", warn: "var(--warn)", bad: "var(--bad)" };
+      statusDot.style.background = colors[state] || "var(--warn)";
+      statusDot.style.boxShadow =
+        state === "ok"  ? "0 0 0 4px rgba(34,197,94,.16)" :
+        state === "bad" ? "0 0 0 4px rgba(239,68,68,.16)" :
+                          "0 0 0 4px rgba(245,158,11,.18)";
+      statusText.textContent = text;
+    }
+
+    function toast(msg){
+      toastEl.textContent = msg;
+      toastEl.style.display = "block";
+      clearTimeout(toastEl._t);
+      toastEl._t = setTimeout(() => toastEl.style.display = "none", 2600);
+    }
+
+    function nowTime(){
+      const d = new Date();
+      return d.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+    }
+
+    // Safe rendering with optional ``` code fences (no innerHTML injection)
+    function renderContent(container, text){
+      const parts = text.split("```");
+      parts.forEach((part, idx) => {
+        if (!part) return;
+        if (idx % 2 === 0){
+          const p = document.createElement("p");
+          p.style.margin = "0 0 10px 0";
+          p.textContent = part.trim();
+          if (p.textContent){
+            container.appendChild(p);
+          }
+        } else {
+          const pre = document.createElement("pre");
+          const code = document.createElement("code");
+          code.textContent = part.replace(/^\n+|\n+$/g, "");
+          pre.appendChild(code);
+          container.appendChild(pre);
+        }
+      });
+      // remove last paragraph spacing
+      const kids = Array.from(container.children);
+      if (kids.length && kids[kids.length - 1].tagName === "P") {
+        kids[kids.length - 1].style.marginBottom = "0";
+      }
+    }
+
+    function addMessage({ role, text, label }){
+      const row = document.createElement("div");
+      row.className = "row " + (role === "user" ? "user" : "assistant");
+
+      const avatar = document.createElement("div");
+      avatar.className = "avatar";
+      avatar.textContent = role === "user" ? "You" : "N";
+
+      const bubble = document.createElement("div");
+      bubble.className = "bubble";
+
+      const meta = document.createElement("div");
+      meta.className = "meta";
+      const who = document.createElement("span");
+      who.textContent = label || (role === "user" ? "You" : "NetOps");
+      const time = document.createElement("span");
+      time.textContent = nowTime();
+      meta.appendChild(who);
+      meta.appendChild(time);
+
+      const content = document.createElement("div");
+      content.className = "content";
+      renderContent(content, text);
+
+      bubble.appendChild(meta);
+      bubble.appendChild(content);
+
+      if (role === "user"){
+        row.appendChild(bubble);
+        row.appendChild(avatar);
+      } else {
+        row.appendChild(avatar);
+        row.appendChild(bubble);
+      }
+
+      messagesInner.appendChild(row);
+      messagesEl.scrollTop = messagesEl.scrollHeight;
+
+      return { row };
+    }
+
+    function addTyping(){
+      const { row } = addMessage({ role: "assistant", label: "NetOps", text: "" });
+      const bubble = row.querySelector(".bubble .content");
+      const t = document.createElement("div");
+      t.className = "typing";
+      t.innerHTML = "<span></span><span></span><span></span>";
+      bubble.appendChild(t);
+      messagesEl.scrollTop = messagesEl.scrollHeight;
+      return row;
+    }
+
+    function setSending(v){
+      isSending = v;
+      sendBtn.disabled = v || !inputEl.value.trim();
+      inputEl.disabled = v;
+      if (v) setStatus("warn", "Thinking…");
+      else setStatus("ok", "Ready");
+    }
+
+    function autoGrow(){
+      inputEl.style.height = "auto";
+      inputEl.style.height = Math.min(inputEl.scrollHeight, 180) + "px";
+      sendBtn.disabled = isSending || !inputEl.value.trim();
+    }
+
+    async function sendMessage(textOverride){
+      const text = (textOverride ?? inputEl.value).trim();
+      if (!text || isSending) return;
+
+      addMessage({ role: "user", text });
+      inputEl.value = "";
+      autoGrow();
+
+      setSending(true);
+      const typingRow = addTyping();
+
+      const payload = { message: text };
+      const start = performance.now();
+
+      try{
+        const res = await fetch(BACKEND_URL, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload)
+        });
+
+        const ms = Math.round(performance.now() - start);
+        latencyHint.textContent = `Last response: ${ms}ms`;
+
+        if (!res.ok){
+          throw new Error(`HTTP ${res.status} ${res.statusText}`);
+        }
+
+        let data;
+        try{
+          data = await res.json();
+        } catch {
+          throw new Error("Backend returned invalid JSON.");
+        }
+
+        typingRow.remove();
+
+        if (data.assistant_message){
+          addMessage({ role: "assistant", text: data.assistant_message, label: "NetOps" });
+          setStatus("ok", "Ready");
+        } else if (data.error){
+          addMessage({ role: "assistant", text: "Error: " + data.error, label: "NetOps" });
+          setStatus("bad", "Backend error");
+          toast("Backend error received.");
+        } else {
+          addMessage({ role: "assistant", text: "Unexpected response from backend.", label: "NetOps" });
+          setStatus("warn", "Unexpected response");
+          toast("Unexpected backend response.");
+        }
+
+      } catch (err){
+        console.error("[sendMessage] Failed:", err);
+        typingRow.remove();
+        addMessage({
+          role: "assistant",
+          label: "NetOps",
+          text:
+            "I couldn't reach the backend.\n\n" +
+            "• Make sure the API is running on http://127.0.0.1:8000\n" +
+            "• If you opened this HTML from file://, your browser may block requests (CORS).\n" +
+            "  Try serving it with: python -m http.server\n\n" +
+            "Error: " + String(err)
+        });
+        setStatus("bad", "Offline");
+        toast("Cannot reach backend (offline).");
+      } finally {
+        setSending(false);
+        inputEl.focus();
+      }
+    }
+
+    // Quick action chips
+    document.querySelectorAll(".chip").forEach(btn => {
+      btn.addEventListener("click", () => {
+        const prompt = btn.getAttribute("data-prompt") || "";
+        inputEl.value = prompt;
+        autoGrow();
+        inputEl.focus();
+      });
+    });
+
+    sendBtn.addEventListener("click", () => sendMessage());
+
+    // Enter to send, Shift+Enter for newline
+    inputEl.addEventListener("keydown", (e) => {
+      if (e.key === "Enter" && !e.shiftKey){
+        e.preventDefault();
+        sendMessage();
+      }
+    });
+
+    inputEl.addEventListener("input", autoGrow);
+
+    window.addEventListener("load", () => {
+      setStatus("ok", "Ready");
+      addMessage({
+        role: "assistant",
+        label: "NetOps",
+        text:
+          "Hi! I’m NetOps.\n\n" +
+          "Try:\n" +
+          "• List available scripts\n" +
+          "• What inputs does dot1xConfig need?\n" +
+          "• Run inventoryValidation for devices 10.0.0.1,10.0.0.2\n\n" +
+          "Tip: Shift+Enter for a new line."
+      });
+      inputEl.focus();
+      autoGrow();
+    });
+  </script>
+</body>
+</html>

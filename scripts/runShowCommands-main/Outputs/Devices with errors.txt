@@ -1,0 +1,24 @@
+User cisco connected to 192.168.0.17 got an error:
+Authentication to device failed.
+
+Common causes of this problem are:
+1. Invalid username and password
+2. Incorrect SSH-key file
+3. Connecting to the wrong device
+
+Device settings: cisco_xe 192.168.0.17:22
+
+
+Authentication failed..
+User luis connected to 192.168.0.17 got an error:
+Authentication to device failed.
+
+Common causes of this problem are:
+1. Invalid username and password
+2. Incorrect SSH-key file
+3. Connecting to the wrong device
+
+Device settings: cisco_xe 192.168.0.17:22
+
+
+Authentication failed..

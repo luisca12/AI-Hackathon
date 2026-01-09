@@ -1,0 +1,1149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>NetOps — AI Automation</title>
+
+  <style>
+    :root{
+      /* Light / modern (ChatGPT-ish) */
+      --bg: #fbfbfb;
+      --panel: #fbfdff;
+      --panel2: #f4f6f9;
+
+      --stroke: #e5e7eb; /* Button border */
+      --stroke2: #d1d5db; 
+
+      --text: #111827;
+      --muted: #6b7280;
+
+      --assistantBubble: #ffffff;
+      --userBubble: #dbeafe; /* subtle blue */
+      --userBubbleStroke: #bfdbfe;
+
+      --shadow: 0 10px 30px rgba(0,0,0,.08);
+      --shadow2: 0 2px 10px rgba(0,0,0,.06);
+
+      --radius: 18px;
+      --radius2: 14px;
+
+      --ok: #22c55e;
+      --warn: #f59e0b;
+      --bad: #ef4444;
+
+      --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      --sans: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+    }
+
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body{
+      margin: 0;
+      font-family: var(--sans);
+      color: var(--text);
+      background: var(--bg);
+    }
+
+    /* Full-screen app (no outer card) */
+    .app{
+      width: 100vw;
+      height: 100vh;
+      display: grid;
+      grid-template-rows: auto 1fr auto;
+      background: var(--bg);
+    }
+
+    /* TOPBAR — tech / eye-catching (light + glass + glow) */
+    .topbar{
+      position: sticky;
+      top: 0;
+      z-index: 10;
+
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap: 12px;
+      padding: 14px 18px;
+
+      /* glassy near-white */
+      background: rgba(253, 253, 254, 0.86);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+
+      /* remove “split line”, use shadow instead */
+      border-bottom: none;
+      box-shadow: 0 12px 28px rgba(0,0,0,.08);
+
+      overflow: hidden; /* so the glow stays clean */
+    }
+
+    /* soft tech glow background */
+    .topbar::before{
+      content:"";
+      position:absolute;
+      inset:-40px -60px;  /* extend so gradients don't clip */
+      background:
+        radial-gradient(520px 220px at 12% 40%, rgba(59,130,246,.22), transparent 60%),
+        radial-gradient(520px 220px at 55% -10%, rgba(34,197,94,.18), transparent 60%),
+        radial-gradient(520px 220px at 88% 50%, rgba(245,158,11,.16), transparent 60%),
+        linear-gradient(180deg, rgba(255,255,255,.75), rgba(255,255,255,.25));
+      opacity: .95;
+      pointer-events:none;
+    }
+
+    /* thin “neon” tech line at the bottom */
+    .topbar::after{
+      content:"";
+      position:absolute;
+      left: 0; right: 0; bottom: 0;
+      height: 2px;
+      background: linear-gradient(90deg,
+        rgba(239,68,68,.55),
+        rgba(59,130,246,.55),
+        rgba(245,158,11,.55),
+        rgba(34,197,94,.55)
+      );
+      opacity: .9;
+      pointer-events:none;
+    }
+
+    /* keep real content above the glow */
+    .topbar > *{
+      position: relative;
+      z-index: 1;
+    }
+
+    .brand{
+      display:flex;
+      align-items:center;
+      gap: 10px;
+      min-width: 0;
+    }
+
+    .logo{
+      width: 36px;
+      height: 36px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, #60a5fa, #22c55e);
+      box-shadow: 0 10px 20px rgba(59,130,246,.18);
+      display:grid;
+      place-items:center;
+      font-weight: 800;
+      letter-spacing: .2px;
+      color: white;
+      user-select: none;
+    }
+
+    .brand h1{
+      font-size: 14.5px;
+      line-height: 1.1;
+      margin: 0;
+      font-weight: 750;
+      letter-spacing: .2px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .brand .sub{
+      font-size: 12px;
+      color: var(--muted);
+      margin-top: 2px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .status{
+      display:flex;
+      align-items:center;
+      gap: 8px;
+      color: var(--muted);
+      font-size: 12px;
+      user-select:none;
+    }
+
+    .dot{
+      width: 9px; height: 9px;
+      border-radius: 999px;
+      background: var(--ok);
+      box-shadow: 0 0 0 4px rgba(34,197,94,.16);
+    }
+
+    /* Main chat area: full width, but content centered like ChatGPT */
+    .chat{
+      overflow: hidden;
+      display:flex;
+      flex-direction: column;
+    }
+
+    .messages{
+      flex: 1;
+      overflow-y: auto;
+      padding: 18px 14px 28px 14px;
+      scroll-behavior: smooth;
+    }
+
+    .messages::-webkit-scrollbar { width: 10px; }
+    .messages::-webkit-scrollbar-thumb {
+      background: rgba(17,24,39,.10);
+      border-radius: 999px;
+      border: 2px solid rgba(0,0,0,0);
+      background-clip: padding-box;
+    }
+
+    .inner{
+      width: min(980px, 100%);
+      margin: 0 auto;
+    }
+
+    /* Message row */
+    .row{
+      display:flex;
+      gap: 10px;
+      padding: 10px 4px;
+      align-items:flex-end;
+    }
+
+    .row.user{
+      justify-content: flex-end;
+    }
+
+    .avatar{
+      width: 32px;
+      height: 32px;
+      border-radius: 12px;
+      flex: 0 0 auto;
+      display:grid;
+      place-items:center;
+      font-weight: 800;
+      font-size: 12px;
+      color: #111827;
+      border: 1px solid var(--stroke);
+      background: var(--panel);
+      box-shadow: var(--shadow2);
+      user-select: none;
+    }
+
+    .row.user .avatar{
+      background: #eef2ff;
+      border-color: #e0e7ff;
+    }
+
+    /* Bubble background variable (for fade overlay + consistent theming) */
+    .bubble{
+      --bubble-bg: var(--assistantBubble);
+      background: var(--bubble-bg);
+      border-radius: var(--radius);
+      padding: 10px 12px;
+      border: 1px solid var(--stroke);
+      box-shadow: var(--shadow2);
+    }
+
+    .row.user .bubble{
+      --bubble-bg: var(--userBubble);
+      background: var(--bubble-bg);
+      border-color: var(--userBubbleStroke);
+    }
+
+    /* Auto readable width: assistant wider than user */
+    .row.assistant .bubble{
+      max-width: min(860px, 88%);
+    }
+    .row.user .bubble{
+      max-width: min(720px, 78%);
+    }
+
+    .bubble .meta{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap: 8px;
+      margin-bottom: 6px;
+      color: var(--muted);
+      font-size: 11.5px;
+    }
+
+    /* Better readability for long content */
+    .bubble .content{
+      font-size: 14px;
+      line-height: 1.6;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+
+    /* Paragraph spacing */
+    .content p{
+      margin: 0 0 10px 0;
+    }
+    .content p:last-child{
+      margin-bottom: 0;
+    }
+
+    /* Lists like ChatGPT */
+    .content ul,
+    .content ol{
+      margin: 6px 0 10px 18px;
+      padding: 0;
+    }
+    .content li{
+      margin: 4px 0;
+    }
+
+    /* Inline formatting */
+    .content strong{ font-weight: 750; }
+    .content em{ font-style: italic; }
+    .content a{
+      color: #2563eb;
+      text-decoration: none;
+      border-bottom: 1px solid rgba(37,99,235,.35);
+    }
+    .content a:hover{
+      border-bottom-color: rgba(37,99,235,.70);
+    }
+    .content code.inline{
+      font-family: var(--mono);
+      font-size: 12.8px;
+      background: #f3f4f6;
+      border: 1px solid #e5e7eb;
+      padding: 1px 6px;
+      border-radius: 8px;
+    }
+
+    /* Code blocks + copy button */
+    .codewrap{
+      margin: 10px 0 0 0;
+      border-radius: 12px;
+      background: #f3f4f6;
+      border: 1px solid #e5e7eb;
+      overflow: hidden;
+    }
+
+    .codehead{
+      display:flex;
+      justify-content:flex-end;
+      align-items:center;
+      padding: 8px 8px;
+      background: #eef0f3;
+      border-bottom: 1px solid #e5e7eb;
+      gap: 8px;
+    }
+
+    .copybtn{
+      border: 1px solid #d1d5db;
+      background: #ffffff;
+      color: #111827;
+      border-radius: 10px;
+      padding: 6px 10px;
+      font-size: 12px;
+      cursor: pointer;
+      display:flex;
+      align-items:center;
+      gap: 6px;
+      user-select: none;
+    }
+    .copybtn:hover{ background: #f9fafb; }
+    .copybtn:active{ transform: translateY(1px); }
+
+    pre{
+      margin: 0;
+      padding: 12px 12px;
+      font-family: var(--mono);
+      font-size: 12.8px;
+      overflow-x: auto;
+      background: transparent;
+      border: none;
+    }
+    code{ font-family: var(--mono); }
+
+    /* Collapsible long messages (Show more) */
+    .bubble.collapsible .content{
+      max-height: 260px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .bubble.collapsible:not(.expanded) .content::after{
+      content: "";
+      position: absolute;
+      left: 0; right: 0; bottom: 0;
+      height: 90px;
+      background: linear-gradient(to bottom, rgba(0,0,0,0), var(--bubble-bg));
+      pointer-events: none;
+    }
+
+    .readmore{
+      margin-top: 10px;
+      border: 1px solid var(--stroke);
+      background: var(--panel2);
+      color: var(--text);
+      border-radius: 999px;
+      padding: 6px 10px;
+      font-size: 12px;
+      cursor: pointer;
+      align-self: flex-start;
+      user-select: none;
+    }
+    .readmore:hover{
+      background: #f3f4f6;
+    }
+
+    /* Typing dots */
+    .typing{
+      display:inline-flex;
+      gap: 6px;
+      align-items:center;
+      padding: 3px 0;
+    }
+    .typing span{
+      width: 7px; height: 7px;
+      border-radius: 999px;
+      background: rgba(17,24,39,.45);
+      display:inline-block;
+      animation: bounce 1s infinite ease-in-out;
+    }
+    .typing span:nth-child(2){ animation-delay: .12s; }
+    .typing span:nth-child(3){ animation-delay: .24s; }
+    @keyframes bounce{
+      0%, 80%, 100%{ transform: translateY(0); opacity: .5; }
+      40%{ transform: translateY(-4px); opacity: 1; }
+    }
+
+    /* Composer (ChatGPT-like) */
+    .composer{
+      background: transparent;   /* blends with chat background */
+      border-top: none;          /* removes the splitting line */
+      padding: 12px 14px 16px 14px;
+      position: sticky;
+      bottom: 0;
+      z-index: 10;
+    }
+
+    .composer .inner{
+      width: min(980px, 100%);
+      margin: 0 auto;
+      display:flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .chips{
+      display:flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+        /* Chips: base style (uses per-chip CSS variables) */
+    .chip{
+      --chip-bg: var(--panel2);
+      --chip-border: var(--stroke);
+      --chip-text: var(--text);
+
+      border: 1px solid var(--chip-border);
+      background: var(--chip-bg);
+      color: var(--chip-text);
+
+      border-radius: 999px;
+      padding: 7px 10px;
+      font-size: 12.5px;
+      cursor: pointer;
+      transition: transform .08s ease, background .15s ease, border-color .15s ease, box-shadow .15s ease;
+      user-select: none;
+    }
+
+    .chip:hover{
+      transform: translateY(-1px);
+      /* light transparent white overlay on hover */
+      background: linear-gradient(0deg, rgba(255,255,255,.45), rgba(255,255,255,.45)), var(--chip-bg);
+      box-shadow: 0 6px 16px rgba(0,0,0,.06);
+      border-color: color-mix(in srgb, var(--chip-border) 70%, #ffffff 30%);
+    }
+
+    .chip:active{
+      transform: translateY(0px);
+      box-shadow: none;
+    }
+
+    .chip:focus-visible{
+      outline: 3px solid rgba(59,130,246,.25);
+      outline-offset: 2px;
+    }
+
+    /* One color per chip (order-based) */
+    .chips .chip:nth-child(1){
+      --chip-bg: #fee2e2;      /* red */
+      --chip-border: #fecaca;
+      --chip-text: #991b1b;
+    }
+
+    .chips .chip:nth-child(2){
+      --chip-bg: #dbeafe;      /* blue */
+      --chip-border: #bfdbfe;
+      --chip-text: #1d4ed8;
+    }
+
+    .chips .chip:nth-child(3){
+      --chip-bg: #fef9c3;      /* yellow */
+      --chip-border: #fde68a;
+      --chip-text: #92400e;
+    }
+
+    .chips .chip:nth-child(4){
+      --chip-bg: #dcfce7;      /* green */
+      --chip-border: #bbf7d0;
+      --chip-text: #166534;
+    }
+
+    /* The ChatGPT-ish input bar */
+    .composeBox{
+      display:flex;
+      align-items:flex-end;
+      gap: 10px;
+      padding: 10px 10px;
+      border-radius: 18px;
+      border: 1px solid var(--stroke2);
+      background: var(--panel);
+      box-shadow: 0 1px 0 rgba(0,0,0,.02), 0 8px 20px rgba(0,0,0,.06);
+    }
+
+    textarea{
+      flex: 1;
+      resize: none;
+      min-height: 22px;
+      max-height: 180px;
+      padding: 6px 6px;
+      border: none;
+      outline: none;
+      background: transparent;
+      color: var(--text);
+      font-size: 14px;
+      line-height: 1.45;
+    }
+
+    textarea::placeholder{
+      color: #9ca3af;
+    }
+
+    .send{
+      width: 40px;
+      height: 40px;
+      border-radius: 14px;
+      border: 1px solid var(--stroke);
+      background: #111827;  /* dark send button like ChatGPT */
+      color: white;
+      cursor: pointer;
+      display:grid;
+      place-items:center;
+      transition: transform .08s ease, opacity .2s ease;
+      flex: 0 0 auto;
+    }
+    .send:hover{ transform: translateY(-1px); }
+    .send:disabled{
+      opacity: .45;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .hint{
+      font-size: 12px;
+      color: var(--muted);
+      display:flex;
+      justify-content: space-between;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .toast{
+      position: fixed;
+      bottom: 18px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(17,24,39,.92);
+      color: white;
+      padding: 10px 12px;
+      border-radius: 12px;
+      box-shadow: var(--shadow);
+      font-size: 13px;
+      display:none;
+      max-width: min(560px, 92vw);
+      z-index: 999;
+    }
+
+    @media (max-width: 560px){
+      .row.assistant .bubble{ max-width: 92%; }
+      .row.user .bubble{ max-width: 88%; }
+      .topbar{ padding: 12px 14px; }
+      .messages{ padding: 14px 10px 24px 10px; }
+      .composer{ padding: 10px 10px 14px 10px; }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="app">
+    <header class="topbar">
+      <div class="brand">
+        <div class="logo">N</div>
+        <div style="min-width:0">
+          <h1>NetOps</h1>
+          <div class="sub">AI-Powered Network Automation Assistant</div>
+        </div>
+      </div>
+
+      <div class="status" title="Backend status">
+        <span id="statusDot" class="dot"></span>
+        <span id="statusText">Ready</span>
+      </div>
+    </header>
+
+    <main class="chat">
+      <div id="messages" class="messages">
+        <div class="inner" id="messagesInner"></div>
+      </div>
+    </main>
+
+    <section class="composer">
+      <div class="inner">
+        <div class="chips" aria-label="Quick actions">
+          <button class="chip" data-prompt="List available scripts">List scripts</button>
+          <button class="chip" data-prompt="Show help (how to run a script)">Help</button>
+          <button class="chip" data-prompt="Run inventoryValidation for devices 10.0.0.1,10.0.0.2 (example)">Run example</button>
+          <button class="chip" data-prompt="What inputs does dot1xConfig need?">Ask about inputs</button>
+        </div>
+
+        <div class="composeBox">
+          <textarea id="msgInput" placeholder="Message NetOps… (Enter to send • Shift+Enter for a new line)"></textarea>
+          <button id="sendBtn" class="send" aria-label="Send message" title="Send">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M3 11.5L21 3l-8.5 18-2.7-7.2L3 11.5Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
+              <path d="M21 3l-11.2 10.8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+            </svg>
+          </button>
+        </div>
+
+        <div class="hint">
+          <span>Tip: try “list scripts” or “run dot1xConfig …”</span>
+          <span id="latencyHint"></span>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <div id="toast" class="toast"></div>
+
+  <script>
+    // ✅ Change backend here if needed
+    const BACKEND_URL = "http://127.0.0.1:8000/chat";
+
+    const messagesEl = document.getElementById("messages");
+    const messagesInner = document.getElementById("messagesInner");
+    const inputEl = document.getElementById("msgInput");
+    const sendBtn = document.getElementById("sendBtn");
+    const statusDot = document.getElementById("statusDot");
+    const statusText = document.getElementById("statusText");
+    const latencyHint = document.getElementById("latencyHint");
+    const toastEl = document.getElementById("toast");
+
+    let isSending = false;
+
+    function setStatus(state, text){
+      const colors = { ok: "var(--ok)", warn: "var(--warn)", bad: "var(--bad)" };
+      statusDot.style.background = colors[state] || "var(--warn)";
+      statusDot.style.boxShadow =
+        state === "ok"  ? "0 0 0 4px rgba(34,197,94,.16)" :
+        state === "bad" ? "0 0 0 4px rgba(239,68,68,.16)" :
+                          "0 0 0 4px rgba(245,158,11,.18)";
+      statusText.textContent = text;
+    }
+
+    function toast(msg){
+      toastEl.textContent = msg;
+      toastEl.style.display = "block";
+      clearTimeout(toastEl._t);
+      toastEl._t = setTimeout(() => toastEl.style.display = "none", 2200);
+    }
+
+    function nowTime(){
+      const d = new Date();
+      return d.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+    }
+
+    /* ---------------------------
+       Safe inline markdown parsing
+       Supports:
+       - **bold**
+       - *italic*  (also _italic_)
+       - `inline code`
+       - [text](https://url)
+       - plain https:// links
+       NO innerHTML used.
+    ----------------------------*/
+
+    function sanitizeUrl(raw){
+      if (!raw) return null;
+      let url = raw.trim();
+
+      // Allow autolink "www."
+      if (/^www\./i.test(url)) url = "https://" + url;
+
+      // Block dangerous schemes
+      const lower = url.toLowerCase();
+      const allowed = lower.startsWith("http://") || lower.startsWith("https://") || lower.startsWith("mailto:");
+      if (!allowed) return null;
+
+      return url;
+    }
+
+    function appendText(parent, text){
+      if (!text) return;
+      parent.appendChild(document.createTextNode(text));
+    }
+
+    function appendLink(parent, label, url){
+      const safe = sanitizeUrl(url);
+      if (!safe){
+        // fall back to literal markdown if unsafe
+        appendText(parent, `[${label}](${url})`);
+        return;
+      }
+      const a = document.createElement("a");
+      a.href = safe;
+      a.target = "_blank";
+      a.rel = "noopener noreferrer";
+      a.textContent = label;
+      parent.appendChild(a);
+    }
+
+    // Parse a string into DOM nodes (very safe subset)
+    function appendInlineMarkdown(parent, input){
+      let text = input;
+
+      // Helper to find earliest match among patterns
+      function earliestMatch(str){
+        const patterns = [
+          { type: "code",  re: /`([^`]+)`/ },
+          { type: "link",  re: /\[([^\]]+)\]\(([^)]+)\)/ },
+          { type: "bold",  re: /\*\*([^*]+)\*\*/ },
+          { type: "italic",re: /(^|[^*])\*([^*]+)\*/ },   // captures leading char to avoid consuming it
+          { type: "italicU",re: /(^|[^_])_([^_]+)_/ },   // underscore italic
+          { type: "auto",  re: /\bhttps?:\/\/[^\s<>()]+/ }
+        ];
+
+        let best = null;
+
+        for (const p of patterns){
+          const m = str.match(p.re);
+          if (!m) continue;
+
+          const idx = m.index;
+          // For italic patterns with leading capture, the actual star starts at idx + (m[1] ? 1 : 0)
+          let realIdx = idx;
+          if (p.type === "italic" || p.type === "italicU"){
+            realIdx = idx + (m[1] ? m[1].length : 0);
+          }
+
+          if (best === null || realIdx < best.realIdx){
+            best = { p, m, idx, realIdx };
+          }
+        }
+        return best;
+      }
+
+      while (text.length){
+        const best = earliestMatch(text);
+        if (!best){
+          appendText(parent, text);
+          break;
+        }
+
+        // Append plain prefix (up to match)
+        if (best.realIdx > 0){
+          appendText(parent, text.slice(0, best.realIdx));
+        }
+
+        const { p, m, idx, realIdx } = best;
+
+        if (p.type === "code"){
+          const code = document.createElement("code");
+          code.className = "inline";
+          code.textContent = m[1];
+          parent.appendChild(code);
+          text = text.slice(realIdx + m[0].length);
+          continue;
+        }
+
+        if (p.type === "link"){
+          const label = m[1];
+          const url = m[2];
+          appendLink(parent, label, url);
+          text = text.slice(realIdx + m[0].length);
+          continue;
+        }
+
+        if (p.type === "bold"){
+          const strong = document.createElement("strong");
+          appendInlineMarkdown(strong, m[1]); // allow nested inline tokens safely
+          parent.appendChild(strong);
+          text = text.slice(realIdx + m[0].length);
+          continue;
+        }
+
+        if (p.type === "italic"){
+          // m[1] is the leading char (maybe ""), m[2] is italic content
+          if (m[1]) appendText(parent, m[1]); // keep the leading char
+          const em = document.createElement("em");
+          appendInlineMarkdown(em, m[2]);
+          parent.appendChild(em);
+          text = text.slice(idx + m[0].length); // use original idx since we preserved leading char
+          continue;
+        }
+
+        if (p.type === "italicU"){
+          if (m[1]) appendText(parent, m[1]);
+          const em = document.createElement("em");
+          appendInlineMarkdown(em, m[2]);
+          parent.appendChild(em);
+          text = text.slice(idx + m[0].length);
+          continue;
+        }
+
+        if (p.type === "auto"){
+          const url = m[0];
+          appendLink(parent, url, url);
+          text = text.slice(realIdx + m[0].length);
+          continue;
+        }
+
+        // fallback
+        appendText(parent, m[0]);
+        text = text.slice(realIdx + m[0].length);
+      }
+    }
+
+    /* ---------------------------
+       Block rendering:
+       - paragraphs (blank line separated)
+       - bullet lists
+       - numbered lists
+       - code fences handled in renderContent
+    ----------------------------*/
+    function renderTextBlocks(container, text) {
+      const lines = text.replace(/\r/g, "").split("\n");
+      let i = 0;
+
+      const isBullet = (s) => /^\s*(?:[-*•])\s+/.test(s);
+      const isNumbered = (s) => /^\s*\d+\.\s+/.test(s);
+
+      while (i < lines.length) {
+        while (i < lines.length && lines[i].trim() === "") i++;
+        if (i >= lines.length) break;
+
+        if (isBullet(lines[i])) {
+          const ul = document.createElement("ul");
+          while (i < lines.length && isBullet(lines[i])) {
+            const li = document.createElement("li");
+            const item = lines[i].replace(/^\s*(?:[-*•])\s+/, "");
+            appendInlineMarkdown(li, item);
+            ul.appendChild(li);
+            i++;
+          }
+          container.appendChild(ul);
+          continue;
+        }
+
+        if (isNumbered(lines[i])) {
+          const ol = document.createElement("ol");
+          while (i < lines.length && isNumbered(lines[i])) {
+            const li = document.createElement("li");
+            const item = lines[i].replace(/^\s*\d+\.\s+/, "");
+            appendInlineMarkdown(li, item);
+            ol.appendChild(li);
+            i++;
+          }
+          container.appendChild(ol);
+          continue;
+        }
+
+        const buf = [];
+        while (i < lines.length && lines[i].trim() !== "") {
+          buf.push(lines[i]);
+          i++;
+        }
+
+        const p = document.createElement("p");
+        buf.forEach((ln, idx) => {
+          if (idx > 0) p.appendChild(document.createElement("br"));
+          appendInlineMarkdown(p, ln);
+        });
+        container.appendChild(p);
+      }
+    }
+
+    async function copyToClipboard(text){
+      try{
+        if (navigator.clipboard && navigator.clipboard.writeText){
+          await navigator.clipboard.writeText(text);
+          return true;
+        }
+      } catch {}
+      // Fallback
+      try{
+        const ta = document.createElement("textarea");
+        ta.value = text;
+        ta.style.position = "fixed";
+        ta.style.left = "-9999px";
+        document.body.appendChild(ta);
+        ta.select();
+        const ok = document.execCommand("copy");
+        document.body.removeChild(ta);
+        return ok;
+      } catch {
+        return false;
+      }
+    }
+
+    function renderCodeBlock(container, codeText){
+      const wrap = document.createElement("div");
+      wrap.className = "codewrap";
+
+      const head = document.createElement("div");
+      head.className = "codehead";
+
+      const btn = document.createElement("button");
+      btn.className = "copybtn";
+      btn.type = "button";
+      btn.innerHTML = `
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path d="M9 9h10v10H9V9Z" stroke="currentColor" stroke-width="1.8"/>
+          <path d="M5 15H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v0" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+        </svg>
+        Copy
+      `;
+
+      btn.addEventListener("click", async () => {
+        const ok = await copyToClipboard(codeText);
+        toast(ok ? "Copied!" : "Copy failed");
+      });
+
+      head.appendChild(btn);
+
+      const pre = document.createElement("pre");
+      const code = document.createElement("code");
+      code.textContent = codeText;
+      pre.appendChild(code);
+
+      wrap.appendChild(head);
+      wrap.appendChild(pre);
+
+      container.appendChild(wrap);
+    }
+
+    function renderContent(container, text) {
+      const parts = text.split("```");
+      parts.forEach((part, idx) => {
+        if (!part) return;
+
+        if (idx % 2 === 0) {
+          const cleaned = part.trim();
+          if (cleaned) renderTextBlocks(container, cleaned);
+        } else {
+          const codeText = part.replace(/^\n+|\n+$/g, "");
+          renderCodeBlock(container, codeText);
+        }
+      });
+    }
+
+    function addMessage({ role, text, label }){
+      const row = document.createElement("div");
+      row.className = "row " + (role === "user" ? "user" : "assistant");
+
+      const avatar = document.createElement("div");
+      avatar.className = "avatar";
+      avatar.textContent = role === "user" ? "You" : "N";
+
+      const bubble = document.createElement("div");
+      bubble.className = "bubble";
+
+      const meta = document.createElement("div");
+      meta.className = "meta";
+      const who = document.createElement("span");
+      who.textContent = label || (role === "user" ? "You" : "NetOps");
+      const time = document.createElement("span");
+      time.textContent = nowTime();
+      meta.appendChild(who);
+      meta.appendChild(time);
+
+      const content = document.createElement("div");
+      content.className = "content";
+      renderContent(content, text);
+
+      bubble.appendChild(meta);
+      bubble.appendChild(content);
+
+      // Collapse long messages so they stay readable (ChatGPT-ish)
+      const lines = text.replace(/\r/g, "").split("\n").length;
+      const tooLong = text.length > 1200 || lines > 26;
+      if (tooLong){
+        bubble.classList.add("collapsible");
+
+        const btn = document.createElement("button");
+        btn.className = "readmore";
+        btn.type = "button";
+        btn.textContent = "Show more";
+
+        btn.addEventListener("click", () => {
+          const expanded = bubble.classList.toggle("expanded");
+          btn.textContent = expanded ? "Show less" : "Show more";
+        });
+
+        bubble.appendChild(btn);
+      }
+
+      if (role === "user"){
+        row.appendChild(bubble);
+        row.appendChild(avatar);
+      } else {
+        row.appendChild(avatar);
+        row.appendChild(bubble);
+      }
+
+      messagesInner.appendChild(row);
+      messagesEl.scrollTop = messagesEl.scrollHeight;
+
+      return { row, bubble };
+    }
+
+    function addTyping(){
+      const { row } = addMessage({ role: "assistant", label: "NetOps", text: "" });
+      const content = row.querySelector(".bubble .content");
+      const t = document.createElement("div");
+      t.className = "typing";
+      t.innerHTML = "<span></span><span></span><span></span>";
+      content.appendChild(t);
+      messagesEl.scrollTop = messagesEl.scrollHeight;
+      return row;
+    }
+
+    function setSending(v){
+      isSending = v;
+      sendBtn.disabled = v || !inputEl.value.trim();
+      inputEl.disabled = v;
+      if (v) setStatus("warn", "Thinking…");
+      else setStatus("ok", "Ready");
+    }
+
+    function autoGrow(){
+      inputEl.style.height = "auto";
+      inputEl.style.height = Math.min(inputEl.scrollHeight, 180) + "px";
+      sendBtn.disabled = isSending || !inputEl.value.trim();
+    }
+
+    async function sendMessage(textOverride){
+      const text = (textOverride ?? inputEl.value).trim();
+      if (!text || isSending) return;
+
+      addMessage({ role: "user", text });
+      inputEl.value = "";
+      autoGrow();
+
+      setSending(true);
+      const typingRow = addTyping();
+
+      const payload = { message: text };
+      const start = performance.now();
+
+      try{
+        const res = await fetch(BACKEND_URL, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload)
+        });
+
+        const ms = Math.round(performance.now() - start);
+        latencyHint.textContent = `Last response: ${ms}ms`;
+
+        if (!res.ok){
+          throw new Error(`HTTP ${res.status} ${res.statusText}`);
+        }
+
+        let data;
+        try{
+          data = await res.json();
+        } catch {
+          throw new Error("Backend returned invalid JSON.");
+        }
+
+        typingRow.remove();
+
+        if (data.assistant_message){
+          addMessage({ role: "assistant", text: data.assistant_message, label: "NetOps" });
+          setStatus("ok", "Ready");
+        } else if (data.error){
+          addMessage({ role: "assistant", text: "Error: " + data.error, label: "NetOps" });
+          setStatus("bad", "Backend error");
+          toast("Backend error received.");
+        } else {
+          addMessage({ role: "assistant", text: "Unexpected response from backend.", label: "NetOps" });
+          setStatus("warn", "Unexpected response");
+          toast("Unexpected backend response.");
+        }
+
+      } catch (err){
+        console.error("[sendMessage] Failed:", err);
+        typingRow.remove();
+        addMessage({
+          role: "assistant",
+          label: "NetOps",
+          text:
+            "I couldn't reach the backend.\n\n" +
+            "• Make sure the API is running on http://127.0.0.1:8000\n" +
+            "• If you opened this HTML from file://, your browser may block requests (CORS).\n" +
+            "  Try serving it with: python -m http.server\n\n" +
+            "Error: " + String(err)
+        });
+        setStatus("bad", "Offline");
+        toast("Cannot reach backend (offline).");
+      } finally {
+        setSending(false);
+        inputEl.focus();
+      }
+    }
+
+    // Quick action chips
+    document.querySelectorAll(".chip").forEach(btn => {
+      btn.addEventListener("click", () => {
+        const prompt = btn.getAttribute("data-prompt") || "";
+        inputEl.value = prompt;
+        autoGrow();
+        inputEl.focus();
+      });
+    });
+
+    sendBtn.addEventListener("click", () => sendMessage());
+
+    // Enter to send, Shift+Enter for newline
+    inputEl.addEventListener("keydown", (e) => {
+      if (e.key === "Enter" && !e.shiftKey){
+        e.preventDefault();
+        sendMessage();
+      }
+    });
+
+    inputEl.addEventListener("input", autoGrow);
+
+    window.addEventListener("load", () => {
+      setStatus("ok", "Ready");
+      addMessage({
+        role: "assistant",
+        label: "NetOps",
+        text:
+          "Hi! I'm **Automation Heroe👋**!.\n\n" +
+          "Please let me know how may I help you?"
+      });
+      inputEl.focus();
+      autoGrow();
+    });
+  </script>
+</body>
+</html>

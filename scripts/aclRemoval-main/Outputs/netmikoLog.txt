@@ -1,0 +1,254 @@
+
+IOSv - Cisco Systems Confidential -
+
+Supplemental End User License Restrictions
+
+This IOSv software is provided AS-IS without warranty of any kind. Under no circumstances may this software be used separate from the Cisco Modeling Labs Software that this software was provided with, or deployed or used as part of a production environment.
+
+By using the software, you agree to abide by the terms and conditions of the Cisco End User License Agreement at http://www.cisco.com/go/eula. Unauthorized use or distribution of this software is expressly prohibited.
+
+SW-TEST1#
+SW-TEST1#terminal width 511
+SW-TEST1#terminal length 0
+SW-TEST1#
+SW-TEST1#
+SW-TEST1#
+SW-TEST1#configure terminal
+Enter configuration commands, one per line.  End with CNTL/Z.
+SW-TEST1(config)#
+SW-TEST1(config)#snmp-server group grpallRO v3 priv read fullview write noview notify fullview
+SW-TEST1(config)#
+SW-TEST1(config)#end
+SW-TEST1#
+SW-TEST1#
+IOSv - Cisco Systems Confidential -
+
+Supplemental End User License Restrictions
+
+This IOSv software is provided AS-IS without warranty of any kind. Under no circumstances may this software be used separate from the Cisco Modeling Labs Software that this software was provided with, or deployed or used as part of a production environment.
+
+By using the software, you agree to abide by the terms and conditions of the Cisco End User License Agreement at http://www.cisco.com/go/eula. Unauthorized use or distribution of this software is expressly prohibited.
+SW-TEST#
+SW-TEST#terminal width 511
+SW-TEST#terminal length 0
+SW-TEST#
+SW-TEST#
+SW-TEST#
+SW-TEST#configure terminal
+Enter configuration commands, one per line.  End with CNTL/Z.
+SW-TEST(config)#
+SW-TEST(config)#snmp-server group grpallRO v3 priv read fullview write noview notify fullview
+SW-TEST(config)#
+SW-TEST(config)#end
+SW-TEST#
+SW-TEST#show run | inc grpallRO
+snmp-server group grpallRO v3 priv read fullview write noview notify fullview 
+SW-TEST1#show run | inc grpallRO
+snmp-server group grpallRO v3 priv read fullview write noview notify fullview 
+SW-TEST#copy run start
+Destination filename [startup-config]? copy run start
+Destination filename [startup-config]? 
+Building configuration...
+Compressed configuration from 2963 bytes to 1781 bytes[OK]
+SW-TEST#exit
+
+Building configuration...
+Compressed configuration from 2897 bytes to 1722 bytes[OK]
+SW-TEST1#exit
+
+IOSv - Cisco Systems Confidential -
+
+Supplemental End User License Restrictions
+
+This IOSv software is provided AS-IS without warranty of any kind. Under no circumstances may this software be used separate from the Cisco Modeling Labs Software that this software was provided with, or deployed or used as part of a production environment.
+
+By using the software, you agree to abide by the terms and conditions of the Cisco End User License Agreement at http://www.cisco.com/go/eula. Unauthorized use or distribution of this software is expressly prohibited.
+
+SW-TEST#
+SW-TEST#terminal width 511
+SW-TEST#terminal length 0
+SW-TEST#
+SW-TEST#
+SW-TEST#
+SW-TEST#configure terminal
+Enter configuration commands, one per line.  End with CNTL/Z.
+SW-TEST(config)#
+SW-TEST(config)#snmp-server group grpallRO v3 priv read fullview write noview notify fullview
+SW-TEST(config)#
+SW-TEST(config)#end
+SW-TEST#
+SW-TEST#show run | inc grpallRO
+snmp-server group grpallRO v3 priv read fullview write noview notify fullview 
+SW-TEST#copy run start
+Destination filename [startup-config]? 
+Building configuration...
+Compressed configuration from 2963 bytes to 1780 bytes[OK]
+SW-TEST#exit
+
+IOSv - Cisco Systems Confidential -
+
+Supplemental End User License Restrictions
+
+This IOSv software is provided AS-IS without warranty of any kind. Under no circumstances may this software be used separate from the Cisco Modeling Labs Software that this software was provided with, or deployed or used as part of a production environment.
+
+By using the software, you agree to abide by the terms and conditions of the Cisco End User License Agreement at http://www.cisco.com/go/eula. Unauthorized use or distribution of this software is expressly prohibited.
+SW-TEST#
+SW-TEST#terminal width 511
+SW-TEST#terminal length 0
+SW-TEST#
+SW-TEST#
+SW-TEST#
+SW-TEST#configure terminal
+Enter configuration commands, one per line.  End with CNTL/Z.
+SW-TEST(config)#
+SW-TEST(config)#snmp-server group grpallRO v3 priv read fullview write noview notify fullview
+SW-TEST(config)#
+SW-TEST(config)#end
+SW-TEST#
+SW-TEST#show run | inc grpallRO
+snmp-server group grpallRO v3 priv read fullview write noview notify fullview 
+SW-TEST#copy run start
+Destination filename [startup-config]? 
+Building configuration...
+Compressed configuration from 2963 bytes to 1777 bytes[OK]
+SW-TEST#exit
+
+IOSv - Cisco Systems Confidential -
+
+Supplemental End User License Restrictions
+
+This IOSv software is provided AS-IS without warranty of any kind. Under no circumstances may this software be used separate from the Cisco Modeling Labs Software that this software was provided with, or deployed or used as part of a production environment.
+
+By using the software, you agree to abide by the terms and conditions of the Cisco End User License Agreement at http://www.cisco.com/go/eula. Unauthorized use or distribution of this software is expressly prohibited.
+SW-TEST1#
+SW-TEST1#terminal width 511
+SW-TEST1#terminal length 0
+SW-TEST1#
+SW-TEST1#
+SW-TEST1#
+SW-TEST1#configure terminal
+Enter configuration commands, one per line.  End with CNTL/Z.
+SW-TEST1(config)#
+SW-TEST1(config)#snmp-server group grpallRO v3 priv read fullview write noview notify fullview
+SW-TEST1(config)#
+SW-TEST1(config)#end
+SW-TEST1#
+SW-TEST1#show run | inc grpallRO
+snmp-server group grpallRO v3 priv read fullview write noview notify fullview 
+SW-TEST1#copy run start
+Destination filename [startup-config]? 
+Building configuration...
+Compressed configuration from 2897 bytes to 1721 bytes[OK]
+SW-TEST1#exit
+
+IOSv - Cisco Systems Confidential -
+
+Supplemental End User License Restrictions
+
+This IOSv software is provided AS-IS without warranty of any kind. Under no circumstances may this software be used separate from the Cisco Modeling Labs Software that this software was provided with, or deployed or used as part of a production environment.
+
+By using the software, you agree to abide by the terms and conditions of the Cisco End User License Agreement at http://www.cisco.com/go/eula. Unauthorized use or distribution of this software is expressly prohibited.
+SW-TEST#
+SW-TEST#terminal width 511
+SW-TEST#terminal length 0
+SW-TEST#
+SW-TEST#
+SW-TEST#
+SW-TEST#configure terminal
+Enter configuration commands, one per line.  End with CNTL/Z.
+SW-TEST(config)#
+SW-TEST(config)#snmp-server group grpallRO v3 priv read fullview write noview notify fullview
+SW-TEST(config)#
+SW-TEST(config)#end
+SW-TEST#
+SW-TEST#show run | inc grpallRO
+snmp-server group grpallRO v3 priv read fullview write noview notify fullview 
+SW-TEST#copy run start
+Destination filename [startup-config]? 
+Building configuration...
+Compressed configuration from 2963 bytes to 1780 bytes[OK]
+SW-TEST#exit
+
+IOSv - Cisco Systems Confidential -
+
+Supplemental End User License Restrictions
+
+This IOSv software is provided AS-IS without warranty of any kind. Under no circumstances may this software be used separate from the Cisco Modeling Labs Software that this software was provided with, or deployed or used as part of a production environment.
+
+By using the software, you agree to abide by the terms and conditions of the Cisco End User License Agreement at http://www.cisco.com/go/eula. Unauthorized use or distribution of this software is expressly prohibited.
+SW-TEST1#
+SW-TEST1#terminal width 511
+SW-TEST1#terminal length 0
+SW-TEST1#
+SW-TEST1#
+SW-TEST1#
+SW-TEST1#configure terminal
+Enter configuration commands, one per line.  End with CNTL/Z.
+SW-TEST1(config)#
+SW-TEST1(config)#snmp-server group grpallRO v3 priv read fullview write noview notify fullview
+SW-TEST1(config)#
+SW-TEST1(config)#end
+SW-TEST1#
+SW-TEST1#show run | inc grpallRO
+snmp-server group grpallRO v3 priv read fullview write noview notify fullview 
+SW-TEST1#copy run start
+Destination filename [startup-config]? 
+Building configuration...
+Compressed configuration from 2897 bytes to 1721 bytes[OK]
+SW-TEST1#exit
+
+IOSv - Cisco Systems Confidential -
+
+Supplemental End User License Restrictions
+
+This IOSv software is provided AS-IS without warranty of any kind. Under no circumstances may this software be used separate from the Cisco Modeling Labs Software that this software was provided with, or deployed or used as part of a production environment.
+
+By using the software, you agree to abide by the terms and conditions of the Cisco End User License Agreement at http://www.cisco.com/go/eula. Unauthorized use or distribution of this software is expressly prohibited.
+SW-TEST#
+SW-TEST#terminal width 511
+SW-TEST#terminal length 0
+SW-TEST#
+SW-TEST#
+SW-TEST#
+SW-TEST#configure terminal
+Enter configuration commands, one per line.  End with CNTL/Z.
+SW-TEST(config)#
+SW-TEST(config)#snmp-server group grpallRO v3 priv read fullview write noview notify fullview
+SW-TEST(config)#
+SW-TEST(config)#end
+SW-TEST#
+SW-TEST#show run | inc grpallRO
+snmp-server group grpallRO v3 priv read fullview write noview notify fullview 
+SW-TEST#copy run start
+Destination filename [startup-config]? 
+Building configuration...
+Compressed configuration from 2963 bytes to 1778 bytes[OK]
+SW-TEST#exit
+
+IOSv - Cisco Systems Confidential -
+
+Supplemental End User License Restrictions
+
+This IOSv software is provided AS-IS without warranty of any kind. Under no circumstances may this software be used separate from the Cisco Modeling Labs Software that this software was provided with, or deployed or used as part of a production environment.
+
+By using the software, you agree to abide by the terms and conditions of the Cisco End User License Agreement at http://www.cisco.com/go/eula. Unauthorized use or distribution of this software is expressly prohibited.
+SW-TEST1#
+SW-TEST1#terminal width 511
+SW-TEST1#terminal length 0
+SW-TEST1#
+SW-TEST1#
+SW-TEST1#
+SW-TEST1#configure terminal
+Enter configuration commands, one per line.  End with CNTL/Z.
+SW-TEST1(config)#
+SW-TEST1(config)#snmp-server group grpallRO v3 priv read fullview write noview notify fullview
+SW-TEST1(config)#
+SW-TEST1(config)#end
+SW-TEST1#
+SW-TEST1#show run | inc grpallRO
+snmp-server group grpallRO v3 priv read fullview write noview notify fullview 
+SW-TEST1#copy run start
+Destination filename [startup-config]? 
+Building configuration...
+Compressed configuration from 2897 bytes to 1719 bytes[OK]
+SW-TEST1#exit

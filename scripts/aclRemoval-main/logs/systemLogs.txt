@@ -1,0 +1,219 @@
+2025-12-10 13:46:05,289 - INFO - IP successfully validated: 192.168.0.17
+2025-12-10 13:46:05,292 - INFO - Device IP 192.168.0.17 is reachable on Port TCP 22.
+2025-12-10 13:46:05,292 - INFO - IP successfully validated: 192.168.0.18
+2025-12-10 13:46:05,294 - INFO - Device IP 192.168.0.18 is reachable on Port TCP 22.
+2025-12-10 13:46:05,294 - INFO - [aclRemoval-main] Non-interactive run. Devices=['192.168.0.17', '192.168.0.18'], username=cisco
+2025-12-10 13:46:06,556 - INFO - User cisco is now running commands at: 192.168.0.18
+2025-12-10 13:46:06,556 - INFO - Generating hostname for 192.168.0.18
+2025-12-10 13:46:06,556 - INFO - Hostname for 192.168.0.18: 192.168.0.18
+2025-12-10 13:46:06,571 - INFO - User cisco is now running commands at: 192.168.0.17
+2025-12-10 13:46:06,571 - INFO - Generating hostname for 192.168.0.17
+2025-12-10 13:46:06,571 - INFO - Hostname for 192.168.0.17: 192.168.0.17
+2025-12-10 13:46:06,792 - INFO - 192.168.0.18snmp-server group grpallRO v3 priv read fullview write noview notify fullview
+configure terminal
+Enter configuration commands, one per line.  End with CNTL/Z.
+SW-TEST1(config)#snmp-server group grpallRO v3 priv read fullview write noview notify fullview
+SW-TEST1(config)#end
+SW-TEST1#
+2025-12-10 13:46:06,802 - INFO - 192.168.0.17snmp-server group grpallRO v3 priv read fullview write noview notify fullview
+configure terminal
+Enter configuration commands, one per line.  End with CNTL/Z.
+SW-TEST(config)#snmp-server group grpallRO v3 priv read fullview write noview notify fullview
+SW-TEST(config)#end
+SW-TEST#
+2025-12-10 13:46:11,094 - INFO - 192.168.0.18show run | inc grpallRO
+snmp-server group grpallRO v3 priv read fullview write noview notify fullview 
+2025-12-10 13:46:11,094 - INFO - Device:192.168.0.18, configured properly
+2025-12-10 13:46:11,094 - INFO - Appended device: 192.168.0.18 to file Successfully configured devices
+2025-12-10 13:46:11,104 - INFO - 192.168.0.17show run | inc grpallRO
+snmp-server group grpallRO v3 priv read fullview write noview notify fullview 
+2025-12-10 13:46:11,104 - INFO - Device:192.168.0.17, configured properly
+2025-12-10 13:46:11,104 - INFO - Appended device: 192.168.0.17 to file Successfully configured devices
+2025-12-10 13:46:13,297 - INFO - Running configuration saved for device 192.168.0.18
+192.168.0.18copy run start
+Destination filename [startup-config]? 
+2025-12-10 13:46:13,306 - INFO - Running configuration saved for device 192.168.0.17
+192.168.0.17copy run start
+Destination filename [startup-config]? 
+2025-12-10 13:59:40,072 - INFO - IP successfully validated: 192.168.0.17
+2025-12-10 13:59:40,074 - INFO - Device IP 192.168.0.17 is reachable on Port TCP 22.
+2025-12-10 13:59:40,074 - INFO - IP successfully validated: 192.168.0.18
+2025-12-10 13:59:40,077 - INFO - Device IP 192.168.0.18 is reachable on Port TCP 22.
+2025-12-10 13:59:40,077 - INFO - [aclRemoval-main] Non-interactive run. Devices=['192.168.0.17', '192.168.0.18'], username=cisco
+2025-12-10 13:59:40,077 - ERROR - User cisco connected to ['192.168.0.17', '192.168.0.18'] got an error: 'list' object has no attribute 'strip'
+Traceback (most recent call last):
+  File "/home/kali/Documents/AI-Hackathon/scripts/aclRemoval-main/commandsCLI.py", line 25, in aclRemoval
+    validDeviceIP = validDeviceIP.strip()
+                    ^^^^^^^^^^^^^^^^^^^
+AttributeError: 'list' object has no attribute 'strip'
+
+2025-12-10 14:06:11,881 - INFO - IP successfully validated: 192.168.0.17
+2025-12-10 14:06:11,883 - INFO - Device IP 192.168.0.17 is reachable on Port TCP 22.
+2025-12-10 14:06:11,883 - INFO - IP successfully validated: 192.168.0.8
+2025-12-10 14:06:14,933 - ERROR - Was not posible to resolve hostname: 192.168.0.8.mgmt.internal.das
+2025-12-10 14:06:14,976 - ERROR - Was not posible to resolve hostname: 192.168.0.8.cm.mgmt.internal.das
+2025-12-10 14:06:15,117 - ERROR - Was not posible to resolve hostname: 192.168.0.8.mgmt.wellpoint.com
+2025-12-10 14:06:15,117 - ERROR - Not a valid IP address or hostname: 192.168.0.8.mgmt.internal.das, 192.168.0.8.cm.mgmt.internal.das, 192.168.0.8.mgmt.wellpoint.com
+2025-12-10 14:06:15,117 - ERROR - NoneType: None
+
+2025-12-10 14:06:15,117 - INFO - IP address 192.168.0.8 is invalid or unreachable.
+2025-12-10 14:06:15,117 - INFO - [aclRemoval-main] Non-interactive run. Devices=['192.168.0.17'], username=cisco
+2025-12-10 14:06:16,363 - INFO - User cisco is now running commands at: 192.168.0.17
+2025-12-10 14:06:16,363 - INFO - Generating hostname for 192.168.0.17
+2025-12-10 14:06:16,363 - INFO - Hostname for 192.168.0.17: 192.168.0.17
+2025-12-10 14:06:16,604 - INFO - 192.168.0.17snmp-server group grpallRO v3 priv read fullview write noview notify fullview
+configure terminal
+Enter configuration commands, one per line.  End with CNTL/Z.
+SW-TEST(config)#snmp-server group grpallRO v3 priv read fullview write noview notify fullview
+SW-TEST(config)#end
+SW-TEST#
+2025-12-10 14:06:20,906 - INFO - 192.168.0.17show run | inc grpallRO
+snmp-server group grpallRO v3 priv read fullview write noview notify fullview 
+2025-12-10 14:06:20,906 - INFO - Device:192.168.0.17, configured properly
+2025-12-10 14:06:23,108 - INFO - Running configuration saved for device 192.168.0.17
+192.168.0.17copy run start
+Destination filename [startup-config]? 
+2025-12-10 14:06:24,559 - ERROR - User cisco connected to 192.168.0.17 got an error: list.append() takes exactly one argument (2 given)
+Traceback (most recent call last):
+  File "/home/kali/Documents/AI-Hackathon/scripts/aclRemoval-main/commandsCLI.py", line 87, in aclRemoval
+    results.append(outText, outText1)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^
+TypeError: list.append() takes exactly one argument (2 given)
+
+2025-12-10 14:10:18,333 - INFO - IP successfully validated: 192.168.0.17
+2025-12-10 14:10:18,335 - INFO - Device IP 192.168.0.17 is reachable on Port TCP 22.
+2025-12-10 14:10:18,335 - INFO - IP successfully validated: 192.168.0.8
+2025-12-10 14:10:21,382 - ERROR - Was not posible to resolve hostname: 192.168.0.8.mgmt.internal.das
+2025-12-10 14:10:21,426 - ERROR - Was not posible to resolve hostname: 192.168.0.8.cm.mgmt.internal.das
+2025-12-10 14:10:21,568 - ERROR - Was not posible to resolve hostname: 192.168.0.8.mgmt.wellpoint.com
+2025-12-10 14:10:21,568 - ERROR - Not a valid IP address or hostname: 192.168.0.8.mgmt.internal.das, 192.168.0.8.cm.mgmt.internal.das, 192.168.0.8.mgmt.wellpoint.com
+2025-12-10 14:10:21,569 - ERROR - NoneType: None
+
+2025-12-10 14:10:21,569 - INFO - IP address 192.168.0.8 is invalid or unreachable.
+2025-12-10 14:10:21,569 - INFO - IP successfully validated: 192.168.0.18
+2025-12-10 14:10:21,571 - INFO - Device IP 192.168.0.18 is reachable on Port TCP 22.
+2025-12-10 14:10:21,571 - INFO - [aclRemoval-main] Non-interactive run. Devices=['192.168.0.17', '192.168.0.18'], username=cisco
+2025-12-10 14:10:22,817 - INFO - User cisco is now running commands at: 192.168.0.17
+2025-12-10 14:10:22,817 - INFO - Generating hostname for 192.168.0.17
+2025-12-10 14:10:22,817 - INFO - Hostname for 192.168.0.17: 192.168.0.17
+2025-12-10 14:10:23,047 - INFO - 192.168.0.17snmp-server group grpallRO v3 priv read fullview write noview notify fullview
+configure terminal
+Enter configuration commands, one per line.  End with CNTL/Z.
+SW-TEST(config)#snmp-server group grpallRO v3 priv read fullview write noview notify fullview
+SW-TEST(config)#end
+SW-TEST#
+2025-12-10 14:10:27,350 - INFO - 192.168.0.17show run | inc grpallRO
+snmp-server group grpallRO v3 priv read fullview write noview notify fullview 
+2025-12-10 14:10:27,350 - INFO - Device:192.168.0.17, configured properly
+2025-12-10 14:10:29,551 - INFO - Running configuration saved for device 192.168.0.17
+192.168.0.17copy run start
+Destination filename [startup-config]? 
+2025-12-10 14:10:32,255 - INFO - User cisco is now running commands at: 192.168.0.18
+2025-12-10 14:10:32,255 - INFO - Generating hostname for 192.168.0.18
+2025-12-10 14:10:32,255 - INFO - Hostname for 192.168.0.18: 192.168.0.18
+2025-12-10 14:10:32,486 - INFO - 192.168.0.18snmp-server group grpallRO v3 priv read fullview write noview notify fullview
+configure terminal
+Enter configuration commands, one per line.  End with CNTL/Z.
+SW-TEST1(config)#snmp-server group grpallRO v3 priv read fullview write noview notify fullview
+SW-TEST1(config)#end
+SW-TEST1#
+2025-12-10 14:10:36,789 - INFO - 192.168.0.18show run | inc grpallRO
+snmp-server group grpallRO v3 priv read fullview write noview notify fullview 
+2025-12-10 14:10:36,789 - INFO - Device:192.168.0.18, configured properly
+2025-12-10 14:10:38,991 - INFO - Running configuration saved for device 192.168.0.18
+192.168.0.18copy run start
+Destination filename [startup-config]? 
+2025-12-10 14:13:42,906 - INFO - IP successfully validated: 192.168.0.17
+2025-12-10 14:13:42,909 - INFO - Device IP 192.168.0.17 is reachable on Port TCP 22.
+2025-12-10 14:13:42,909 - INFO - IP successfully validated: 192.168.0.8
+2025-12-10 14:13:45,955 - ERROR - Was not posible to resolve hostname: 192.168.0.8.mgmt.internal.das
+2025-12-10 14:13:46,002 - ERROR - Was not posible to resolve hostname: 192.168.0.8.cm.mgmt.internal.das
+2025-12-10 14:13:46,141 - ERROR - Was not posible to resolve hostname: 192.168.0.8.mgmt.wellpoint.com
+2025-12-10 14:13:46,141 - ERROR - Not a valid IP address or hostname: 192.168.0.8.mgmt.internal.das, 192.168.0.8.cm.mgmt.internal.das, 192.168.0.8.mgmt.wellpoint.com
+2025-12-10 14:13:46,141 - ERROR - NoneType: None
+
+2025-12-10 14:13:46,141 - INFO - IP address 192.168.0.8 is invalid or unreachable.
+2025-12-10 14:13:46,141 - INFO - IP successfully validated: 192.168.0.18
+2025-12-10 14:13:46,143 - INFO - Device IP 192.168.0.18 is reachable on Port TCP 22.
+2025-12-10 14:13:46,143 - INFO - [aclRemoval-main] Non-interactive run. Devices=['192.168.0.17', '192.168.0.18'], username=cisco
+2025-12-10 14:13:47,386 - INFO - User cisco is now running commands at: 192.168.0.17
+2025-12-10 14:13:47,386 - INFO - Generating hostname for 192.168.0.17
+2025-12-10 14:13:47,386 - INFO - Hostname for 192.168.0.17: 192.168.0.17
+2025-12-10 14:13:47,606 - INFO - 192.168.0.17snmp-server group grpallRO v3 priv read fullview write noview notify fullview
+configure terminal
+Enter configuration commands, one per line.  End with CNTL/Z.
+SW-TEST(config)#snmp-server group grpallRO v3 priv read fullview write noview notify fullview
+SW-TEST(config)#end
+SW-TEST#
+2025-12-10 14:13:51,909 - INFO - 192.168.0.17show run | inc grpallRO
+snmp-server group grpallRO v3 priv read fullview write noview notify fullview 
+2025-12-10 14:13:51,909 - INFO - Device:192.168.0.17, configured properly
+2025-12-10 14:13:54,110 - INFO - Running configuration saved for device 192.168.0.17
+192.168.0.17copy run start
+Destination filename [startup-config]? 
+2025-12-10 14:13:56,798 - INFO - User cisco is now running commands at: 192.168.0.18
+2025-12-10 14:13:56,798 - INFO - Generating hostname for 192.168.0.18
+2025-12-10 14:13:56,798 - INFO - Hostname for 192.168.0.18: 192.168.0.18
+2025-12-10 14:13:57,027 - INFO - 192.168.0.18snmp-server group grpallRO v3 priv read fullview write noview notify fullview
+configure terminal
+Enter configuration commands, one per line.  End with CNTL/Z.
+SW-TEST1(config)#snmp-server group grpallRO v3 priv read fullview write noview notify fullview
+SW-TEST1(config)#end
+SW-TEST1#
+2025-12-10 14:14:01,329 - INFO - 192.168.0.18show run | inc grpallRO
+snmp-server group grpallRO v3 priv read fullview write noview notify fullview 
+2025-12-10 14:14:01,329 - INFO - Device:192.168.0.18, configured properly
+2025-12-10 14:14:03,531 - INFO - Running configuration saved for device 192.168.0.18
+192.168.0.18copy run start
+Destination filename [startup-config]? 
+2025-12-10 14:16:33,625 - INFO - IP successfully validated: 192.168.0.17
+2025-12-10 14:16:33,627 - INFO - Device IP 192.168.0.17 is reachable on Port TCP 22.
+2025-12-10 14:16:33,627 - INFO - IP successfully validated: 192.168.0.18
+2025-12-10 14:16:33,629 - INFO - Device IP 192.168.0.18 is reachable on Port TCP 22.
+2025-12-10 14:16:33,629 - INFO - IP successfully validated: 192.168.0.19
+2025-12-10 14:16:36,680 - ERROR - Was not posible to resolve hostname: 192.168.0.19.mgmt.internal.das
+2025-12-10 14:16:36,725 - ERROR - Was not posible to resolve hostname: 192.168.0.19.cm.mgmt.internal.das
+2025-12-10 14:16:36,821 - ERROR - Was not posible to resolve hostname: 192.168.0.19.mgmt.wellpoint.com
+2025-12-10 14:16:36,821 - ERROR - Not a valid IP address or hostname: 192.168.0.19.mgmt.internal.das, 192.168.0.19.cm.mgmt.internal.das, 192.168.0.19.mgmt.wellpoint.com
+2025-12-10 14:16:36,821 - ERROR - NoneType: None
+
+2025-12-10 14:16:36,821 - INFO - IP address 192.168.0.19 is invalid or unreachable.
+2025-12-10 14:16:36,822 - INFO - IP successfully validated: 192.168.0.20
+2025-12-10 14:16:39,871 - ERROR - Was not posible to resolve hostname: 192.168.0.20.mgmt.internal.das
+2025-12-10 14:16:39,916 - ERROR - Was not posible to resolve hostname: 192.168.0.20.cm.mgmt.internal.das
+2025-12-10 14:16:40,068 - ERROR - Was not posible to resolve hostname: 192.168.0.20.mgmt.wellpoint.com
+2025-12-10 14:16:40,068 - ERROR - Not a valid IP address or hostname: 192.168.0.20.mgmt.internal.das, 192.168.0.20.cm.mgmt.internal.das, 192.168.0.20.mgmt.wellpoint.com
+2025-12-10 14:16:40,068 - ERROR - NoneType: None
+
+2025-12-10 14:16:40,069 - INFO - IP address 192.168.0.20 is invalid or unreachable.
+2025-12-10 14:16:40,069 - INFO - [aclRemoval-main] Non-interactive run. Devices=['192.168.0.17', '192.168.0.18'], username=cisco
+2025-12-10 14:16:41,313 - INFO - User cisco is now running commands at: 192.168.0.17
+2025-12-10 14:16:41,313 - INFO - Generating hostname for 192.168.0.17
+2025-12-10 14:16:41,313 - INFO - Hostname for 192.168.0.17: 192.168.0.17
+2025-12-10 14:16:41,532 - INFO - 192.168.0.17snmp-server group grpallRO v3 priv read fullview write noview notify fullview
+configure terminal
+Enter configuration commands, one per line.  End with CNTL/Z.
+SW-TEST(config)#snmp-server group grpallRO v3 priv read fullview write noview notify fullview
+SW-TEST(config)#end
+SW-TEST#
+2025-12-10 14:16:45,834 - INFO - 192.168.0.17show run | inc grpallRO
+snmp-server group grpallRO v3 priv read fullview write noview notify fullview 
+2025-12-10 14:16:45,834 - INFO - Device:192.168.0.17, configured properly
+2025-12-10 14:16:48,036 - INFO - Running configuration saved for device 192.168.0.17
+192.168.0.17copy run start
+Destination filename [startup-config]? 
+2025-12-10 14:16:50,729 - INFO - User cisco is now running commands at: 192.168.0.18
+2025-12-10 14:16:50,729 - INFO - Generating hostname for 192.168.0.18
+2025-12-10 14:16:50,729 - INFO - Hostname for 192.168.0.18: 192.168.0.18
+2025-12-10 14:16:50,959 - INFO - 192.168.0.18snmp-server group grpallRO v3 priv read fullview write noview notify fullview
+configure terminal
+Enter configuration commands, one per line.  End with CNTL/Z.
+SW-TEST1(config)#snmp-server group grpallRO v3 priv read fullview write noview notify fullview
+SW-TEST1(config)#end
+SW-TEST1#
+2025-12-10 14:16:55,261 - INFO - 192.168.0.18show run | inc grpallRO
+snmp-server group grpallRO v3 priv read fullview write noview notify fullview 
+2025-12-10 14:16:55,261 - INFO - Device:192.168.0.18, configured properly
+2025-12-10 14:16:57,463 - INFO - Running configuration saved for device 192.168.0.18
+192.168.0.18copy run start
+Destination filename [startup-config]? 
