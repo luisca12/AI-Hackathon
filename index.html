@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Automation Heroe - AI Network Automation</title>
+  <title>Automation Hero - AI Network Automation</title>
 
   <style>
     :root{
@@ -373,6 +373,19 @@
       pointer-events: none;
     }
 
+        /* When expanded, let the message grow fully (main chat scrollbar will handle it) */
+    .bubble.collapsible.expanded .content{
+      max-height: none;
+      overflow: visible;
+    }
+
+    /* Remove the fade overlay when expanded */
+    .bubble.collapsible.expanded .content::after{
+      display: none;
+    }
+
+    .bubble{ overflow: visible; }
+
     .readmore{
       margin-top: 10px;
       border: 1px solid var(--stroke);
@@ -584,9 +597,9 @@
   <div class="app">
     <header class="topbar">
       <div class="brand">
-        <div class="logo">N</div>
+        <div class="logo">A</div>
         <div style="min-width:0">
-          <h1>Automation Heroe</h1>
+          <h1>Automation Hero</h1>
           <div class="sub">AI-Powered Network Automation Assistant</div>
         </div>
       </div>
@@ -960,7 +973,7 @@
 
       const avatar = document.createElement("div");
       avatar.className = "avatar";
-      avatar.textContent = role === "user" ? "You" : "N";
+      avatar.textContent = role === "user" ? "You" : "A";
 
       const bubble = document.createElement("div");
       bubble.className = "bubble";
@@ -968,7 +981,7 @@
       const meta = document.createElement("div");
       meta.className = "meta";
       const who = document.createElement("span");
-      who.textContent = label || (role === "user" ? "You" : "Automation Heroe");
+      who.textContent = label || (role === "user" ? "You" : "Automation Hero");
       const time = document.createElement("span");
       time.textContent = nowTime();
       meta.appendChild(who);
@@ -1015,7 +1028,7 @@
     }
 
     function addTyping(){
-      const { row } = addMessage({ role: "assistant", label: "Automation Heroe", text: "" });
+      const { row } = addMessage({ role: "assistant", label: "Automation Hero", text: "" });
       const content = row.querySelector(".bubble .content");
       const t = document.createElement("div");
       t.className = "typing";
@@ -1077,14 +1090,14 @@
         typingRow.remove();
 
         if (data.assistant_message){
-          addMessage({ role: "assistant", text: data.assistant_message, label: "Automation Heroe" });
+          addMessage({ role: "assistant", text: data.assistant_message, label: "Automation Hero" });
           setStatus("ok", "Ready");
         } else if (data.error){
-          addMessage({ role: "assistant", text: "Error: " + data.error, label: "Automation Heroe" });
+          addMessage({ role: "assistant", text: "Error: " + data.error, label: "Automation Hero" });
           setStatus("bad", "Backend error");
           toast("Backend error received.");
         } else {
-          addMessage({ role: "assistant", text: "Unexpected response from backend.", label: "Automation Heroe" });
+          addMessage({ role: "assistant", text: "Unexpected response from backend.", label: "Automation Hero" });
           setStatus("warn", "Unexpected response");
           toast("Unexpected backend response.");
         }
@@ -1094,7 +1107,7 @@
         typingRow.remove();
         addMessage({
           role: "assistant",
-          label: "Automation Heroe",
+          label: "Automation Hero",
           text:
             "I couldn't reach the backend.\n\n" +
             "• Make sure the API is running on http://127.0.0.1:8000\n" +
@@ -1136,9 +1149,9 @@
       setStatus("ok", "Ready");
       addMessage({
         role: "assistant",
-        label: "Automation Heroe",
+        label: "Automation Hero",
         text:
-          "Hi! I'm **Automation Heroe👋**!.\n\n" +
+          "Hi! I'm **Automation Hero👋**!.\n\n" +
           "Please let me know how may I help you?"
       });
       inputEl.focus();
